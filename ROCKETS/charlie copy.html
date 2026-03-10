@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visor 3D - Charlie</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body { margin: 0; background: #0f1115; font-family: Arial, sans-serif; }
+    #wrap { position: relative; width: 100vw; height: 100vh; }
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 20%, #f4f7fb 0%, #dde6f1 55%, #bcc9da 100%);
+    }
+    #status {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #fff;
+      background: rgba(20, 24, 30, 0.82);
+      line-height: 1.35;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <model-viewer
+      id="mv"
+      src="/ROCKETS/charlie/charlie.gltf"
+      alt="Modelo 3D Charlie"
+      camera-controls
+      auto-rotate
+      camera-target="auto auto auto"
+      camera-orbit="0deg 75deg auto"
+      environment-image="neutral"
+      shadow-intensity="0.8"
+      exposure="1.25"
+      tone-mapping="aces"
+      loading="eager">
+    </model-viewer>
+    <div id="status">Cargando modelo...</div>
+  </div>
+
+  <script>
+    const mv = document.getElementById("mv");
+    const status = document.getElementById("status");
+
+    mv.addEventListener("load", () => {
+      status.textContent = "Modelo cargado. Si no lo ves, arrastra para orbitar o usa la rueda para zoom.";
+    });
+
+    mv.addEventListener("error", () => {
+      status.textContent = "Error de carga del modelo o recursos asociados (.bin/.png).";
+    });
+
+    setTimeout(() => {
+      if (!customElements.get("model-viewer")) {
+        status.textContent = "No se ha cargado model-viewer desde el CDN. Revisa internet/bloqueos del navegador.";
+      }
+    }, 1500);
+  </script>
+</body>
+</html>

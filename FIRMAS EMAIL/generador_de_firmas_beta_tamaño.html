@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>ZIP de s HTML — Céntrico</title>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    body {
+      background: #F7F9FC;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+    } 
+    .container {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 4px 24px rgba(40,60,121,0.09);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 36px 28px 32px 28px;
+      min-width: 420px;
+      max-width: 420px;
+    }
+    h2 {
+      margin: 0 0 28px 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1a315d;
+      text-align: center;
+    }
+    .file-input {
+      display: none;
+    }
+    .custom-file-btn {
+      background: #2257b0;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 34px;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .custom-file-btn:hover {
+      background: #3969c1;
+    }
+    #fileLabel {
+      display: block;
+      font-size: 15px;
+      color: #1a315d;
+      margin-bottom: 20px;
+    }
+    #tamano {
+      width: 10%;
+      padding: 8px;
+      margin-top: 8px;
+      font-size: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    #exportBtn {
+      width: 85%;
+      background: #2257b0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      padding: 13px 0;
+      margin-top: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background .15s;
+    }
+    #exportBtn:disabled {
+      background-color: #bbc8da;
+      cursor: not-allowed;
+    }
+    #exportBtn:not(:disabled):hover {
+      background: #3969c1;
+    }
+    #output {
+      margin-top: 18px;
+      color: #1a315d;
+      font-size: 15px;
+      text-align: center;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Selecciona un archivo Excel</h2>
+    <label class="custom-file-btn">
+      Seleccionar archivo
+      <input type="file" id="fileInput" class="file-input" />
+    </label>
+    <span id="fileLabel">Ningún archivo seleccionado</span>
+
+    <label for="tamano" id="tamanoLabel" style="color:#1a315d;font-size:15px;">Tamaño de la  (px):</label>
+    <input type="number" id="tamano" value="100" min="50" max="300" step="10">
+
+    <button id="exportBtn" disabled>Exportar ZIP con HTMLs</button>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    let filas = [];
+    let tamano = 100;
+
+    const columnas = {
+      NOMBRE: "NOMBRE +2 apellidos",
+      CARGO: "Tipo de Participante",
+      EQUIPO: "EQUIPO",
+      CORREO: "CORREO DOMINIO PROPIO",
+      TELEFONO: "TELÉFONO",
+      LINKEDIN: "Linked In"
+    };
+
+    const plantilla = `
+<head>
+<style>
+  .tabla{
+    border-collapse: collapse;
+    table-layout: fixed;
+    overflow: hidden;
+  }
+  .celda{
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.452);
+    white-space: nowrap;
+  }
+  .celda.linkedin {
+    width: 40px;
+    height: 40px;
+    border-left:  #2257B0 solid 3px;
+    padding: 4px;
+  }
+  .celda.inferior {
+    width: 40px;
+    border-top:#2257B0 solid 3px;
+  }
+  .celda.nombre{
+    height: 20px;
+  }
+  .celda.cargo-equipo {
+    height: 20px;
+  }
+  .celda.telefono {
+    height: 20px;
+  }
+  .celda.correo {
+    height: 20px;
+  }
+  .celda.web {
+    text-align: center;
+  }
+  .celda.ubicacion {
+    text-align: center;
+  }
+  .celda.info-email {
+    text-align: center;
+  }
+  .celda.frase {
+    text-align: center;
+  }
+  .celda.social {
+    width: 60px;
+  }
+  .nombre {
+    font-size: 15px;
+    color: #3781c7;
+    font-weight: bold;
+    padding-right: 10px;
+  }
+  .cargo {
+    font-size: 9px;
+    color: #2257B0;
+    font-style: italic;
+  }
+  .equipo {
+    font-size: 9px;
+    color: #3781c7;
+    margin-left: 20px;
+  }
+  .icono {
+    height: 13px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+  .logo-bisky {
+    width: 100px;
+  }
+  .icono-linkedin {
+    width: 40px;
+    height: 40px;
+  }
+  .icono-social {
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 2px;
+  }
+  .span-web {
+    font-size: 9px;
+    color: black;
+  }
+  .span-social {
+    font-size: 9px;
+  }
+  .span-email {
+    font-size: 9px;
+  }
+  .span-telefono {
+    font-size: 9px;
+  }
+  .span-lugar {
+    font-size: 9px;
+    color: #2257B0;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+  .span-frase {
+    font-size: 9px;
+    color: #2257B0;
+    font-style: italic;
+    padding-left: 21px;
+    display: block;
+    margin: 2px 0;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+</style>
+</head>
+
+<table class="tabla">
+  <tr>
+    <td colspan="1" rowspan="4" class="celda logo-bisky">
+      <img src="https://docs.biskyteam.com/logo.png" alt="BiSky Team Logo" class="logo-bisky">
+    </td>
+    <td colspan="1" rowspan="1" class="celda nombre">
+      <div class="nombre">
+        {{NOMBRE}}sdfgsdfgsdfgsdfgsdfgsdsdg
+      </div>
+    </td>
+    <td colspan="1" rowspan="2" class="celda linkedin">
+      <a href="{{LINKEDIN}}" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/1024px-LinkedIn_icon.svg.png" alt="LinkedIn Logo" class="icono-linkedin">
+      </a>
+    </td>
+    <td colspan="1" rowspan="1" class="celda telefono">
+      <a href="tel:946 01 72 21" target="_blank"></a>
+      <img src="https://cdn-icons-png.flaticon.com/128/597/597177.png" class="icono" alt="Teléfono">
+      <span class="span-telefono">
+        946 01 72 21
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <td class="celda cargo-equipo">
+      <div class="cargo">{{CARGO}}</div>
+      <div class="equipo">{{EQUIPO}}</div>
+    </td>
+    <td colspan="2" rowspan="1" class="celda correo">
+      <a href="mailto:{{CORREO}}" target="_blank">
+        <span>
+          <img src="https://cdn-icons-png.flaticon.com/128/561/561127.png" class="icono" alt="Email"> 
+          <span class="span-email">
+            {{CORREO}}
+          </span>
+        </span>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" rowspan="1" class="celda inferior" style="border-collapse: collapse;">
+      <table style="border-collapse: collapse; overflow: hidden; width: 100%;">
+        <tr>
+          <td class="celda web">
+            <a href="https://biskyteam.com" target="_blank">
+              <img src="https://cdn-icons-png.flaticon.com/128/561/561103.png" class="icono" alt="Web">
+              <span class="span-web">
+                www.biskyteam.com
+              </span>
+            </a>
+          </td>
+          <td colspan="2" class="celda ubicacion">
+            <a href="https://maps.app.goo.gl/24Ygynh5qn32Gmhx8" target="_blank">
+              <img src="https://cdn-icons-png.flaticon.com/128/8978/8978251.png" class="icono" alt="Lugar">
+              <span class="span-lugar">
+                <b>Escuela de Ingeniería de Bilbao</b>, Planta 0, local P0111
+              </span>
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td class="celda info-email">
+            <a href="mailto:info@biskyteam.com" target="_blank">
+              <img src="https://cdn-icons-png.flaticon.com/128/561/561127.png" class="icono" alt="Mail">
+              <span class="span-email">
+                info@biskyteam.com
+              </span>
+            </a>
+          </td>
+          <td class="celda frase">
+            <span class="span-frase">“Forming the next generation of scientists”</span>
+          </td>
+          <td class="celda social">
+            <span class="span-social">
+              <a href="https://www.linkedin.com/company/biskyteam" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/1024px-LinkedIn_icon.svg.png" class="icono-social" alt="LinkedIn">
+              </a>
+              <a href="https://www.instagram.com/bisky_team?utm_source=ig_web_button_share_sheet&igsh=MTlycWNzbDdyMWpwdA==" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="icono-social" alt="Instagram">
+              </a>
+              <a href="https://www.youtube.com/@BiSKYTeam" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" class="icono-social" alt="YouTube">
+              </a>
+            </span>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+`;
+
+
+    // Se actualiza automáticamente al cambiar el valor
+    const inputTamano = document.getElementById("tamano");
+    inputTamano.addEventListener("input", e => {
+      const nuevo = parseInt(e.target.value, 10);
+      if (!isNaN(nuevo)
+    //   && nuevo >= 50 && nuevo <= 300
+      ) {
+        tamano = nuevo;
+        document.getElementById("output").textContent = `Tamaño actual: ${tamano}px`;
+      }
+    });
+
+
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      document.getElementById('fileLabel').textContent = file ? file.name : "Ningún archivo seleccionado";
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const data = e.target.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+        const worksheet = workbook.Sheets["Miembros"];
+        if (!worksheet) {
+          document.getElementById('output').innerText = "La hoja 'Miembros' no existe.";
+          document.getElementById('exportBtn').disabled = true;
+          return;
+        }
+        const rows = XLSX.utils.sheet_to_row_object_array(worksheet);
+        // Se asume que la celda "Linked In" tiene formato hipervínculo, 
+        // por lo que aquí extraemos el href y lo asignamos a la propiedad LINKEDIN de cada fila:
+        filas = rows
+          .filter(row => row[columnas.NOMBRE] && row[columnas.NOMBRE].trim() !== "")
+          .map(row => {
+            let linkedInHref = "";
+            // Buscar si hay hipervínculo en la celda Linked In
+            // Para ello, buscamos en worksheet las celdas con !links o !hyperlinks
+            // Pero XLSX.utils.sheet_to_row_object_array no da esa info, así que la siguiente técnica:
+            // Aquí se hará un mapeo desde worksheet para obtener el hipervínculo que corresponda
+
+            // Primero obtener la dirección de la celda de "Linked In" para la fila actual:
+            // Busca la fila en worksheet para esta fila de datos (el índice de esta fila):
+            // Pero primero hallamos la posición columna Linked In
+            return row; // Se ajustará abajo
+          });
+
+        // Para obtener los hipervínculos de "Linked In" usamos otra función auxiliar:
+        const linkedInCol = Object.values(columnas).indexOf(columnas.LINKEDIN);
+        if (linkedInCol === -1) {
+          filas = rows.filter(row => row[columnas.NOMBRE] && row[columnas.NOMBRE].trim() !== "");
+        } else {
+          // Obtener la columna letra de LinkedIn en worksheet (ej. "F")
+          // Obtener todas las direcciones en worksheet y filtrar las que tienen hipervínculo
+          const colLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+          let linkedInColLetter = null;
+          for(let i=0; i<colLetters.length; i++){
+            if(workbook.Sheets["Miembros"] && workbook.Sheets["Miembros"][colLetters[i] + "1"] && workbook.Sheets["Miembros"][colLetters[i] + "1"].v === columnas.LINKEDIN){
+              linkedInColLetter = colLetters[i];
+              break;
+            }
+          }
+          if(linkedInColLetter){
+            filas = rows
+              .map((row, index) => {
+                if(row[columnas.NOMBRE] && row[columnas.NOMBRE].trim() !== ""){
+                  // obtener la celda para LinkedIn en la fila index+2 (por encabezados)
+                  const cellAddress = linkedInColLetter + (index + 2);
+                  const cell = worksheet[cellAddress];
+                  const link = worksheet['!hyperlinks']?.find(h => h.ref === cellAddress);
+                  const href = link?.Target || (cell?.l?.Target) || "";
+                  return {
+                    ...row,
+                    [columnas.LINKEDIN]: href || row[columnas.LINKEDIN] || "",
+                  };
+                }
+                return row;
+              }).filter(row => row[columnas.NOMBRE] && row[columnas.NOMBRE].trim() !== "");
+          } else {
+            filas = rows.filter(row => row[columnas.NOMBRE] && row[columnas.NOMBRE].trim() !== "");
+          }
+        }
+
+        document.getElementById('output').innerHTML = filas.length > 0
+          ? `<strong>Miembros encontrados:</strong> ${filas.length}`
+          : "No se encontraron miembros.";
+        document.getElementById('exportBtn').disabled = filas.length === 0;
+      };
+      reader.readAsBinaryString(file);
+    });
+
+
+    document.getElementById('exportBtn').addEventListener('click', async function() {
+      const zip = new JSZip();
+      filas.forEach(fila => {
+        let html = plantilla;
+        Object.keys(columnas).forEach(key => {
+          const valor = fila[columnas[key]] || "";
+          html = html.replace(new RegExp(`{{${key}}}`, 'g'), valor);
+        });
+        html = html.replace("--tamaño-: 100px;", `--tamaño-: ${tamano}px;`);
+        const nombreLimpio = fila[columnas.NOMBRE].replace(/ /g, "_").replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ_]/g, "");
+        zip.file(`_${nombreLimpio}.html`, html);
+      });
+      const blob = await zip.generateAsync({ type: "blob" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 's_html.zip';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>

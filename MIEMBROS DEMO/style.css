@@ -1,0 +1,120 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #ffffff;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.btn-linkedin {
+  display: inline-block;
+  padding: 5px 7px;
+  background-color: #007BB6; /* Azul LinkedIn */
+  color: #fff;
+  font-weight: bold;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.btn-linkedin:hover {
+  background-color: #004182;
+}
+
+/* Contenedor de miembros */
+#equipo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.miembro {
+  background: rgba(255, 0, 0, 0);
+  border: 1px solid #dddddd00;
+  border-radius: 10px;
+  padding: 15px;
+  width: 200px;
+  text-align: center;
+}
+
+.miembro img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+.miembro h3 {
+  background-color: #b3141400;
+  font-weight: bold;
+  margin: 10px 0 5px 0;
+}
+
+.miembro p {
+  background-color: #0997aa00;
+  font-size: small;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #8F8F8F;
+}
+
+/* Formulario */
+#nuevo-miembro-form {
+  max-width: 300px;
+  margin: 30px auto;
+  padding: 20px;
+  background: rgb(255, 255, 255);
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#nuevo-miembro-form input,
+#nuevo-miembro-form textarea {
+  width: calc(100% - 20px);
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#nuevo-miembro-form select {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+#nuevo-miembro-form button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background: #0073e6;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#nuevo-miembro-form button:hover {
+  background: #005bb5;
+}
+
+
+

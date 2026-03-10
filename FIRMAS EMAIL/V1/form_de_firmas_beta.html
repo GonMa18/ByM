@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Generador de firma - BiSky Team</title>
+  <style>
+    body {
+      background: #eef4fb;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background: #fff;
+      max-width: 440px;
+      margin: 48px auto;
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(44,89,158,.14);
+      padding: 36px 32px 24px 32px;
+    }
+    h2 {
+      text-align: center;
+      color: #175494;
+      margin-bottom: 18px;
+      font-size: 1.6em;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+    form label {
+      font-weight: bold;
+      color: #1a2f5d;
+      margin-top: 10px;
+      display: block;
+    }
+    form input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1.5px solid #b2c8e6;
+      border-radius: 8px;
+      font-size: 16px;
+      background: #f4f8ff;
+      transition: border 0.2s;
+      box-sizing: border-box;
+    }
+    form input:focus {
+      border-color: #175494;
+      background: #eaf2fb;
+      outline: none;
+    }
+    button {
+      margin-top: 16px;
+      width: 100%;
+      padding: 10px 0;
+      border: none;
+      background: linear-gradient(90deg,#175494 0%,#226bdc 100%);
+      color: #fff;
+      font-weight: bold;
+      border-radius: 8px;
+      font-size: 17px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(44,89,158,.12);
+      transition: background 0.23s;
+    }
+    button:hover {
+      background: linear-gradient(90deg,#226bdc 0%,#175494 100%);
+    }
+    #resultado { margin-top: 24px; text-align: center; }
+    .preview {
+      background: #fbfdff;
+      border: 1.5px solid #e3e9f6;
+      border-radius: 12px;
+      padding: 18px 10px;
+      box-shadow: 0 2px 8px rgba(44,89,158,0.10);
+      margin: 0 auto;
+      display: inline-block;
+      text-align: left;
+      max-width: 100%;
+      overflow: auto;
+    }
+    .preview h3 {
+      color: #175494;
+      font-size: 16px;
+      margin: 0 0 10px 0;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>BiSky Team</h2>
+
+    <form id="form">
+      <label>Nombre y apellidos:</label>
+      <input type="text" name="nombre" required>
+
+      <label>Cargo:</label>
+      <input type="text" name="cargo" required>
+
+      <label>Equipo / Departamento:</label>
+      <input type="text" name="equipo" required>
+
+      <label>Usuario del correo (sin @biskyteam.com):</label>
+      <input type="text" name="correoUsuario" required>
+
+      <label>LinkedIn (URL del perfil):</label>
+      <input type="url" name="linkedin" placeholder="https://www.linkedin.com/in/..." required>
+
+      <label>Teléfono (opcional):</label>
+      <input type="text" name="telefono" value="946 01 72 21">
+
+      <button type="submit">Generar y descargar</button>
+    </form>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function telHref(raw) {
+      // deja solo + y dígitos para tel:
+      const cleaned = String(raw || "").trim().replace(/[^\d+]/g, "");
+      return cleaned ? `tel:${cleaned}` : "";
+    }
+
+    document.getElementById('form').onsubmit = function (e) {
+      e.preventDefault();
+      const datos = Object.fromEntries(new FormData(e.target).entries());
+
+      const nombre = escapeHtml(datos.nombre);
+      const cargo = escapeHtml(datos.cargo);
+      const equipo = escapeHtml(datos.equipo);
+
+      const correoUsuario = String(datos.correoUsuario || "").trim();
+      const correo = escapeHtml(`${correoUsuario}@biskyteam.com`);
+
+      const linkedin = escapeHtml(String(datos.linkedin || "").trim());
+
+      const telefonoTxt = escapeHtml(String(datos.telefono || "").trim());
+      const telefonoLink = telHref(datos.telefono);
+
+      // Si no hay teléfono, ocultamos esa parte (sin romper la tabla)
+      const bloqueTelefono = telefonoTxt
+        ? `
+        <a href="${telefonoLink}" target="_blank"></a>
+        <span>
+          <svg class="icono" viewBox="0 0 24 24" aria-hidden="true" aria-label="Teléfono" fill="none">
+            <g transform="translate(-2.181818 0.545455) scale(1.090909)">
+              <path
+                d="M5.73268 2.043C6.95002 0.832583 8.95439 1.04804 9.9737 2.40962L11.2347 4.09402C12.0641 5.20191 11.9909 6.75032 11.0064 7.72923L10.7676 7.96665C10.7572 7.99694 10.7319 8.09215 10.76 8.2731C10.8232 8.6806 11.1635 9.545 12.592 10.9654C14.02 12.3853 14.8905 12.7253 15.3038 12.7887C15.4911 12.8174 15.5891 12.7906 15.6194 12.78L16.0274 12.3743C16.9026 11.5041 18.2475 11.3414 19.3311 11.9305L21.2416 12.9691C22.8775 13.8584 23.2909 16.0821 21.9505 17.4148L20.53 18.8273C20.0824 19.2723 19.4805 19.6434 18.7459 19.7119C16.9369 19.8806 12.7187 19.6654 8.28659 15.2584C4.14868 11.144 3.35462 7.556 3.25415 5.78817L4.00294 5.74562L3.25415 5.78817C3.20335 4.89426 3.62576 4.13796 4.16308 3.60369L5.73268 2.043ZM8.77291 3.30856C8.26628 2.63182 7.322 2.57801 6.79032 3.10668L5.22072 4.66737C4.8908 4.99542 4.73206 5.35695 4.75173 5.70307C4.83156 7.10766 5.47286 10.3453 9.34423 14.1947C13.4057 18.2331 17.1569 18.3536 18.6067 18.2184C18.9029 18.1908 19.1975 18.0369 19.4724 17.7636L20.8929 16.3511C21.4704 15.777 21.343 14.7315 20.5252 14.2869L18.6147 13.2484C18.0871 12.9616 17.469 13.0562 17.085 13.438L16.6296 13.8909L16.1008 13.359C16.6296 13.8909 16.6289 13.8916 16.6282 13.8923L16.6267 13.8937L16.6236 13.8967L16.6171 13.903L16.6025 13.9166C16.592 13.9262 16.5799 13.9367 16.5664 13.948C16.5392 13.9705 16.5058 13.9959 16.4659 14.0227C16.3858 14.0763 16.2801 14.1347 16.1472 14.1841C15.8764 14.285 15.5192 14.3392 15.0764 14.2713C14.2096 14.1384 13.0614 13.5474 11.5344 12.0291C10.0079 10.5113 9.41194 9.36834 9.2777 8.50306C9.20906 8.06061 9.26381 7.70331 9.36594 7.43225C9.41599 7.29941 9.47497 7.19378 9.5291 7.11389C9.5561 7.07405 9.58179 7.04074 9.60446 7.01368C9.6158 7.00015 9.6264 6.98817 9.63604 6.9777L9.64977 6.96312L9.65606 6.95666L9.65905 6.95363L9.66051 6.95217C9.66122 6.95146 9.66194 6.95075 10.1908 7.48258L9.66194 6.95075L9.94875 6.66556C10.3774 6.23939 10.4374 5.53194 10.0339 4.99297L8.77291 3.30856Z"
+                fill="currentColor"
+                stroke-width="calc(var(--icon-stroke) * 1)"></path>
+            </g>
+          </svg>
+          <span class="span-telefono">${telefonoTxt}</span>
+        </span>
+        `
+        : `<span></span>`;
+
+      const html = `
+<head>
+<style>
+  .tabla{
+    border-collapse: collapse;
+    table-layout: fixed;
+    overflow: hidden;
+    min-width: 470px;
+  }
+  .celda{
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+  .celda.linkedin {
+    width: 40px;
+    height: 40px;
+    border-left:  #2257B0 solid 3px;
+    padding: 4px;
+  }
+  .celda.inferior {
+    width: 40px;
+    border-top:#2257B0 solid 3px;
+  }
+  .celda.nombre{ height: 20px; }
+  .celda.cargo-equipo{ height: 20px; }
+  .celda.telefono{ height: 20px; }
+  .celda.correo{ height: 20px; }
+  .celda.web { text-align: center; }
+  .celda.ubicacion { text-align: center; }
+  .celda.info-email { text-align: center; }
+  .celda.frase { text-align: center; }
+  .celda.social { width: 60px; }
+
+  .nombre {
+    font-size: 15px;
+    color: #3781c7;
+    font-weight: bold;
+    padding-right: 10px;
+  }
+  .cargo {
+    font-size: 9px;
+    color: #2257B0;
+    font-style: italic;
+  }
+  .equipo {
+    font-size: 9px;
+    color: #3781c7;
+    margin-left: 20px;
+  }
+
+  .icono{
+    height: 13px;
+    width: auto;
+    vertical-align: middle;
+    margin-right: 5px;
+    display: inline-block;
+    stroke: currentColor;
+  }
+  :root{ --icon-stroke: 1; }
+
+  .logo-bisky { width: 100px; height: 100px; }
+  .icono-linkedin { width: 40px; height: 40px; }
+  .icono-social {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 2px;
+  }
+
+  .span-web { font-size: 9px; color: black; }
+  .span-social { font-size: 9px; color: black; }
+  .span-email { font-size: 9px; color: black; }
+  .span-telefono { font-size: 9px; color: black; }
+  .span-lugar {
+    font-size: 9px;
+    color: #2257B0;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+  .span-frase {
+    font-size: 9px;
+    color: #2257B0;
+    font-style: italic;
+    padding-left: 21px;
+    padding-right: 10px;
+    display: block;
+    margin: 2px 0;
+  }
+  a { color: inherit; text-decoration: none; }
+</style>
+</head>
+
+<table class="tabla">
+  <tr>
+    <td colspan="1" rowspan="4" class="celda logo-bisky">
+      <a href="https://biskyteam.com" target="_blank" rel="noopener">
+        <!-- (LOGO SVG) lo dejo tal cual en tu plantilla, por longitud no lo recorto aquí.
+             Pega aquí tu <svg ...> completo del logo BiSky tal como lo tienes. -->
+        <!-- >>> PEGA AQUÍ EL SVG DEL LOGO EXACTO QUE YA TIENES <<< -->
+      </a>
+    </td>
+
+    <td colspan="1" rowspan="1" class="celda nombre">
+      <div class="nombre">${nombre}</div>
+    </td>
+
+    <td colspan="1" rowspan="2" class="celda linkedin">
+      <a href="${linkedin}" target="_blank" rel="noopener">
+        <svg class="icono-linkedin" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M14.815,0H1.18C0.53,0,0,0.517,0,1.153v13.694C0,15.485,0.53,16,1.18,16h13.636C15.467,16,16,15.485,16,14.847V1.153 C16,0.517,15.467,0,14.815,0z M4.746,13.634H2.371V5.999h2.376V13.634z M3.559,4.955c-0.762,0-1.377-0.617-1.377-1.377 c0-0.759,0.615-1.376,1.377-1.376c0.759,0,1.376,0.617,1.376,1.376C4.935,4.339,4.319,4.955,3.559,4.955z M13.633,13.634h-2.371 V9.922c0-0.886-0.017-2.025-1.233-2.025c-1.235,0-1.423,0.964-1.423,1.96v3.778H6.235V5.999h2.274v1.043h0.033 c0.317-0.6,1.091-1.233,2.245-1.233c2.401,0,2.845,1.581,2.845,3.638V13.634z" fill="#0e76a8"/>
+        </svg>
+      </a>
+    </td>
+
+    <td colspan="1" rowspan="1" class="celda telefono">
+      ${bloqueTelefono}
+    </td>
+  </tr>
+
+  <tr>
+    <td class="celda cargo-equipo">
+      <div class="cargo">${cargo}</div>
+      <div class="equipo">${equipo}</div>
+    </td>
+
+    <td colspan="2" rowspan="1" class="celda correo">
+      <a href="mailto:${correo}" target="_blank">
+        <span>
+          <svg class="icono" viewBox="0 0 24 24" aria-hidden="true" fill="none">
+            <g transform="translate(-0.521739 0) scale(1.043478)">
+              <path d="M3 8L8.44992 11.6333C9.73295 12.4886 10.3745 12.9163 11.0678 13.0825C11.6806 13.2293 12.3194 13.2293 12.9322 13.0825C13.6255 12.9163 14.2671 12.4886 15.5501 11.6333L21 8M6.2 19H17.8C18.9201 19 19.4802 19 19.908 18.782C20.2843 18.5903 20.5903 18.2843 20.782 17.908C21 17.4802 21 16.9201 21 15.8V8.2C21 7.0799 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V15.8C3 16.9201 3 17.4802 3.21799 17.908C3.40973 18.2843 3.71569 18.5903 4.09202 18.782C4.51984 19 5.07989 19 6.2 19Z"
+                stroke="currentColor"
+                stroke-width="calc(var(--icon-stroke) * 2)"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </g>
+          </svg>
+          <span class="span-email">${correo}</span>
+        </span>
+      </a>
+    </td>
+  </tr>
+
+  <!-- El resto de tu firma (web, ubicación, info@, frase, redes) queda fijo tal como lo tienes -->
+  <tr>
+    <td colspan="3" rowspan="1" class="celda inferior" style="border-collapse: collapse;">
+      <!-- >>> PEGA AQUÍ EL BLOQUE INFERIOR EXACTO DE TU PLANTILLA (web/ubicación/info/social) <<< -->
+    </td>
+  </tr>
+</table>
+      `.trim();
+
+      // Vista previa
+      document.getElementById('resultado').innerHTML =
+        `<div class="preview"><h3>Vista previa</h3>${html}</div>`;
+
+      // Descargar como archivo HTML
+      const nombreArchivo = `firma_${correoUsuario}.html`;
+      const blob = new Blob([html], { type: "text/html" });
+      const enlace = document.createElement("a");
+      enlace.href = URL.createObjectURL(blob);
+      enlace.download = nombreArchivo;
+      document.body.appendChild(enlace);
+      enlace.click();
+      document.body.removeChild(enlace);
+    };
+  </script>
+</body>
+</html>

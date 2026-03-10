@@ -1,0 +1,228 @@
+<head>
+<style>
+  .tabla{
+    border-collapse: collapse;
+    table-layout: fixed;
+    overflow: hidden;
+    min-width: 470px;
+  }
+  .celda{
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+  .celda.linkedin {
+    width: 40px;
+    height: 40px;
+    border-left:  #2257B0 solid 3px;
+    padding: 4px;
+  }
+  .celda.inferior {
+    width: 40px;
+    border-top:#2257B0 solid 3px;
+  }
+  .celda.nombre{
+    height: 20px;
+  }
+  .celda.cargo-equipo {
+    height: 20px;
+  }
+  .celda.telefono {
+    height: 20px;
+  }
+  .celda.correo {
+    height: 20px;
+  }
+  .celda.web {
+    text-align: center;
+  }
+  .celda.ubicacion {
+    text-align: center;
+  }
+  .celda.info-email {
+    text-align: center;
+  }
+  .celda.frase {
+    text-align: center;
+  }
+  .celda.social {
+    width: 60px;
+  }
+  .nombre {
+    font-size: 15px;
+    color: #3781c7;
+    font-weight: bold;
+    padding-right: 10px;
+  }
+  .cargo {
+    font-size: 9px;
+    color: #2257B0;
+    font-style: italic;
+  }
+  .equipo {
+    font-size: 9px;
+    color: #3781c7;
+    margin-left: 20px;
+  }
+  .icono {
+    height: 13px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+  .logo-bisky {
+    width: 100px;
+  }
+  .icono-linkedin {
+    width: 40px;
+    height: 40px;
+  }
+  .icono-social {
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 2px;
+  }
+  .span-web {
+    font-size: 9px;
+    color: black;
+  }
+  .span-social {
+    font-size: 9px;
+    color: black;
+  }
+  .span-email {
+    font-size: 9px;
+    color: black;
+  }
+  .span-telefono {
+    font-size: 9px;
+    color: black;
+  }
+  .span-lugar {
+    font-size: 9px;
+    color: #2257B0;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+  .span-frase {
+    font-size: 9px;
+    color: #2257B0;
+    font-style: italic;
+    padding-left: 21px;
+    padding-right: 10px;
+    display: block;
+    margin: 2px 0;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+</style>
+</head>
+
+
+<table class="tabla">
+  <tr>
+    <td colspan="1" rowspan="4" class="celda logo-bisky">
+      <img src="https://docs.biskyteam.com/logo.png" alt="BiSky Team Logo" class="logo-bisky">
+    </td>
+    <td colspan="1" rowspan="1" class="celda nombre">
+      <div class="nombre">
+        {{NOMBRE}}
+      </div>
+    </td>
+    <td colspan="1" rowspan="2" class="celda linkedin">
+      <a href="{{LINKEDIN}}" target="_blank">
+        <svg class="icono-linkedin" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14.815,0H1.18C0.53,0,0,0.517,0,1.153v13.694C0,15.485,0.53,16,1.18,16h13.636C15.467,16,16,15.485,16,14.847V1.153 C16,0.517,15.467,0,14.815,0z M4.746,13.634H2.371V5.999h2.376V13.634z M3.559,4.955c-0.762,0-1.377-0.617-1.377-1.377 c0-0.759,0.615-1.376,1.377-1.376c0.759,0,1.376,0.617,1.376,1.376C4.935,4.339,4.319,4.955,3.559,4.955z M13.633,13.634h-2.371 V9.922c0-0.886-0.017-2.025-1.233-2.025c-1.235,0-1.423,0.964-1.423,1.96v3.778H6.235V5.999h2.274v1.043h0.033 c0.317-0.6,1.091-1.233,2.245-1.233c2.401,0,2.845,1.581,2.845,3.638V13.634z" fill="#0e76a8"/>
+        </svg>
+      </a>
+    </td>
+    <td colspan="1" rowspan="1" class="celda telefono">
+      <a href="tel:946 01 72 21" target="_blank"></a>
+      <span>
+        <img src="https://cdn-icons-png.flaticon.com/128/597/597177.png" class="icono" alt="Teléfono">
+        <span class="span-telefono">
+          946 01 72 21
+        </span>
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <td class="celda cargo-equipo">
+      <div class="cargo">{{CARGO}}</div>
+      <div class="equipo">{{EQUIPO}}</div>
+    </td>
+    <td colspan="2" rowspan="1" class="celda correo">
+      <a href="mailto:{{CORREO}}" target="_blank">
+        <span>
+          <img src="https://cdn-icons-png.flaticon.com/128/561/561127.png" class="icono" alt="Email"> 
+          <span class="span-email">
+            {{CORREO}}
+          </span>
+        </span>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" rowspan="1" class="celda inferior" style="border-collapse: collapse;">
+      <table style="border-collapse: collapse; overflow: hidden; width: 100%;">
+        <tr>
+          <td class="celda web">
+            <a href="https://biskyteam.com" target="_blank">
+              <span>
+                <img src="https://cdn-icons-png.flaticon.com/128/561/561103.png" class="icono" alt="Web">
+                <span class="span-web">
+                  www.biskyteam.com
+                </span>
+              </span>
+            </a>
+          </td>
+          <td colspan="2" class="celda ubicacion">
+            <a href="https://maps.app.goo.gl/24Ygynh5qn32Gmhx8" target="_blank">
+              <span>
+                <img src="https://cdn-icons-png.flaticon.com/128/8978/8978251.png" class="icono" alt="Lugar">
+                <span class="span-lugar">
+                  <b>Escuela de Ingeniería de Bilbao</b>, Planta 0, local P0111
+                </span>
+              </span>
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td class="celda info-email">
+            <a href="mailto:info@biskyteam.com" target="_blank">
+              <span>
+                <img src="https://cdn-icons-png.flaticon.com/128/561/561127.png" class="icono" alt="Mail">
+                <span class="span-email">
+                  info@biskyteam.com
+                </span>
+              </span>
+            </a>
+          </td>
+          <td class="celda frase">
+            <span class="span-frase">"Forming the next generation of scientists"</span>
+          </td>
+          <td class="celda social">
+            <span class="span-social">
+              <a href="https://www.linkedin.com/company/biskyteam" target="_blank">
+                <svg class="icono-social" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14.815,0H1.18C0.53,0,0,0.517,0,1.153v13.694C0,15.485,0.53,16,1.18,16h13.636C15.467,16,16,15.485,16,14.847V1.153 C16,0.517,15.467,0,14.815,0z M4.746,13.634H2.371V5.999h2.376V13.634z M3.559,4.955c-0.762,0-1.377-0.617-1.377-1.377 c0-0.759,0.615-1.376,1.377-1.376c0.759,0,1.376,0.617,1.376,1.376C4.935,4.339,4.319,4.955,3.559,4.955z M13.633,13.634h-2.371 V9.922c0-0.886-0.017-2.025-1.233-2.025c-1.235,0-1.423,0.964-1.423,1.96v3.778H6.235V5.999h2.274v1.043h0.033 c0.317-0.6,1.091-1.233,2.245-1.233c2.401,0,2.845,1.581,2.845,3.638V13.634z" fill="#0e76a8"/>
+                </svg>
+              </a>
+              <a href="https://www.instagram.com/bisky_team?utm_source=ig_web_button_share_sheet&igsh=MTlycWNzbDdyMWpwdA==" target="_blank">
+                <svg class="icono-social" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8,4C5.791,4,4,5.791,4,8s1.791,4,4,4s4-1.791,4-4S10.209,4,8,4z M8,10c-1.103,0-2-0.897-2-2s0.897-2,2-2s2,0.897,2,2 S9.103,10,8,10z M11,0H5C2.237,0,0,2.237,0,5v6c0,2.762,2.237,5,5,5h6c2.762,0,5-2.238,5-5V5C16,2.237,13.762,0,11,0z M14,11 c0,1.653-1.347,3-3,3H5c-1.653,0-3-1.347-3-3V5c0-1.653,1.347-3,3-3h6c1.653,0,3,1.347,3,3V11z M12,3c-0.553,0-1,0.447-1,1 s0.447,1,1,1s1-0.447,1-1S12.553,3,12,3z" />
+                </svg>
+              </a>
+              <a href="https://www.youtube.com/@BiSKYTeam" target="_blank">
+                <svg class="icono-social" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6.364,10.379L6.364,5.621L10.545,8L6.364,10.379ZM15.666,4.124C15.482,3.431 14.939,2.885 14.251,2.7C13.003,2.364 8,2.364 8,2.364C8,2.364 2.997,2.364 1.749,2.7C1.061,2.885 0.518,3.431 0.334,4.124C0,5.38 0,8 0,8C0,8 0,10.62 0.334,11.876C0.518,12.569 1.061,13.115 1.749,13.3C2.997,13.636 8,13.636 8,13.636C8,13.636 13.003,13.636 14.251,13.3C14.939,13.115 15.482,12.569 15.666,11.876C16,10.62 16,8 16,8C16,8 16,5.38 15.666,4.124" fill="#c4302b"/>
+                </svg>
+              </a>
+            </span>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

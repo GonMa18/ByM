@@ -1,0 +1,219 @@
+<head>
+<style>
+  .tabla{
+    border-collapse: collapse;
+    table-layout: fixed;
+    overflow: hidden;
+    min-width: 470px;
+  }
+  .celda{
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+  .celda.linkedin {
+    width: 40px;
+    height: 40px;
+    border-left:  #2257B0 solid 3px;
+    padding: 4px;
+  }
+  .celda.inferior {
+    width: 40px;
+    border-top:#2257B0 solid 3px;
+  }
+  .celda.nombre{
+    height: 20px;
+  }
+  .celda.cargo-equipo {
+    height: 20px;
+  }
+  .celda.telefono {
+    height: 20px;
+  }
+  .celda.correo {
+    height: 20px;
+  }
+  .celda.web {
+    text-align: center;
+  }
+  .celda.ubicacion {
+    text-align: center;
+  }
+  .celda.info-email {
+    text-align: center;
+  }
+  .celda.frase {
+    text-align: center;
+  }
+  .celda.social {
+    width: 60px;
+  }
+  .nombre {
+    font-size: 15px;
+    color: #3781c7;
+    font-weight: bold;
+    padding-right: 10px;
+  }
+  .cargo {
+    font-size: 9px;
+    color: #2257B0;
+    font-style: italic;
+  }
+  .equipo {
+    font-size: 9px;
+    color: #3781c7;
+    margin-left: 20px;
+  }
+  .icono {
+    height: 13px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+  .logo-bisky {
+    width: 100px;
+  }
+  .icono-linkedin {
+    width: 40px;
+    height: 40px;
+  }
+  .icono-social {
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 2px;
+  }
+  .span-web {
+    font-size: 9px;
+    color: black;
+  }
+  .span-social {
+    font-size: 9px;
+    color: black;
+  }
+  .span-email {
+    font-size: 9px;
+    color: black;
+  }
+  .span-telefono {
+    font-size: 9px;
+    color: black;
+  }
+  .span-lugar {
+    font-size: 9px;
+    color: #2257B0;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+  .span-frase {
+    font-size: 9px;
+    color: #2257B0;
+    font-style: italic;
+    padding-left: 21px;
+    padding-right: 10px;
+    display: block;
+    margin: 2px 0;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+</style>
+</head>
+
+<table class="tabla">
+  <tr>
+    <td colspan="1" rowspan="4" class="celda logo-bisky">
+      <img src="https://docs.biskyteam.com/logo.png" alt="BiSky Team Logo" class="logo-bisky">
+    </td>
+    <td colspan="1" rowspan="1" class="celda nombre">
+      <div class="nombre">
+        {{NOMBRE}}
+      </div>
+    </td>
+    <td colspan="1" rowspan="2" class="celda linkedin">
+      <a href="{{LINKEDIN}}" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/1024px-LinkedIn_icon.svg.png" alt="LinkedIn Logo" class="icono-linkedin">
+      </a>
+    </td>
+    <td colspan="1" rowspan="1" class="celda telefono">
+      <a href="tel:946 01 72 21" target="_blank"></a>
+      <span>
+        <img src="https://cdn-icons-png.flaticon.com/128/597/597177.png" class="icono" alt="Teléfono">
+        <span class="span-telefono">
+          946 01 72 21
+        </span>
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <td class="celda cargo-equipo">
+      <div class="cargo">{{CARGO}}</div>
+      <div class="equipo">{{EQUIPO}}</div>
+    </td>
+    <td colspan="2" rowspan="1" class="celda correo">
+      <a href="mailto:{{CORREO}}" target="_blank">
+        <span>
+          <img src="https://cdn-icons-png.flaticon.com/128/561/561127.png" class="icono" alt="Email"> 
+          <span class="span-email">
+            {{CORREO}}
+          </span>
+        </span>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" rowspan="1" class="celda inferior" style="border-collapse: collapse;">
+      <table style="border-collapse: collapse; overflow: hidden; width: 100%;">
+        <tr>
+          <td class="celda web">
+            <a href="https://biskyteam.com" target="_blank">
+              <span>
+                <img src="https://cdn-icons-png.flaticon.com/128/561/561103.png" class="icono" alt="Web">
+                <span class="span-web">
+                  www.biskyteam.com
+                </span>
+              </span>
+            </a>
+          </td>
+          <td colspan="2" class="celda ubicacion">
+            <a href="https://maps.app.goo.gl/24Ygynh5qn32Gmhx8" target="_blank">
+              <span>
+                <img src="https://cdn-icons-png.flaticon.com/128/8978/8978251.png" class="icono" alt="Lugar">
+                <span class="span-lugar">
+                  <b>Escuela de Ingeniería de Bilbao</b>, Planta 0, local P0111
+                </span>
+              </span>
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td class="celda info-email">
+            <a href="mailto:info@biskyteam.com" target="_blank">
+              <span>
+                <img src="https://cdn-icons-png.flaticon.com/128/561/561127.png" class="icono" alt="Mail">
+                <span class="span-email">
+                  info@biskyteam.com
+                </span>
+              </span>
+            </a>
+          </td>
+          <td class="celda frase">
+            <span class="span-frase">“Forming the next generation of scientists”</span>
+          </td>
+          <td class="celda social">
+            <span class="span-social">
+              <a href="https://www.linkedin.com/company/biskyteam" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/1024px-LinkedIn_icon.svg.png" class="icono-social" alt="LinkedIn">
+              </a>
+              <a href="https://www.instagram.com/bisky_team?utm_source=ig_web_button_share_sheet&igsh=MTlycWNzbDdyMWpwdA==" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="icono-social" alt="Instagram">
+              </a>
+              <a href="https://www.youtube.com/@BiSKYTeam" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" class="icono-social" alt="YouTube">
+              </a>
+            </span>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

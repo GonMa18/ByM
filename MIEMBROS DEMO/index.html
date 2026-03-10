@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Equipo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>MIEMBROS</h1>
+
+  <!-- Miembros iniciales -->
+  <div id="equipo">
+    <div class="miembro">
+      <img src="https://www.biskyteam.com/wp-content/uploads/2024/12/Asier-Lo%E2%95%A0upez.jpg" alt="Miembro 1">
+      <h3>Asier López</h3>
+      <p><strong>Chief</strong></p>
+      <a href="https://www.linkedin.com/in/asier-lopez" target="_blank" class="btn-linkedin"><strong>in</strong></a>
+    </div>
+
+    <div class="miembro">
+      <img src="https://www.biskyteam.com/wp-content/uploads/2024/12/Telmo-Ubieta-Urrutia.jpg" alt="Miembro 2">
+      <h3>Telmo Ubieta</h3>
+      <p><strong>Chief</strong></p>
+      <a href="https://www.linkedin.com/in/telmo-ubieta" target="_blank" class="btn-linkedin"><strong>in</strong></a>
+
+    </div>
+  </div>
+
+  <!-- Formulario para añadir miembros -->
+  <form id="nuevo-miembro-form">
+    <h2>Añadir nuevo miembro</h2>
+    <input type="text" id="nombre" placeholder="Nombre" required>
+    <select id="cargo" required>
+      <option value="" disabled selected hidden>Selecciona un cargo</option>
+      <option value="">(Ninguno)</option>
+      <option value="Team Leader">Team Leader</option>
+      <option value="Chief">Chief</option>
+      <option value="Technical">Technical</option>
+      <option value="Team Member">Team Member</option>
+      <option value="Otros">Otros</option>
+    </select>
+    <input type="text" id="cargo-otro" placeholder="Especifica el cargo" style="display:none;">
+
+    <input type="url" id="foto" placeholder="URL de la foto (opcional)">
+    <input type="url" id="linkedin" placeholder="URL de LinkedIn (opcional)">
+    <button type="submit">Añadir</button>
+  </form>
+
+  <script src="script.js"></script>
+</body>
+</html>
