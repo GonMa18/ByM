@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atlas GLB Viewer</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body { margin: 0; background: #4f4f4f; font-family: Arial, sans-serif; }
+    model-viewer { width: 100vw; height: 100vh; background: #4f4f4f; }
+    #status {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #fff;
+      background: rgba(20, 24, 30, 0.82);
+      line-height: 1.35;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <model-viewer
+    id="mv"
+    src="./atlas/atlas.glb"
+    alt="Atlas GLB"
+    camera-controls
+    auto-rotate
+    environment-image="neutral"
+    exposure="1.15"
+    shadow-intensity="0.8">
+  </model-viewer>
+  <div id="status">Cargando atlas.glb...</div>
+
+  <script>
+    const mv = document.getElementById("mv");
+    const st = document.getElementById("status");
+
+    mv.addEventListener("load", () => {
+      st.textContent = "atlas.glb cargado correctamente.";
+    });
+    mv.addEventListener("error", () => {
+      st.textContent = "Error cargando ./atlas/atlas.glb";
+    });
+  </script>
+</body>
+</html>
