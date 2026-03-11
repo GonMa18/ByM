@@ -1,0 +1,9 @@
+﻿department_id,department_name,department_slug,is_active,sort_order
+dep_001,Business and Management,business-and-management,true,1
+dep_002,Avionics,avionics,true,2
+dep_003,Propulsion,propulsion,true,3
+dep_004,Aerostructure,aerostructure,true,4
+dep_005,Recovery,recovery,true,5
+dep_006,Structures & Manufacturing,structures-and-manufacturing,true,6
+dep_007,Simulation,simulation,true,7
+dep_008,Control,control,true,8
