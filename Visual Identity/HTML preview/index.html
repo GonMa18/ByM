@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preview paleta de marca</title>
+  <link id="theme-stylesheet" rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <div class="topbar">
+        <div>
+          <p class="eyebrow">Identidad de marca</p>
+          <h1>Paleta</h1>
+          <p class="hero-text">
+            Vista previa editable para comprobar tonos serios, profesionales, casuales y pastel.
+          </p>
+        </div>
+
+        <div class="theme-switcher-inline">
+          <label for="themeSelector">Comparar estilo</label>
+          <select id="themeSelector">
+            <option value="styles.css">Estilo original</option>
+            <option value="styles-space.css">Estilo espacial</option>
+            <option value="styles-dark.css">Estilo dark</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <button class="btn btn-primary">Botón principal</button>
+        <button class="btn btn-secondary">Botón secundario</button>
+        <button class="btn btn-soft">Botón suave</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-layout">
+    <section class="panel">
+      <h2>Primario 1</h2>
+
+      <div class="swatch-grid">
+        <div class="swatch blue-50"><span>50</span><code>#EEF4FF</code></div>
+        <div class="swatch blue-100"><span>100</span><code>#D9E8FF</code></div>
+        <div class="swatch blue-200"><span>200</span><code>#B7D1FF</code></div>
+        <div class="swatch blue-300"><span>300</span><code>#7FB0F5</code></div>
+        <div class="swatch blue-400"><span>400</span><code>#4D8DE0</code></div>
+        <div class="swatch blue-500"><span>500</span><code>#1F6FBC</code></div>
+        <div class="swatch blue-600"><span>600</span><code>#155A99</code></div>
+        <div class="swatch blue-700"><span>700</span><code>#11497C</code></div>
+        <div class="swatch blue-800"><span>800</span><code>#0D385F</code></div>
+        <div class="swatch blue-900"><span>900</span><code>#0A2743</code></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Primario 2</h2>
+
+      <div class="swatch-grid">
+        <div class="swatch yellow-50"><span>50</span><code>#FFFDF2</code></div>
+        <div class="swatch yellow-100"><span>100</span><code>#FFF9D6</code></div>
+        <div class="swatch yellow-200"><span>200</span><code>#FFF19C</code></div>
+        <div class="swatch yellow-300"><span>300</span><code>#FFE867</code></div>
+        <div class="swatch yellow-400"><span>400</span><code>#F8D420</code></div>
+        <div class="swatch yellow-500"><span>500</span><code>#EAC400</code></div>
+        <div class="swatch yellow-600"><span>600</span><code>#D4B000</code></div>
+        <div class="swatch yellow-700"><span>700</span><code>#B89600</code></div>
+        <div class="swatch yellow-800"><span>800</span><code>#8F7400</code></div>
+        <div class="swatch yellow-900"><span>900</span><code>#665200</code></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Neutros</h2>
+      <p class="section-text">
+        Base para fondos, texto, bordes y piezas más limpias.
+      </p>
+
+      <div class="swatch-grid neutrals-grid">
+        <div class="swatch neutral-0"><span>Neutral 0</span><code>#FFFFFF</code></div>
+        <div class="swatch neutral-50"><span>Neutral 50</span><code>#F8FAFC</code></div>
+        <div class="swatch neutral-100"><span>Neutral 100</span><code>#EAEFF5</code></div>
+        <div class="swatch neutral-300"><span>Neutral 300</span><code>#B8C2CC</code></div>
+        <div class="swatch neutral-500"><span>Neutral 500</span><code>#6B7280</code></div>
+        <div class="swatch neutral-700"><span>Neutral 700</span><code>#374151</code></div>
+        <div class="swatch neutral-900"><span>Neutral 900</span><code>#111827</code></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Combinaciones</h2>
+      <p class="section-text">
+        Ejemplos rápidos para ver cómo conviven los colores en fondos, tarjetas y llamadas a la acción.
+      </p>
+
+      <div class="combo-grid">
+        <article class="combo combo-brand">
+          <p class="combo-label">Color principal + color secundario</p>
+          <h3>Combinación institucional</h3>
+          <p>
+            Útil para identidad principal, polos, presentaciones, piezas de equipo y cabeceras.
+          </p>
+          <button class="btn btn-secondary">Acción</button>
+        </article>
+
+        <article class="combo combo-soft-blue">
+          <p class="combo-label">Tono suave</p>
+          <h3>Uso amable y limpio</h3>
+          <p>
+            Adecuado para fondos suaves, bloques informativos o secciones secundarias.
+          </p>
+        </article>
+
+        <article class="combo combo-soft-yellow">
+          <p class="combo-label">Resalte suave</p>
+          <h3>Versión ligera</h3>
+          <p>
+            Bueno para destacar sin que el resultado sea agresivo visualmente.
+          </p>
+        </article>
+
+        <article class="combo combo-dark">
+          <p class="combo-label">Versión oscura</p>
+          <h3>Uso serio</h3>
+          <p>
+            Recomendable para piezas premium, documentos y elementos con más peso visual.
+          </p>
+          <button class="btn btn-outline-light">Ver más</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Preview de interfaz</h2>
+      <div class="ui-preview">
+        <aside class="sidebar">
+          <h3>Marca</h3>
+          <nav>
+            <a href="#">Inicio</a>
+            <a href="#">Equipo</a>
+            <a href="#">Proyectos</a>
+            <a href="#">Contacto</a>
+          </nav>
+        </aside>
+
+        <div class="content-card">
+          <p class="tag">Preview</p>
+          <h3>Título de bloque</h3>
+          <p>
+            Así puedes comprobar si la paleta funciona en algo más real que simples cuadrados de color.
+          </p>
+          <div class="card-actions">
+            <button class="btn btn-primary">Principal</button>
+            <button class="btn btn-secondary">Acento</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const themeSelector = document.getElementById('themeSelector');
+    const themeStylesheet = document.getElementById('theme-stylesheet');
+    const storageKey = 'selected-theme-css';
+
+    const savedTheme = localStorage.getItem(storageKey);
+    if (savedTheme) {
+      themeStylesheet.setAttribute('href', savedTheme);
+      const optionExists = [...themeSelector.options].some(option => option.value === savedTheme);
+      if (optionExists) {
+        themeSelector.value = savedTheme;
+      }
+    }
+
+    themeSelector.addEventListener('change', function () {
+      const selectedFile = this.value;
+      themeStylesheet.setAttribute('href', selectedFile);
+      localStorage.setItem(storageKey, selectedFile);
+    });
+  </script>
+</body>
+</html>
