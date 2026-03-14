@@ -211,7 +211,7 @@ Esta tabla actúa como tabla de ayuda o combinación entre `Departamentos` y `Pu
 ### Función
 La idea es que un rol combine ambas cosas, por ejemplo:
 - Avionics + Member
-- Recovery + Team Leader
+- Recovery + Technical
 - Propulsion + Chief
 
 Sirve como referencia combinada para asignar roles generales a los miembros.
@@ -241,9 +241,9 @@ Eso significa que un mismo miembro puede aparecer varias veces:
 - por repetirse en distintos años
 
 ### Ejemplo
-- Ana — Avionics — Member — 2023
-- Ana — Avionics — Team Leader — 2024
-- Ana — Simulation — Member — 2024
+- Juan — Avionics — Member — 2023
+- Juan — Avionics — Chief — 2024
+- Juan — Simulation — Member — 2024
 
 Esta tabla es especialmente útil para búsquedas y filtros dentro de la web.
 
@@ -376,7 +376,7 @@ Esta tabla debe servir para guardar:
 - desarrollos técnicos de cualquier tipo
 
 La clave aquí es que **no todos los proyectos necesitan una tabla propia**.  
-Algunos pueden tener además una ficha en `Cohetes`, `Motores` o `LaunchRails`, y otros existir solo dentro de `Proyectos`.
+Algunos pueden tener además una ficha en `Cohetes`, `Motores` o `LaunchRails`, y otros existir solo dentro de `Proyectos` como Vulture o la Pelican de Juan (Nunca jamas volverá a ser estanca).
 
 ---
 
