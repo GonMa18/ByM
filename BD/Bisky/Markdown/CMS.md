@@ -1,6 +1,6 @@
 # Esquema general de la base de datos guía
 
-La idea de esta base de datos no funcional es servir como **modelo visual y estructural** para organizar el contenido del equipo en la web. No está pensada como base de datos técnica real, sino como una **representación clara de tablas, campos y relaciones** que luego pueda trasladarse al CMS o al sistema que uses.
+La idea de esta base de datos no funcional es servir como **modelo visual y estructural** para organizar el contenido del equipo en la web. No está pensada como base de datos técnica real, sino como una **representación clara de tablas, campos y relaciones** que luego pueda trasladarse al CMS de WebFlow o a cualquie otro sistema más versatil como una DB en SQL.
 
 El objetivo es cubrir:
 
@@ -111,13 +111,6 @@ erDiagram
         string nombre
         string periodo
         string observacion
-    }
-
-    NOTA_AÑO {
-        text uso_posible_relacionar_con_equipo
-        text uso_posible_agrupar_miembros_por_año
-        text uso_posible_construir_paginas_equipo_por_temporada
-        text pendiente_decidir_si_conviene_mas_que_campo_año_simple
     }
 
     DEPARTAMENTOS ||--o{ ROLES : define
@@ -407,18 +400,119 @@ Su posible utilidad sería:
 
 ---
 
-## 12. NOTA_AÑO
+# Explicación de las relaciones
 
-Esta entidad no representa una tabla real, sino una nota visual dentro del diagrama para recordar posibles usos de `AÑOS`.
+## DEPARTAMENTOS → ROLES
 
-### Campos
-- `uso_posible_relacionar_con_equipo`
-- `uso_posible_agrupar_miembros_por_año`
-- `uso_posible_construir_paginas_equipo_por_temporada`
-- `pendiente_decidir_si_conviene_mas_que_campo_año_simple`
+```text
+DEPARTAMENTOS ||--o{ ROLES : define
+```
 
-### Función
-Dejar visible dentro del propio Mermaid que la parte de años todavía está en estudio.
+Un departamento puede participar en varios roles.
+
+### Ejemplo
+- Avionics + Member
+- Avionics + Team Leader
+
+---
+
+## PUESTOS → ROLES
+
+```text
+PUESTOS ||--o{ ROLES : define
+```
+
+Un puesto también puede participar en varios roles.
+
+### Ejemplo
+- Member puede existir en Avionics, Recovery o Simulation
+
+---
+
+## MIEMBROS ↔ ROLES
+
+```text
+MIEMBROS }o--o{ ROLES : tiene
+```
+
+Un miembro puede tener varios roles y un mismo rol puede pertenecer a varios miembros.
+
+Esto representa el campo multireferencia de roles que se mencionó para la tabla `Miembros`.
+
+---
+
+## MIEMBROS → EQUIPO
+
+```text
+MIEMBROS ||--o{ EQUIPO : aparece_en
+```
+
+Un miembro puede aparecer varias veces en la tabla `Equipo`, porque puede estar:
+- en varios departamentos
+- con varios puestos
+- y en varios años
+
+---
+
+## DEPARTAMENTOS → EQUIPO
+
+```text
+DEPARTAMENTOS ||--o{ EQUIPO : organiza
+```
+
+Cada fila de `Equipo` pertenece a un departamento concreto.
+
+---
+
+## PUESTOS → EQUIPO
+
+```text
+PUESTOS ||--o{ EQUIPO : asigna
+```
+
+Cada fila de `Equipo` también queda asociada a un puesto concreto.
+
+---
+
+## DEPARTAMENTOS ↔ PROYECTOS
+
+```text
+DEPARTAMENTOS }o--o{ PROYECTOS : participa_en
+```
+
+Uno o varios departamentos pueden participar en uno o varios proyectos.
+
+Esto encaja con el campo `equipo_responsable` en `Proyectos`.
+
+---
+
+## COHETES → PROYECTOS
+
+```text
+COHETES ||--o{ PROYECTOS : documentado_como
+```
+
+Un cohete puede estar vinculado a uno o varios proyectos o registros documentales.
+
+---
+
+## MOTORES → PROYECTOS
+
+```text
+MOTORES ||--o{ PROYECTOS : documentado_como
+```
+
+Un motor también puede estar vinculado a un proyecto.
+
+---
+
+## LAUNCHRAILS → PROYECTOS
+
+```text
+LAUNCHRAILS ||--o{ PROYECTOS : documentado_como
+```
+
+Un launch rail también puede tener su reflejo dentro de `Proyectos`.
 
 ---
 
