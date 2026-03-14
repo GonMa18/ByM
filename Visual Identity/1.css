@@ -1,0 +1,71 @@
+:root {
+  /* =========================
+     PRIMARIO 1 · AZUL
+     Escala: de pastel a serio
+     ========================= */
+  --primary-blue-50:  #EEF4FF; /* muy claro, fondos */
+  --primary-blue-100: #D9E8FF; /* pastel suave */
+  --primary-blue-200: #B7D1FF; /* casual / ligero */
+  --primary-blue-300: #7FB0F5; /* azul amable */
+  --primary-blue-400: #4D8DE0; /* equilibrado */
+  --primary-blue-500: #1F6FBC; /* base principal */
+  --primary-blue-600: #155A99; /* profesional */
+  --primary-blue-700: #11497C; /* serio */
+  --primary-blue-800: #0D385F; /* corporativo */
+  --primary-blue-900: #0A2743; /* muy oscuro */
+
+  /* =========================
+     PRIMARIO 2 · AMARILLO
+     Escala: de pastel a serio
+     ========================= */
+  --primary-yellow-50:  #FFFBEA; /* muy claro, fondos */
+  --primary-yellow-100: #FFF3C4; /* pastel suave */
+  --primary-yellow-200: #FFE58A; /* casual / luminoso */
+  --primary-yellow-300: #FFD24D; /* alegre */
+  --primary-yellow-400: #F5C542; /* equilibrado */
+  --primary-yellow-500: #D9A404; /* base principal */
+  --primary-yellow-600: #B88400; /* serio */
+  --primary-yellow-700: #926700; /* más sobrio */
+  --primary-yellow-800: #6E4D00; /* profundo */
+  --primary-yellow-900: #4A3300; /* muy oscuro */
+
+  /* =========================
+     COLORES PRINCIPALES RECOMENDADOS
+     ========================= */
+  --brand-primary:   #155A99; /* azul principal serio */
+  --brand-secondary: #D9A404; /* amarillo principal serio */
+
+  /* =========================
+     VERSIONES MÁS CASUALES
+     ========================= */
+  --brand-primary-soft:   #7FB0F5;
+  --brand-secondary-soft: #FFE58A;
+
+  /* =========================
+     NEUTROS DE APOYO
+     ========================= */
+  --neutral-0:   #FFFFFF;
+  --neutral-50:  #F8FAFC;
+  --neutral-100: #EAEFF5;
+  --neutral-300: #B8C2CC;
+  --neutral-500: #6B7280;
+  --neutral-700: #374151;
+  --neutral-900: #111827;
+
+  /* =========================
+     USOS SUGERIDOS
+     ========================= */
+  --color-background: #FFFFFF;
+  --color-surface:    #F8FAFC;
+  --color-text:       #111827;
+  --color-text-soft:  #374151;
+  --color-border:     #EAEFF5;
+
+  --color-button-primary:       #155A99;
+  --color-button-primary-hover: #11497C;
+  --color-button-accent:        #D9A404;
+  --color-button-accent-hover:  #B88400;
+
+  --color-highlight-soft-blue:   #EEF4FF;
+  --color-highlight-soft-yellow: #FFFBEA;
+}
