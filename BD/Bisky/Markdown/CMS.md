@@ -91,12 +91,14 @@ erDiagram
     DEPARTAMENTOS ||--o{ ROLES : define
     PUESTOS ||--o{ ROLES : define
 
+    MIEMBROS }o--o{ ROLES : tiene
     MIEMBROS ||--o{ EQUIPO : aparece_en
     DEPARTAMENTOS ||--o{ EQUIPO : organiza
     PUESTOS ||--o{ EQUIPO : asigna
 
     DEPARTAMENTOS }o--o{ PROYECTOS : participa_en
 
-    COHETES ||--o{ PROYECTOS : puede_ser
-    MOTORES ||--o{ PROYECTOS : puede_ser
-    LAUNCHRAILS ||--o{ PROYECTOS : puede_ser
+    COHETES ||--o{ PROYECTOS : documentado_como
+    MOTORES ||--o{ PROYECTOS : documentado_como
+    LAUNCHRAILS ||--o{ PROYECTOS : documentado_como
+```
