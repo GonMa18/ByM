@@ -1,6 +1,6 @@
 # Esquema general de la base de datos guía
 
-La idea de esta base de datos no funcional es servir como **modelo visual y estructural** para organizar el contenido del equipo en la web. No está pensada como base de datos técnica real, sino como una **representación clara de tablas, campos y relaciones** que luego pueda trasladarse al CMS de WebFlow o a cualquie otro sistema más versatil como una DB en SQL.
+La idea de esta base de datos no funcional es servir como **modelo visual y estructural** para organizar el contenido del equipo en la web. No está pensada como base de datos técnica real, sino como una **representación clara de tablas, campos y relaciones** que luego pueda trasladarse al CMS de WebFlow o a cualquier otro sistema más versatil como una DB en SQL.
 
 El objetivo es cubrir:
 
