@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sponsors — BiSKY Team</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="../index.html" class="nav__logo">BiSKY Team</a>
+      <nav class="nav__links">
+        <a href="../index.html" class="nav__link">Home</a>
+        <div class="nav__item nav__item--has-dropdown">
+          <a href="miembros.html" class="nav__link nav__link--has-dropdown">Miembros</a>
+          <div class="nav__dropdown" aria-hidden="true">
+            <a href="miembros-2025.html" class="nav__dropdown-link">Año 2025</a>
+            <a href="miembros-2024.html" class="nav__dropdown-link">Año 2024</a>
+            <a href="miembros-2023.html" class="nav__dropdown-link">Año 2023</a>
+          </div>
+        </div>
+        <div class="nav__item nav__item--has-dropdown">
+          <a href="proyectos.html" class="nav__link nav__link--has-dropdown">Proyectos</a>
+          <div class="nav__dropdown" aria-hidden="true">
+            <a href="proyectos.html#cohetes" class="nav__dropdown-link">Cohetes</a>
+            <a href="proyectos.html#motores" class="nav__dropdown-link">Motores</a>
+            <a href="proyectos.html#launch-rails" class="nav__dropdown-link">Launch Rails</a>
+            <a href="proyectos.html#auxiliares" class="nav__dropdown-link">Proyectos auxiliares</a>
+          </div>
+        </div>
+        <a href="sponsors.html" class="nav__link" aria-current="page">Sponsors</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="page-header">
+      <div class="container">
+        <h1 class="page-header__title headline-section">Sponsors</h1>
+        <p class="page-header__subtitle body-lg">Organizaciones y partners que apoyan al equipo. Agrupados por categoría.</p>
+      </div>
+    </header>
+
+    <section class="section-block">
+      <div class="container section">
+        <div class="sponsor-tier reveal-on-scroll">
+          <h2 class="sponsor-tier__title">Cosmos</h2>
+          <div class="sponsor-tier__grid" id="tier-cosmos"></div>
+        </div>
+        <div class="sponsor-tier reveal-on-scroll">
+          <h2 class="sponsor-tier__title">Galaxy</h2>
+          <div class="sponsor-tier__grid" id="tier-galaxy"></div>
+        </div>
+        <div class="sponsor-tier reveal-on-scroll">
+          <h2 class="sponsor-tier__title">Nebula</h2>
+          <div class="sponsor-tier__grid" id="tier-nebula"></div>
+        </div>
+        <div class="sponsor-tier reveal-on-scroll">
+          <h2 class="sponsor-tier__title">Star</h2>
+          <div class="sponsor-tier__grid" id="tier-star"></div>
+        </div>
+        <div class="sponsor-tier reveal-on-scroll">
+          <h2 class="sponsor-tier__title">Satellite</h2>
+          <div class="sponsor-tier__grid" id="tier-satellite"></div>
+        </div>
+        <div class="sponsor-tier reveal-on-scroll">
+          <h2 class="sponsor-tier__title">Earth</h2>
+          <div class="sponsor-tier__grid" id="tier-earth"></div>
+        </div>
+        <div class="sponsor-tier reveal-on-scroll">
+          <h2 class="sponsor-tier__title">Software</h2>
+          <div class="sponsor-tier__grid" id="tier-software"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p class="site-footer__text"><a href="../index.html">BiSKY Team</a> · Sponsors</p>
+    </footer>
+  </main>
+
+  <script src="../js/data-sponsors.js"></script>
+  <script>
+    (function () {
+      var tiers = ['cosmos', 'galaxy', 'nebula', 'star', 'satellite', 'earth', 'software'];
+      var data = window.BISKY_SPONSORS || {};
+      tiers.forEach(function (tier) {
+        var list = data[tier] || [];
+        var el = document.getElementById('tier-' + tier);
+        if (!el) return;
+        list.forEach(function (s) {
+          var a = document.createElement('a');
+          a.href = 'sponsor.html?id=' + encodeURIComponent(s.id);
+          a.className = 'sponsor-card' + (s.logo ? '' : ' sponsor-card--text');
+          if (s.logo) {
+            var img = document.createElement('img');
+            img.className = 'sponsor-card__logo';
+            img.src = s.logo;
+            img.alt = s.name;
+            a.appendChild(img);
+          } else {
+            a.textContent = s.name;
+          }
+          el.appendChild(a);
+        });
+      });
+    })();
+  </script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/scroll-reveal.js"></script>
+</body>
+</html>

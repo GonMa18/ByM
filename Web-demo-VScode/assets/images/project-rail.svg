@@ -1,0 +1,7 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" fill="none">
+  <rect width="1400" height="900" fill="#11151A"/>
+  <path d="M220 690L660 270L1090 270" stroke="#E8ECF4" stroke-width="22" stroke-linecap="round"/>
+  <path d="M250 690L690 300L1120 300" stroke="#95A0B2" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="660" cy="270" r="44" fill="#E8ECF4"/>
+  <text x="88" y="822" fill="#E8EBF0" font-size="86" font-family="Arial, Helvetica, sans-serif">Launch Rail Systems</text>
+</svg>

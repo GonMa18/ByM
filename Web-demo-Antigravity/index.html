@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BiSKY Team — Ingeniería Aeroespacial Universitaria</title>
+  <meta name="description" content="BiSKY Team es un equipo universitario de cohetería de la UPV/EHU. Diseñamos, construimos y lanzamos cohetes de sondeo.">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <span class="preloader__text">BiSKY</span>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <span class="navbar__logo-mark">B</span>
+        <span>BiSKY</span>
+      </a>
+      <ul class="navbar__links">
+        <li class="navbar__item">
+          <a href="index.html" class="navbar__link active">Home</a>
+        </li>
+        <li class="navbar__item">
+          <a href="pages/members.html" class="navbar__link">
+            Miembros <span class="navbar__link-arrow">▾</span>
+          </a>
+          <div class="navbar__dropdown">
+            <a href="pages/members-year.html?year=2025" class="navbar__dropdown-link">Año 2025</a>
+            <a href="pages/members-year.html?year=2024" class="navbar__dropdown-link">Año 2024</a>
+            <a href="pages/members-year.html?year=2023" class="navbar__dropdown-link">Año 2023</a>
+          </div>
+        </li>
+        <li class="navbar__item">
+          <a href="pages/projects.html" class="navbar__link">
+            Proyectos <span class="navbar__link-arrow">▾</span>
+          </a>
+          <div class="navbar__dropdown">
+            <a href="pages/projects.html#rockets" class="navbar__dropdown-link">Cohetes</a>
+            <a href="pages/projects.html#motors" class="navbar__dropdown-link">Motores</a>
+            <a href="pages/projects.html#launch-rails" class="navbar__dropdown-link">Launch Rails</a>
+          </div>
+        </li>
+        <li class="navbar__item">
+          <a href="pages/sponsors.html" class="navbar__link">Sponsors</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="page-content">
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero__canvas-wrap">
+        <canvas id="hero-canvas"></canvas>
+      </div>
+      <div class="hero__gradient-overlay"></div>
+      <div class="hero__content">
+        <p class="hero__label">UPV/EHU Rocketry Team</p>
+        <h1 class="hero__title">
+          <span>Ingeniería aeroespacial desde la universidad</span>
+        </h1>
+        <p class="hero__tagline">Reaching beyond the sky</p>
+        <div class="hero__cta">
+          <a href="pages/projects.html" class="btn">
+            Explorar proyectos <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="home-about section" id="about">
+      <div class="container">
+        <div class="home-about__grid">
+          <div class="home-about__text reveal">
+            <span class="section-label">Sobre el equipo</span>
+            <h2 class="section-title">Diseñamos y construimos cohetes de sondeo</h2>
+            <p class="home-about__paragraph">
+              BiSKY Team es el equipo de cohetería experimental de la Universidad del País Vasco. Desde 2022, un grupo multidisciplinar de estudiantes de ingeniería diseña, fabrica y lanza cohetes de sondeo con tecnología propia.
+            </p>
+            <p class="home-about__paragraph">
+              Cada componente — desde el motor de propelente sólido hasta la aviónica de vuelo — es desarrollado internamente, aplicando procesos de ingeniería real en un entorno universitario.
+            </p>
+            <a href="pages/members.html" class="btn" style="margin-top: var(--sp-6);">
+              Conocer al equipo <span class="btn-arrow">→</span>
+            </a>
+          </div>
+          <div class="home-about__stats reveal reveal-delay-2">
+            <div class="home-about__stat">
+              <div class="home-about__stat-value" data-count="3">3</div>
+              <div class="home-about__stat-label">Cohetes diseñados</div>
+            </div>
+            <div class="home-about__stat">
+              <div class="home-about__stat-value" data-count="6">6</div>
+              <div class="home-about__stat-label">Departamentos técnicos</div>
+            </div>
+            <div class="home-about__stat">
+              <div class="home-about__stat-value" data-count="23">23</div>
+              <div class="home-about__stat-label">Miembros activos</div>
+            </div>
+            <div class="home-about__stat">
+              <div class="home-about__stat-value" data-count="3">3</div>
+              <div class="home-about__stat-label">Años de actividad</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS PREVIEW -->
+    <section class="home-projects section" id="projects-preview">
+      <div class="container">
+        <div class="home-projects__header reveal">
+          <div>
+            <span class="section-label">Portfolio técnico</span>
+            <h2 class="section-title">Proyectos</h2>
+            <p class="section-subtitle">Cohetes, motores, sistemas de lanzamiento y desarrollos auxiliares. Todo diseñado y fabricado por el equipo.</p>
+          </div>
+          <a href="pages/projects.html" class="btn">
+            Ver todos <span class="btn-arrow">→</span>
+          </a>
+        </div>
+
+        <!-- Featured Project -->
+        <a href="pages/project-detail.html?id=sugaar" class="home-projects__featured reveal">
+          <div class="home-projects__featured-image">
+            <span class="home-projects__featured-image-placeholder">SUGAAR</span>
+          </div>
+          <div class="home-projects__featured-body">
+            <div class="home-projects__featured-meta">
+              <span class="project-card__category">Cohete</span>
+              <span class="project-card__year">2025</span>
+              <span class="status-badge status--active">En desarrollo</span>
+            </div>
+            <h3 class="home-projects__featured-title">Sugaar</h3>
+            <p class="home-projects__featured-desc">
+              Cohete de alta potencia para competición internacional. Motor N-class de diseño propio, estructura en fibra de carbono y aviónica con doble redundancia.
+            </p>
+            <span class="btn" style="align-self: flex-start;">
+              Ver proyecto <span class="btn-arrow">→</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Project Grid -->
+        <div class="home-projects__grid" id="home-projects-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- DEPARTMENTS -->
+    <section class="home-departments section" id="departments">
+      <div class="container">
+        <div class="reveal">
+          <span class="section-label">Estructura técnica</span>
+          <h2 class="section-title">Departamentos</h2>
+          <p class="section-subtitle">Seis departamentos especializados cubren cada aspecto del desarrollo de un cohete de sondeo.</p>
+        </div>
+        <div class="home-departments__grid" id="departments-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM PREVIEW -->
+    <section class="home-team section" id="team-preview">
+      <div class="container">
+        <div class="home-team__header reveal">
+          <div>
+            <span class="section-label">Equipo 2025</span>
+            <h2 class="section-title">Miembros</h2>
+            <p class="section-subtitle">El equipo actual que impulsa cada proyecto.</p>
+          </div>
+          <a href="pages/members.html" class="btn">
+            Ver equipo completo <span class="btn-arrow">→</span>
+          </a>
+        </div>
+        <div class="home-team__grid" id="team-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SPONSORS PREVIEW -->
+    <section class="home-sponsors section" id="sponsors-preview">
+      <div class="container">
+        <div class="home-sponsors__header reveal">
+          <span class="section-label">Colaboradores</span>
+          <h2 class="section-title">Sponsors</h2>
+          <p class="section-subtitle">Empresas e instituciones que hacen posible nuestro desarrollo tecnológico.</p>
+        </div>
+        <div class="home-sponsors__logos reveal" id="sponsors-logos">
+          <!-- Populated by JS -->
+        </div>
+        <div class="home-sponsors__cta reveal">
+          <a href="pages/sponsors.html" class="btn">
+            Ver todos los sponsors <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="home-cta section">
+      <div class="container reveal">
+        <h2 class="home-cta__title">¿Quieres colaborar con nosotros?</h2>
+        <p class="home-cta__subtitle">Buscamos sponsors, colaboradores técnicos y nuevos miembros que quieran participar en el desarrollo aeroespacial universitario.</p>
+        <div class="home-cta__buttons">
+          <a href="pages/sponsors.html" class="btn btn--primary">
+            Ser sponsor <span class="btn-arrow">→</span>
+          </a>
+          <a href="pages/members.html" class="btn">
+            Unirse al equipo <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <div class="footer__brand-name">BiSKY Team</div>
+          <p class="footer__brand-desc">Equipo universitario de cohetería experimental de la UPV/EHU. Reaching beyond the sky.</p>
+        </div>
+        <div>
+          <div class="footer__col-title">Navegación</div>
+          <div class="footer__col-links">
+            <a href="index.html" class="footer__col-link">Home</a>
+            <a href="pages/members.html" class="footer__col-link">Miembros</a>
+            <a href="pages/projects.html" class="footer__col-link">Proyectos</a>
+            <a href="pages/sponsors.html" class="footer__col-link">Sponsors</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Proyectos</div>
+          <div class="footer__col-links">
+            <a href="pages/projects.html#rockets" class="footer__col-link">Cohetes</a>
+            <a href="pages/projects.html#motors" class="footer__col-link">Motores</a>
+            <a href="pages/projects.html#launch-rails" class="footer__col-link">Launch Rails</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Contacto</div>
+          <div class="footer__col-links">
+            <a href="#" class="footer__col-link">contact@biskyteam.com</a>
+            <a href="#" class="footer__col-link">UPV/EHU, Bilbao</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2025 BiSKY Team. UPV/EHU.</span>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link">Instagram</a>
+          <a href="#" class="footer__social-link">LinkedIn</a>
+          <a href="#" class="footer__social-link">YouTube</a>
+          <a href="#" class="footer__social-link">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/rocket3d.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

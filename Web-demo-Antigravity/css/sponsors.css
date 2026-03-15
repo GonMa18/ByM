@@ -1,0 +1,218 @@
+/* ============================================================
+   BiSKY Team — Sponsors Page Styles
+   ============================================================ */
+
+.sponsors-content {
+  padding: 0 0 var(--sp-32);
+}
+
+/* Tier section */
+.sponsor-tier {
+  margin-bottom: var(--sp-16);
+}
+
+.sponsor-tier__header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-8);
+  padding-bottom: var(--sp-4);
+  border-bottom: var(--border-subtle);
+}
+
+.sponsor-tier__name {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-semibold);
+  color: var(--c-white);
+}
+
+.sponsor-tier__badge {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--c-grey-600);
+  padding: var(--sp-1) var(--sp-3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sponsor-tier__grid {
+  display: grid;
+  gap: var(--sp-6);
+}
+
+/* Tier-specific grid sizing */
+.sponsor-tier--cosmos .sponsor-tier__grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.sponsor-tier--cosmos .sponsor-card {
+  min-height: 160px;
+  padding: var(--sp-12);
+}
+
+.sponsor-tier--cosmos .sponsor-card__name {
+  font-size: var(--fs-xl);
+}
+
+.sponsor-tier--galaxy .sponsor-tier__grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.sponsor-tier--galaxy .sponsor-card {
+  min-height: 130px;
+}
+
+.sponsor-tier--galaxy .sponsor-card__name {
+  font-size: var(--fs-lg);
+}
+
+.sponsor-tier--nebula .sponsor-tier__grid,
+.sponsor-tier--star .sponsor-tier__grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.sponsor-tier--satellite .sponsor-tier__grid,
+.sponsor-tier--earth .sponsor-tier__grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.sponsor-tier--satellite .sponsor-card,
+.sponsor-tier--earth .sponsor-card {
+  min-height: 80px;
+  padding: var(--sp-6);
+}
+
+.sponsor-tier--satellite .sponsor-card__name,
+.sponsor-tier--earth .sponsor-card__name {
+  font-size: var(--fs-sm);
+}
+
+.sponsor-tier--software .sponsor-tier__grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.sponsor-tier--software .sponsor-card {
+  min-height: 80px;
+  padding: var(--sp-6);
+}
+
+.sponsor-tier--software .sponsor-card__name {
+  font-size: var(--fs-sm);
+  font-family: var(--font-mono);
+  letter-spacing: var(--ls-wide);
+}
+
+/* Sponsor detail (inline modal) */
+.sponsor-detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--t-base);
+}
+
+.sponsor-detail-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sponsor-detail {
+  background: var(--c-grey-900);
+  border: var(--border-light);
+  padding: var(--sp-12);
+  max-width: 500px;
+  width: 90%;
+  transform: translateY(20px);
+  transition: transform var(--t-base) var(--ease-out);
+}
+
+.sponsor-detail-overlay.active .sponsor-detail {
+  transform: translateY(0);
+}
+
+.sponsor-detail__close {
+  float: right;
+  font-size: var(--fs-lg);
+  color: var(--c-grey-500);
+  cursor: pointer;
+  transition: color var(--t-fast);
+  background: none;
+  border: none;
+}
+
+.sponsor-detail__close:hover {
+  color: var(--c-white);
+}
+
+.sponsor-detail__tier {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-bottom: var(--sp-4);
+}
+
+.sponsor-detail__name {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--c-white);
+  margin-bottom: var(--sp-4);
+}
+
+.sponsor-detail__description {
+  font-size: var(--fs-base);
+  color: var(--c-grey-400);
+  line-height: var(--lh-relaxed);
+  margin-bottom: var(--sp-8);
+}
+
+.sponsor-detail__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--c-grey-400);
+  border: var(--border-subtle);
+  padding: var(--sp-2) var(--sp-4);
+  transition: all var(--t-base);
+}
+
+.sponsor-detail__link:hover {
+  color: var(--c-white);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* CTA section */
+.sponsors-cta {
+  padding: var(--sp-16) 0;
+  text-align: center;
+  border-top: var(--border-subtle);
+  margin-top: var(--sp-8);
+}
+
+.sponsors-cta__title {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--c-white);
+  margin-bottom: var(--sp-4);
+}
+
+.sponsors-cta__text {
+  font-size: var(--fs-base);
+  color: var(--c-grey-400);
+  margin-bottom: var(--sp-8);
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}

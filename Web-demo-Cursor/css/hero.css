@@ -1,0 +1,109 @@
+/* BiSKY Team — Hero section */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,255,255,0.03) 0%, transparent 50%),
+              radial-gradient(ellipse 100% 100% at 50% 100%, rgba(255,255,255,0.02) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.hero__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 70%);
+  pointer-events: none;
+  animation: heroGridShift 20s ease-in-out infinite;
+}
+
+@keyframes heroGridShift {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.92; }
+}
+
+.hero__cursor-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity var(--duration-slow);
+}
+
+.hero__content {
+  position: relative;
+  z-index: var(--z-hero-content);
+  text-align: center;
+  padding: var(--section-padding-x);
+  max-width: 900px;
+}
+
+.hero__rocket-wrap {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  width: min(280px, 40vw);
+  height: min(420px, 55vw);
+  pointer-events: none;
+  z-index: 1;
+  perspective: 800px;
+}
+
+.hero__rocket {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: center center;
+  filter: drop-shadow(0 0 40px rgba(255,255,255,0.08));
+  transition: transform var(--duration-slower) var(--ease-out-expo);
+}
+
+.hero__text {
+  position: relative;
+  z-index: 2;
+}
+
+.hero__headline {
+  margin-bottom: var(--space-4);
+  opacity: 0;
+  animation: heroFadeUp 1s var(--ease-out-expo) 0.2s forwards;
+}
+
+.hero__motto {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  font-weight: 400;
+  letter-spacing: var(--tracking-wide);
+  max-width: 480px;
+  margin-inline: auto;
+  opacity: 0;
+  animation: heroFadeUp 1s var(--ease-out-expo) 0.5s forwards;
+}
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

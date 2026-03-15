@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto — BiSKY Team</title>
+  <meta name="description" content="Ficha técnica de proyecto de BiSKY Team.">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/projects.css">
+</head>
+<body>
+
+  <div class="preloader" id="preloader">
+    <span class="preloader__text">BiSKY</span>
+  </div>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="../index.html" class="navbar__logo">
+        <span class="navbar__logo-mark">B</span>
+        <span>BiSKY</span>
+      </a>
+      <ul class="navbar__links">
+        <li class="navbar__item">
+          <a href="../index.html" class="navbar__link">Home</a>
+        </li>
+        <li class="navbar__item">
+          <a href="members.html" class="navbar__link">
+            Miembros <span class="navbar__link-arrow">▾</span>
+          </a>
+          <div class="navbar__dropdown">
+            <a href="members-year.html?year=2025" class="navbar__dropdown-link">Año 2025</a>
+            <a href="members-year.html?year=2024" class="navbar__dropdown-link">Año 2024</a>
+            <a href="members-year.html?year=2023" class="navbar__dropdown-link">Año 2023</a>
+          </div>
+        </li>
+        <li class="navbar__item">
+          <a href="projects.html" class="navbar__link active">
+            Proyectos <span class="navbar__link-arrow">▾</span>
+          </a>
+          <div class="navbar__dropdown">
+            <a href="projects.html#rockets" class="navbar__dropdown-link">Cohetes</a>
+            <a href="projects.html#motors" class="navbar__dropdown-link">Motores</a>
+            <a href="projects.html#launch-rails" class="navbar__dropdown-link">Launch Rails</a>
+          </div>
+        </li>
+        <li class="navbar__item">
+          <a href="sponsors.html" class="navbar__link">Sponsors</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="page-content">
+    <section class="project-detail">
+      <div class="container" id="project-container">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <div class="footer__brand-name">BiSKY Team</div>
+          <p class="footer__brand-desc">Equipo universitario de cohetería experimental de la UPV/EHU. Reaching beyond the sky.</p>
+        </div>
+        <div>
+          <div class="footer__col-title">Navegación</div>
+          <div class="footer__col-links">
+            <a href="../index.html" class="footer__col-link">Home</a>
+            <a href="members.html" class="footer__col-link">Miembros</a>
+            <a href="projects.html" class="footer__col-link">Proyectos</a>
+            <a href="sponsors.html" class="footer__col-link">Sponsors</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Proyectos</div>
+          <div class="footer__col-links">
+            <a href="projects.html#rockets" class="footer__col-link">Cohetes</a>
+            <a href="projects.html#motors" class="footer__col-link">Motores</a>
+            <a href="projects.html#launch-rails" class="footer__col-link">Launch Rails</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Contacto</div>
+          <div class="footer__col-links">
+            <a href="#" class="footer__col-link">contact@biskyteam.com</a>
+            <a href="#" class="footer__col-link">UPV/EHU, Bilbao</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2025 BiSKY Team. UPV/EHU.</span>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link">Instagram</a>
+          <a href="#" class="footer__social-link">LinkedIn</a>
+          <a href="#" class="footer__social-link">YouTube</a>
+          <a href="#" class="footer__social-link">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/animations.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      const project = BISKY.getProjectById(id);
+
+      if (!project) {
+        document.getElementById('project-container').innerHTML =
+          '<p style="color: var(--c-grey-500);">Proyecto no encontrado.</p>';
+        return;
+      }
+
+      document.title = `${project.name} — BiSKY Team`;
+      const statusClass = BISKY.getStatusClass(project.status);
+
+      // Build specs table
+      let specsRows = '';
+      if (project.specs) {
+        const specLabels = {
+          height: 'Altura', diameter: 'Diámetro', mass: 'Masa', motor: 'Motor',
+          apogee: 'Apogeo', impulse: 'Clasificación', classification: 'Clasificación',
+          propellant: 'Propelente', totalImpulse: 'Impulso total', burnTime: 'Tiempo de combustión',
+          avgThrust: 'Empuje medio', length: 'Longitud', maxAngle: 'Ángulo máximo',
+          material: 'Material', maxRocketMass: 'Masa máx. cohete', guidingSystem: 'Sistema de guiado',
+          frequency: 'Frecuencia', range: 'Alcance', dataRate: 'Velocidad datos',
+          interface: 'Interfaz', protocol: 'Protocolo', maxPayload: 'Carga máxima'
+        };
+
+        for (const [key, value] of Object.entries(project.specs)) {
+          const label = specLabels[key] || key;
+          specsRows += `<tr><td>${label}</td><td>${value}</td></tr>`;
+        }
+      }
+
+      // Get related projects (same category, different id)
+      const allProjects = BISKY.getAllProjects();
+      const related = allProjects
+        .filter(p => p.category === project.category && p.id !== project.id)
+        .slice(0, 3);
+
+      const container = document.getElementById('project-container');
+      container.innerHTML = `
+        <nav class="breadcrumb">
+          <a href="projects.html">Proyectos</a>
+          <span class="breadcrumb__sep">/</span>
+          <a href="projects.html#${project.category}">${BISKY.getCategoryLabel(project.category)}</a>
+          <span class="breadcrumb__sep">/</span>
+          <span>${project.name}</span>
+        </nav>
+
+        <div class="project-detail__hero">
+          <div class="project-detail__hero-image">
+            <span class="project-detail__hero-placeholder">${project.name}</span>
+          </div>
+          <div class="project-detail__header">
+            <div>
+              <div class="project-detail__meta">
+                <span class="project-detail__category">${BISKY.getCategoryLabel(project.category)}</span>
+                <span class="project-detail__year">${project.year}</span>
+              </div>
+              <h1 class="project-detail__title">${project.name}</h1>
+              <p class="project-detail__tagline">${project.tagline}</p>
+            </div>
+            <div class="project-detail__status">
+              <span class="status-badge ${statusClass}">${project.status}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-detail__content">
+          <div>
+            <div class="project-detail__section">
+              <h2 class="project-detail__section-title">Descripción</h2>
+              <p class="project-detail__description">${project.description}</p>
+            </div>
+
+            <div class="project-detail__section">
+              <h2 class="project-detail__section-title">Galería</h2>
+              <div class="project-detail__gallery">
+                <div class="project-detail__gallery-item">Render</div>
+                <div class="project-detail__gallery-item">Detalle</div>
+                <div class="project-detail__gallery-item">Fabricación</div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="project-detail__specs">
+            <h3 class="project-detail__specs-title">Especificaciones</h3>
+            <table class="spec-table">
+              ${specsRows}
+            </table>
+          </aside>
+        </div>
+
+        ${related.length > 0 ? `
+          <div class="project-detail__related">
+            <h2 class="project-detail__related-title">Proyectos relacionados</h2>
+            <div class="project-detail__related-grid">
+              ${related.map(p => `
+                <a href="project-detail.html?id=${p.id}" class="project-card">
+                  <div class="project-card__image">
+                    <div class="project-card__image-placeholder">${p.name}</div>
+                  </div>
+                  <div class="project-card__body">
+                    <div class="project-card__meta">
+                      <span class="project-card__category">${BISKY.getCategoryLabel(p.category)}</span>
+                      <span class="project-card__year">${p.year}</span>
+                    </div>
+                    <h3 class="project-card__title">${p.name}</h3>
+                    <p class="project-card__tagline">${p.tagline}</p>
+                    <div class="project-card__footer">
+                      <span class="status-badge ${BISKY.getStatusClass(p.status)}">${p.status}</span>
+                      <span class="project-card__arrow">→</span>
+                    </div>
+                  </div>
+                </a>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+      `;
+    });
+  </script>
+</body>
+</html>

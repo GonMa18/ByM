@@ -1,0 +1,38 @@
+/* BiSKY Team — Main stylesheet */
+
+@import "variables.css";
+@import "reset.css";
+@import "typography.css";
+@import "layout.css";
+@import "navbar.css";
+@import "hero.css";
+@import "sections.css";
+@import "pages.css";
+
+/* Scroll-driven subtle motion (utility) */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--duration-slow) var(--ease-out-expo), transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Footer */
+.site-footer {
+  padding: var(--space-12) var(--section-padding-x);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.site-footer__text {
+  font-size: var(--text-sm);
+  color: var(--color-text-dim);
+}
+
+.site-footer__text a:hover {
+  color: var(--color-text-muted);
+}

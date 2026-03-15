@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miembro — BiSKY Team</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="../index.html" class="nav__logo">BiSKY Team</a>
+      <nav class="nav__links">
+        <a href="../index.html" class="nav__link">Home</a>
+        <div class="nav__item nav__item--has-dropdown">
+          <a href="miembros.html" class="nav__link nav__link--has-dropdown" aria-current="page">Miembros</a>
+          <div class="nav__dropdown" aria-hidden="true">
+            <a href="miembros-2025.html" class="nav__dropdown-link">Año 2025</a>
+            <a href="miembros-2024.html" class="nav__dropdown-link">Año 2024</a>
+            <a href="miembros-2023.html" class="nav__dropdown-link">Año 2023</a>
+          </div>
+        </div>
+        <div class="nav__item nav__item--has-dropdown">
+          <a href="proyectos.html" class="nav__link nav__link--has-dropdown">Proyectos</a>
+          <div class="nav__dropdown" aria-hidden="true">
+            <a href="proyectos.html#cohetes" class="nav__dropdown-link">Cohetes</a>
+            <a href="proyectos.html#motores" class="nav__dropdown-link">Motores</a>
+            <a href="proyectos.html#launch-rails" class="nav__dropdown-link">Launch Rails</a>
+            <a href="proyectos.html#auxiliares" class="nav__dropdown-link">Proyectos auxiliares</a>
+          </div>
+        </div>
+        <a href="sponsors.html" class="nav__link">Sponsors</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="profile">
+    <div class="profile__grid">
+      <aside class="profile__sidebar">
+        <div class="profile__avatar-wrap">
+          <img id="profile-avatar" class="profile__avatar" src="" alt="" style="background: var(--color-bg-elevated);">
+        </div>
+        <h1 class="profile__name headline-section" id="profile-name">—</h1>
+        <p class="profile__roles body" id="profile-roles">—</p>
+        <div class="profile__links">
+          <a id="profile-linkedin" href="#" class="profile__link" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </aside>
+      <div class="profile__main">
+        <div class="profile__block">
+          <p class="body" id="profile-bio">—</p>
+        </div>
+        <div class="profile__block">
+          <h2 class="profile__block-title">Información</h2>
+          <div class="profile__meta-row">
+            <span class="profile__meta-label">Departamento(s)</span>
+            <span class="profile__meta-value" id="profile-depts">—</span>
+          </div>
+          <div class="profile__meta-row">
+            <span class="profile__meta-label">Años de participación</span>
+            <span class="profile__meta-value" id="profile-years">—</span>
+          </div>
+          <div class="profile__meta-row">
+            <span class="profile__meta-label">Puesto actual</span>
+            <span class="profile__meta-value" id="profile-position">—</span>
+          </div>
+        </div>
+        <div class="profile__block" id="profile-history-wrap">
+          <h2 class="profile__block-title">Histórico</h2>
+          <div id="profile-history"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/data-members.js"></script>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var id = params.get('id');
+      var data = window.BISKY_MEMBERS && window.BISKY_MEMBERS[id];
+      if (!data) {
+        data = {
+          name: "Miembro",
+          role: "—",
+          departments: ["—"],
+          years: "—",
+          position: "—",
+          history: [],
+          linkedin: "#",
+          image: "",
+          bio: "Perfil no encontrado o datos pendientes de cargar."
+        };
+      }
+      document.getElementById('profile-name').textContent = data.name;
+      document.getElementById('profile-roles').textContent = data.role + (data.departments && data.departments.length ? " · " + data.departments.join(", ") : "");
+      document.getElementById('profile-bio').textContent = data.bio || "—";
+      document.getElementById('profile-depts').textContent = data.departments ? data.departments.join(", ") : "—";
+      document.getElementById('profile-years').textContent = data.years || "—";
+      document.getElementById('profile-position').textContent = data.position || "—";
+      document.getElementById('profile-linkedin').href = data.linkedin || "#";
+      var img = document.getElementById('profile-avatar');
+      if (data.image) {
+        img.src = data.image;
+        img.alt = data.name;
+      } else {
+        img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%231a1a1a" width="100" height="100"/%3E%3C/svg%3E';
+        img.alt = '';
+      }
+      var historyEl = document.getElementById('profile-history');
+      var historyWrap = document.getElementById('profile-history-wrap');
+      if (data.history && data.history.length) {
+        data.history.forEach(function (h) {
+          var row = document.createElement('div');
+          row.className = 'profile__meta-row';
+          row.innerHTML = '<span class="profile__meta-label">' + h.year + '</span><span class="profile__meta-value">' + h.department + ' · ' + h.position + '</span>';
+          historyEl.appendChild(row);
+        });
+      } else {
+        historyWrap.style.display = 'none';
+      }
+      document.title = data.name + " — BiSKY Team";
+    })();
+  </script>
+  <script src="../js/navbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Hub de miembros BiSKY Team: anos, departamentos, puestos y perfiles individuales." />
+    <title>Miembros - BiSKY Team</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/pages.css" />
+  </head>
+  <body data-root="../" data-page="members">
+    <canvas id="ambient-canvas" aria-hidden="true"></canvas>
+    <div class="cursor-orb" data-cursor-orb aria-hidden="true"></div>
+    <div data-site-header></div>
+
+    <div class="main-wrap">
+      <main class="page-shell">
+        <section class="page-header reveal">
+          <div class="container page-intro">
+            <span class="kicker">Team Architecture</span>
+            <h1>Miembros</h1>
+            <p class="lead">
+              Hub de estructura humana del equipo: historico por anos, organizacion por departamentos y acceso a fichas
+              individuales orientadas a portfolio tecnico.
+            </p>
+            <div class="section-nav">
+              <a href="members-2025.html">Ano 2025</a>
+              <a href="members-2024.html">Ano 2024</a>
+              <a href="members-2023.html">Ano 2023</a>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="container grid grid-3" data-members-years></div>
+        </section>
+
+        <section>
+          <div class="container split-content">
+            <article class="card spotlight-content reveal">
+              <span class="kicker">Jerarquia recomendada</span>
+              <h2>Orden por liderazgo, departamentos y puesto</h2>
+              <p>
+                Cada ano se presenta destacando Team Leader y managers al inicio, seguido por departamentos con bloques
+                Chief, Technical y Member para mantener coherencia de lectura.
+              </p>
+              <div class="timeline">
+                <div class="timeline-item"><p>Leadership: Team Leader, Financial Manager, Project Managers.</p></div>
+                <div class="timeline-item"><p>Departamentos tecnicos: Propulsion, Structures, Avionics, Recovery, Operations.</p></div>
+                <div class="timeline-item"><p>Categoria Faculties para mentoria y supervisores academicos.</p></div>
+              </div>
+            </article>
+            <figure class="spotlight-visual reveal">
+              <img src="../assets/images/member-placeholder.svg" alt="Visual de equipo BiSKY" />
+            </figure>
+          </div>
+        </section>
+
+        <section>
+          <div class="container" data-members-preview></div>
+        </section>
+      </main>
+
+      <div data-site-footer></div>
+    </div>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/site.js"></script>
+    <script src="../js/members.js"></script>
+  </body>
+</html>
+

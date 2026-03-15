@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miembros — BiSKY Team</title>
+  <meta name="description" content="Miembros del equipo BiSKY Team organizados por departamento y puesto.">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/members.css">
+</head>
+<body>
+
+  <div class="preloader" id="preloader">
+    <span class="preloader__text">BiSKY</span>
+  </div>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="../index.html" class="navbar__logo">
+        <span class="navbar__logo-mark">B</span>
+        <span>BiSKY</span>
+      </a>
+      <ul class="navbar__links">
+        <li class="navbar__item">
+          <a href="../index.html" class="navbar__link">Home</a>
+        </li>
+        <li class="navbar__item">
+          <a href="members.html" class="navbar__link active">
+            Miembros <span class="navbar__link-arrow">▾</span>
+          </a>
+          <div class="navbar__dropdown">
+            <a href="members-year.html?year=2025" class="navbar__dropdown-link">Año 2025</a>
+            <a href="members-year.html?year=2024" class="navbar__dropdown-link">Año 2024</a>
+            <a href="members-year.html?year=2023" class="navbar__dropdown-link">Año 2023</a>
+          </div>
+        </li>
+        <li class="navbar__item">
+          <a href="projects.html" class="navbar__link">
+            Proyectos <span class="navbar__link-arrow">▾</span>
+          </a>
+          <div class="navbar__dropdown">
+            <a href="projects.html#rockets" class="navbar__dropdown-link">Cohetes</a>
+            <a href="projects.html#motors" class="navbar__dropdown-link">Motores</a>
+            <a href="projects.html#launch-rails" class="navbar__dropdown-link">Launch Rails</a>
+          </div>
+        </li>
+        <li class="navbar__item">
+          <a href="sponsors.html" class="navbar__link">Sponsors</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="page-content">
+    <header class="page-header">
+      <div class="page-header__bg"></div>
+      <div class="container">
+        <nav class="breadcrumb">
+          <a href="members.html">Miembros</a>
+          <span class="breadcrumb__sep">/</span>
+          <span id="breadcrumb-year">—</span>
+        </nav>
+        <p class="page-header__label" id="year-label">—</p>
+        <h1 class="page-header__title" id="year-title">—</h1>
+        <p class="page-header__description" id="year-description">—</p>
+      </div>
+    </header>
+
+    <section class="members-year-content">
+      <div class="container" id="members-container">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <div class="footer__brand-name">BiSKY Team</div>
+          <p class="footer__brand-desc">Equipo universitario de cohetería experimental de la UPV/EHU. Reaching beyond the sky.</p>
+        </div>
+        <div>
+          <div class="footer__col-title">Navegación</div>
+          <div class="footer__col-links">
+            <a href="../index.html" class="footer__col-link">Home</a>
+            <a href="members.html" class="footer__col-link">Miembros</a>
+            <a href="projects.html" class="footer__col-link">Proyectos</a>
+            <a href="sponsors.html" class="footer__col-link">Sponsors</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Proyectos</div>
+          <div class="footer__col-links">
+            <a href="projects.html#rockets" class="footer__col-link">Cohetes</a>
+            <a href="projects.html#motors" class="footer__col-link">Motores</a>
+            <a href="projects.html#launch-rails" class="footer__col-link">Launch Rails</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Contacto</div>
+          <div class="footer__col-links">
+            <a href="#" class="footer__col-link">contact@biskyteam.com</a>
+            <a href="#" class="footer__col-link">UPV/EHU, Bilbao</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2025 BiSKY Team. UPV/EHU.</span>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link">Instagram</a>
+          <a href="#" class="footer__social-link">LinkedIn</a>
+          <a href="#" class="footer__social-link">YouTube</a>
+          <a href="#" class="footer__social-link">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/animations.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const year = parseInt(params.get('year')) || 2025;
+
+      // Update page info
+      document.title = `Equipo ${year} — BiSKY Team`;
+      document.getElementById('breadcrumb-year').textContent = year;
+      document.getElementById('year-label').textContent = `Temporada ${year - 1}/${year}`;
+      document.getElementById('year-title').textContent = `Equipo ${year}`;
+
+      const members = BISKY.getMembersByYear(year);
+      document.getElementById('year-description').textContent =
+        `${members.length} miembros formaron parte de BiSKY Team durante la temporada ${year - 1}/${year}.`;
+
+      const container = document.getElementById('members-container');
+
+      // Order: Team Leader → Financial Manager → Project Manager first
+      // Then by department: Chief → Technical → Member → Faculty
+      const positionOrder = ['team-leader', 'financial-manager', 'project-manager', 'faculty'];
+      const leadershipMembers = [];
+      const deptMembers = {};
+
+      members.forEach(member => {
+        const record = member.history.find(h => h.year === year);
+        if (!record) return;
+
+        if (positionOrder.includes(record.pos)) {
+          leadershipMembers.push({ member, record });
+        } else {
+          if (!deptMembers[record.dept]) deptMembers[record.dept] = [];
+          deptMembers[record.dept].push({ member, record });
+        }
+      });
+
+      // Sort leadership
+      leadershipMembers.sort((a, b) =>
+        positionOrder.indexOf(a.record.pos) - positionOrder.indexOf(b.record.pos)
+      );
+
+      // Render leadership
+      if (leadershipMembers.length > 0) {
+        const section = document.createElement('div');
+        section.className = 'dept-section reveal';
+        section.innerHTML = `
+          <div class="dept-section__title">
+            <span class="dept-section__icon">◇</span> Dirección
+          </div>
+          <div class="dept-section__grid">
+            ${leadershipMembers.map(({ member, record }) => createMemberCard(member, record)).join('')}
+          </div>
+        `;
+        container.appendChild(section);
+      }
+
+      // Render departments
+      const deptPosOrder = ['chief', 'technical', 'member'];
+
+      BISKY.departments.forEach(dept => {
+        const dMembers = deptMembers[dept.id];
+        if (!dMembers || dMembers.length === 0) return;
+
+        dMembers.sort((a, b) =>
+          deptPosOrder.indexOf(a.record.pos) - deptPosOrder.indexOf(b.record.pos)
+        );
+
+        const section = document.createElement('div');
+        section.className = 'dept-section reveal';
+        section.innerHTML = `
+          <div class="dept-section__title">
+            <span class="dept-section__icon">${dept.icon}</span> ${dept.name}
+          </div>
+          <div class="dept-section__grid">
+            ${dMembers.map(({ member, record }) => createMemberCard(member, record)).join('')}
+          </div>
+        `;
+        container.appendChild(section);
+      });
+
+      function createMemberCard(member, record) {
+        const initials = member.name.split(' ').map(w => w[0]).join('').slice(0, 2);
+        return `
+          <a href="member-profile.html?id=${member.id}" class="member-card">
+            <div class="member-card__avatar">${initials}</div>
+            <div class="member-card__name">${member.name}</div>
+            <div class="member-card__role">${BISKY.getPositionName(record.pos)}</div>
+          </a>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 180" fill="none" class="hero-rocket-svg">
+  <defs>
+    <linearGradient id="rocket-body" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="30%" stop-color="#2a2a2a"/>
+      <stop offset="50%" stop-color="#333"/>
+      <stop offset="70%" stop-color="#2a2a2a"/>
+      <stop offset="100%" stop-color="#1a1a1a"/>
+    </linearGradient>
+    <linearGradient id="rocket-nose" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#444"/>
+      <stop offset="100%" stop-color="#222"/>
+    </linearGradient>
+    <linearGradient id="fin-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#252525"/>
+      <stop offset="100%" stop-color="#151515"/>
+    </linearGradient>
+  </defs>
+  <!-- Nose cone -->
+  <path d="M60 8 L72 42 L72 95 L60 95 L48 95 L48 42 Z" fill="url(#rocket-nose)" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+  <!-- Body -->
+  <rect x="38" y="95" width="44" height="70" rx="2" fill="url(#rocket-body)" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+  <!-- Fins -->
+  <path d="M38 125 L18 165 L38 165 Z" fill="url(#fin-grad)" stroke="rgba(255,255,255,0.06)" stroke-width="0.6"/>
+  <path d="M82 125 L102 165 L82 165 Z" fill="url(#fin-grad)" stroke="rgba(255,255,255,0.06)" stroke-width="0.6"/>
+  <!-- Window band -->
+  <ellipse cx="60" cy="75" rx="12" ry="6" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.2"/>
+  <!-- Engine bell -->
+  <path d="M48 165 L60 178 L72 165 L68 165 L60 172 L52 165 Z" fill="#1a1a1a" stroke="rgba(255,255,255,0.06)" stroke-width="0.6"/>
+</svg>

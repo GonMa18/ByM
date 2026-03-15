@@ -1,0 +1,227 @@
+/* BiSKY Team — Section blocks (home & shared) */
+
+.section-block {
+  position: relative;
+  padding-block: var(--section-padding-y);
+}
+
+.section-block__header {
+  margin-bottom: var(--space-12);
+  max-width: 640px;
+}
+
+.section-block__title {
+  margin-bottom: var(--space-4);
+}
+
+.section-block__subtitle {
+  color: var(--color-text-muted);
+}
+
+.card-link {
+  display: block;
+  padding: var(--space-6);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  transition: border-color var(--duration-normal),
+              background var(--duration-normal),
+              transform var(--duration-normal) var(--ease-out-expo);
+}
+
+.card-link:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-hover);
+  transform: translateY(-2px);
+}
+
+.card-link__title {
+  margin-bottom: var(--space-2);
+}
+
+.card-link__meta {
+  font-size: var(--text-sm);
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-3);
+}
+
+.card-link__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+/* Member card */
+.member-card {
+  display: block;
+  padding: var(--space-4);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  text-align: center;
+  transition: border-color var(--duration-normal), background var(--duration-normal), transform var(--duration-normal) var(--ease-out-expo);
+}
+
+.member-card:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-hover);
+  transform: translateY(-2px);
+}
+
+.member-card__avatar {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-3);
+  border-radius: 50%;
+  background: var(--color-bg-elevated);
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+}
+
+.member-card__name {
+  font-size: var(--text-base);
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.member-card__role {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.member-card__dept {
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+  margin-top: var(--space-1);
+}
+
+/* Project card */
+.project-card {
+  display: block;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color var(--duration-normal), background var(--duration-normal), transform var(--duration-normal) var(--ease-out-expo);
+}
+
+.project-card:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-hover);
+  transform: translateY(-2px);
+}
+
+.project-card__media {
+  aspect-ratio: 16/10;
+  background: var(--color-bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-dim);
+  font-size: var(--text-sm);
+}
+
+.project-card__body {
+  padding: var(--space-4);
+}
+
+.project-card__category {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-2);
+}
+
+.project-card__title {
+  margin-bottom: var(--space-2);
+}
+
+.project-card__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+/* Sponsor card */
+.sponsor-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  min-height: 120px;
+  transition: border-color var(--duration-normal), background var(--duration-normal);
+}
+
+.sponsor-card:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-hover);
+}
+
+.sponsor-card__logo {
+  max-height: 48px;
+  max-width: 160px;
+  object-fit: contain;
+  filter: grayscale(1) brightness(1.2);
+  opacity: 0.9;
+}
+
+.sponsor-card:hover .sponsor-card__logo {
+  filter: grayscale(0) brightness(1);
+  opacity: 1;
+}
+
+.sponsor-card--text {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.sponsor-card--text:hover {
+  color: var(--color-text);
+}
+
+/* Year pill (Miembros hub) */
+.year-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-8);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text);
+  transition: border-color var(--duration-normal), background var(--duration-normal), transform var(--duration-normal) var(--ease-out-expo);
+}
+
+.year-pill:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-hover);
+  transform: translateY(-2px);
+}
+
+/* Sponsor tier section */
+.sponsor-tier {
+  margin-bottom: var(--space-16);
+}
+
+.sponsor-tier__title {
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sponsor-tier__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-4);
+}

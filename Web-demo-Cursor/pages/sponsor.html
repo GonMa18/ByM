@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sponsor — BiSKY Team</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="../index.html" class="nav__logo">BiSKY Team</a>
+      <nav class="nav__links">
+        <a href="../index.html" class="nav__link">Home</a>
+        <div class="nav__item nav__item--has-dropdown">
+          <a href="miembros.html" class="nav__link nav__link--has-dropdown">Miembros</a>
+          <div class="nav__dropdown" aria-hidden="true">
+            <a href="miembros-2025.html" class="nav__dropdown-link">Año 2025</a>
+            <a href="miembros-2024.html" class="nav__dropdown-link">Año 2024</a>
+            <a href="miembros-2023.html" class="nav__dropdown-link">Año 2023</a>
+          </div>
+        </div>
+        <div class="nav__item nav__item--has-dropdown">
+          <a href="proyectos.html" class="nav__link nav__link--has-dropdown">Proyectos</a>
+          <div class="nav__dropdown" aria-hidden="true">
+            <a href="proyectos.html#cohetes" class="nav__dropdown-link">Cohetes</a>
+            <a href="proyectos.html#motores" class="nav__dropdown-link">Motores</a>
+            <a href="proyectos.html#launch-rails" class="nav__dropdown-link">Launch Rails</a>
+            <a href="proyectos.html#auxiliares" class="nav__dropdown-link">Proyectos auxiliares</a>
+          </div>
+        </div>
+        <a href="sponsors.html" class="nav__link" aria-current="page">Sponsors</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="sponsor-detail">
+    <div class="container">
+      <img id="sponsor-logo" class="sponsor-detail__logo" src="" alt="" style="display: none;">
+      <p class="sponsor-detail__tier" id="sponsor-tier">—</p>
+      <h1 class="sponsor-detail__name headline-section" id="sponsor-name">—</h1>
+      <p class="sponsor-detail__desc body" id="sponsor-desc">—</p>
+      <p><a id="sponsor-url" href="#" class="profile__link">Visitar web</a></p>
+    </div>
+  </main>
+
+  <script src="../js/data-sponsors.js"></script>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var id = params.get('id');
+      var found = null;
+      var tierName = '';
+      var data = window.BISKY_SPONSORS || {};
+      Object.keys(data).forEach(function (tier) {
+        (data[tier] || []).forEach(function (s) {
+          if (s.id === id) { found = s; tierName = tier.charAt(0).toUpperCase() + tier.slice(1); }
+        });
+      });
+      if (!found) found = { name: "Sponsor", tier: "—", description: "Datos no encontrados.", url: "#" };
+      document.getElementById('sponsor-name').textContent = found.name;
+      document.getElementById('sponsor-tier').textContent = tierName;
+      document.getElementById('sponsor-desc').textContent = found.description || "—";
+      document.getElementById('sponsor-url').href = found.url || "#";
+      if (found.logo) {
+        var img = document.getElementById('sponsor-logo');
+        img.src = found.logo;
+        img.alt = found.name;
+        img.style.display = 'block';
+      }
+      document.title = found.name + " — BiSKY Team";
+    })();
+  </script>
+  <script src="../js/navbar.js"></script>
+</body>
+</html>

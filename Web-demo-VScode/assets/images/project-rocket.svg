@@ -1,0 +1,12 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" fill="none">
+  <rect width="1400" height="900" fill="#101317"/>
+  <path d="M700 180L760 300L760 640L700 740L640 640V300L700 180Z" fill="#ECEFF5"/>
+  <path d="M660 340H740" stroke="#49515E" stroke-width="5"/>
+  <path d="M660 420H740" stroke="#49515E" stroke-width="5"/>
+  <path d="M660 500H740" stroke="#49515E" stroke-width="5"/>
+  <path d="M640 640L560 700L640 700V640Z" fill="#D4D9E3"/>
+  <path d="M760 640L840 700L760 700V640Z" fill="#D4D9E3"/>
+  <rect x="675" y="740" width="50" height="52" rx="16" fill="#9DA6B7"/>
+  <circle cx="700" cy="815" r="44" fill="#FFFBF2" fill-opacity="0.78"/>
+  <text x="88" y="822" fill="#E8EBF0" font-size="86" font-family="Arial, Helvetica, sans-serif">Rocket Platform</text>
+</svg>

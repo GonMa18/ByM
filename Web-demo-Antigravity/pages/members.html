@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miembros — BiSKY Team</title>
+  <meta name="description" content="Conoce a los miembros de BiSKY Team a lo largo de los años. Equipo universitario de cohetería de la UPV/EHU.">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/members.css">
+</head>
+<body>
+
+  <div class="preloader" id="preloader">
+    <span class="preloader__text">BiSKY</span>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="../index.html" class="navbar__logo">
+        <span class="navbar__logo-mark">B</span>
+        <span>BiSKY</span>
+      </a>
+      <ul class="navbar__links">
+        <li class="navbar__item">
+          <a href="../index.html" class="navbar__link">Home</a>
+        </li>
+        <li class="navbar__item">
+          <a href="members.html" class="navbar__link active">
+            Miembros <span class="navbar__link-arrow">▾</span>
+          </a>
+          <div class="navbar__dropdown">
+            <a href="members-year.html?year=2025" class="navbar__dropdown-link">Año 2025</a>
+            <a href="members-year.html?year=2024" class="navbar__dropdown-link">Año 2024</a>
+            <a href="members-year.html?year=2023" class="navbar__dropdown-link">Año 2023</a>
+          </div>
+        </li>
+        <li class="navbar__item">
+          <a href="projects.html" class="navbar__link">
+            Proyectos <span class="navbar__link-arrow">▾</span>
+          </a>
+          <div class="navbar__dropdown">
+            <a href="projects.html#rockets" class="navbar__dropdown-link">Cohetes</a>
+            <a href="projects.html#motors" class="navbar__dropdown-link">Motores</a>
+            <a href="projects.html#launch-rails" class="navbar__dropdown-link">Launch Rails</a>
+          </div>
+        </li>
+        <li class="navbar__item">
+          <a href="sponsors.html" class="navbar__link">Sponsors</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="page-content">
+
+    <!-- Page Header -->
+    <header class="page-header">
+      <div class="page-header__bg"></div>
+      <div class="container">
+        <p class="page-header__label">Equipo</p>
+        <h1 class="page-header__title">Miembros</h1>
+        <p class="page-header__description">Las personas detrás de cada cohete. Explora el equipo por año y descubre quién impulsa cada departamento.</p>
+      </div>
+    </header>
+
+    <!-- Year Cards -->
+    <section class="members-years">
+      <div class="container">
+        <div class="grid-3" id="years-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <div class="footer__brand-name">BiSKY Team</div>
+          <p class="footer__brand-desc">Equipo universitario de cohetería experimental de la UPV/EHU. Reaching beyond the sky.</p>
+        </div>
+        <div>
+          <div class="footer__col-title">Navegación</div>
+          <div class="footer__col-links">
+            <a href="../index.html" class="footer__col-link">Home</a>
+            <a href="members.html" class="footer__col-link">Miembros</a>
+            <a href="projects.html" class="footer__col-link">Proyectos</a>
+            <a href="sponsors.html" class="footer__col-link">Sponsors</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Proyectos</div>
+          <div class="footer__col-links">
+            <a href="projects.html#rockets" class="footer__col-link">Cohetes</a>
+            <a href="projects.html#motors" class="footer__col-link">Motores</a>
+            <a href="projects.html#launch-rails" class="footer__col-link">Launch Rails</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Contacto</div>
+          <div class="footer__col-links">
+            <a href="#" class="footer__col-link">contact@biskyteam.com</a>
+            <a href="#" class="footer__col-link">UPV/EHU, Bilbao</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2025 BiSKY Team. UPV/EHU.</span>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link">Instagram</a>
+          <a href="#" class="footer__social-link">LinkedIn</a>
+          <a href="#" class="footer__social-link">YouTube</a>
+          <a href="#" class="footer__social-link">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/animations.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('years-grid');
+      if (!grid) return;
+
+      BISKY.years.forEach((year, i) => {
+        const members = BISKY.getMembersByYear(year);
+        const card = document.createElement('a');
+        card.href = `members-year.html?year=${year}`;
+        card.className = 'year-card reveal reveal-delay-' + (i + 1);
+        card.innerHTML = `
+          <div>
+            <div class="year-card__year">${year}</div>
+            <div class="year-card__meta">Temporada ${year - 1}/${year}</div>
+          </div>
+          <div class="year-card__bottom">
+            <span class="year-card__count">${members.length} miembros</span>
+            <span class="year-card__arrow">→</span>
+          </div>
+          <div class="year-card__bg-line"></div>
+        `;
+        grid.appendChild(card);
+      });
+    });
+  </script>
+</body>
+</html>

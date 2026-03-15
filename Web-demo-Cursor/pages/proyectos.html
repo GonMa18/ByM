@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyectos — BiSKY Team</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="../index.html" class="nav__logo">BiSKY Team</a>
+      <nav class="nav__links">
+        <a href="../index.html" class="nav__link">Home</a>
+        <div class="nav__item nav__item--has-dropdown">
+          <a href="miembros.html" class="nav__link nav__link--has-dropdown">Miembros</a>
+          <div class="nav__dropdown" aria-hidden="true">
+            <a href="miembros-2025.html" class="nav__dropdown-link">Año 2025</a>
+            <a href="miembros-2024.html" class="nav__dropdown-link">Año 2024</a>
+            <a href="miembros-2023.html" class="nav__dropdown-link">Año 2023</a>
+          </div>
+        </div>
+        <div class="nav__item nav__item--has-dropdown">
+          <a href="proyectos.html" class="nav__link nav__link--has-dropdown" aria-current="page">Proyectos</a>
+          <div class="nav__dropdown" aria-hidden="true">
+            <a href="proyectos.html#cohetes" class="nav__dropdown-link">Cohetes</a>
+            <a href="proyectos.html#motores" class="nav__dropdown-link">Motores</a>
+            <a href="proyectos.html#launch-rails" class="nav__dropdown-link">Launch Rails</a>
+            <a href="proyectos.html#auxiliares" class="nav__dropdown-link">Proyectos auxiliares</a>
+          </div>
+        </div>
+        <a href="sponsors.html" class="nav__link">Sponsors</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="page-header">
+      <div class="container">
+        <h1 class="page-header__title headline-section">Proyectos</h1>
+        <p class="page-header__subtitle body-lg">Portfolio técnico del equipo. Cohetes, motores, sistemas de lanzamiento y desarrollos auxiliares.</p>
+      </div>
+    </header>
+
+    <section class="section-block" id="cohetes">
+      <div class="container section">
+        <h2 class="dept-group__title reveal-on-scroll">Cohetes</h2>
+        <div class="grid grid--3">
+          <a href="proyecto.html?id=aurora-1" class="project-card reveal-on-scroll">
+            <div class="project-card__media">Aurora I</div>
+            <div class="project-card__body">
+              <span class="project-card__category">Cohete · 2025</span>
+              <h3 class="project-card__title headline-card">Aurora I</h3>
+              <p class="project-card__desc">Vehículo de una etapa. Altura objetivo 3.000 m.</p>
+            </div>
+          </a>
+          <div class="project-card reveal-on-scroll" style="opacity: 0.7;">
+            <div class="project-card__media">Próximamente</div>
+            <div class="project-card__body">
+              <span class="project-card__category">Cohete</span>
+              <h3 class="project-card__title headline-card">Aurora II (previsto)</h3>
+              <p class="project-card__desc">Siguiente generación en planificación.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block" id="motores">
+      <div class="container section">
+        <h2 class="dept-group__title reveal-on-scroll">Motores</h2>
+        <div class="grid grid--3">
+          <a href="proyecto.html?id=prometheus" class="project-card reveal-on-scroll">
+            <div class="project-card__media">Prometheus</div>
+            <div class="project-card__body">
+              <span class="project-card__category">Motor · 2024</span>
+              <h3 class="project-card__title headline-card">Prometheus</h3>
+              <p class="project-card__desc">Motor sólido experimental. Base para vehículos.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block" id="launch-rails">
+      <div class="container section">
+        <h2 class="dept-group__title reveal-on-scroll">Launch Rails</h2>
+        <div class="grid grid--3">
+          <a href="proyecto.html?id=lr-1" class="project-card reveal-on-scroll">
+            <div class="project-card__media">Launch Rail I</div>
+            <div class="project-card__body">
+              <span class="project-card__category">Launch Rail · 2024</span>
+              <h3 class="project-card__title headline-card">Launch Rail I</h3>
+              <p class="project-card__desc">Sistema de guía para lanzamiento vertical.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block" id="auxiliares">
+      <div class="container section">
+        <h2 class="dept-group__title reveal-on-scroll">Proyectos auxiliares</h2>
+        <div class="grid grid--3">
+          <div class="project-card reveal-on-scroll" style="opacity: 0.85;">
+            <div class="project-card__media">Telemetría</div>
+            <div class="project-card__body">
+              <span class="project-card__category">Sistema · 2024</span>
+              <h3 class="project-card__title headline-card">Sistema de telemetría</h3>
+              <p class="project-card__desc">Adquisición de datos en vuelo. Placeholder.</p>
+            </div>
+          </div>
+          <div class="project-card reveal-on-scroll" style="opacity: 0.85;">
+            <div class="project-card__media">Recuperación</div>
+            <div class="project-card__body">
+              <span class="project-card__category">Sistema · 2024</span>
+              <h3 class="project-card__title headline-card">Sistema de recuperación</h3>
+              <p class="project-card__desc">Paracaídas y despliegue. Placeholder.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p class="site-footer__text"><a href="../index.html">BiSKY Team</a> · Proyectos</p>
+    </footer>
+  </main>
+
+  <script src="../js/navbar.js"></script>
+  <script src="../js/scroll-reveal.js"></script>
+  <script>
+    if (window.location.hash) {
+      var el = document.querySelector(window.location.hash);
+      if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+    }
+  </script>
+</body>
+</html>

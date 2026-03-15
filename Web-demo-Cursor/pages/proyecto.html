@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto — BiSKY Team</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="../index.html" class="nav__logo">BiSKY Team</a>
+      <nav class="nav__links">
+        <a href="../index.html" class="nav__link">Home</a>
+        <div class="nav__item nav__item--has-dropdown">
+          <a href="miembros.html" class="nav__link nav__link--has-dropdown">Miembros</a>
+          <div class="nav__dropdown" aria-hidden="true">
+            <a href="miembros-2025.html" class="nav__dropdown-link">Año 2025</a>
+            <a href="miembros-2024.html" class="nav__dropdown-link">Año 2024</a>
+            <a href="miembros-2023.html" class="nav__dropdown-link">Año 2023</a>
+          </div>
+        </div>
+        <div class="nav__item nav__item--has-dropdown">
+          <a href="proyectos.html" class="nav__link nav__link--has-dropdown" aria-current="page">Proyectos</a>
+          <div class="nav__dropdown" aria-hidden="true">
+            <a href="proyectos.html#cohetes" class="nav__dropdown-link">Cohetes</a>
+            <a href="proyectos.html#motores" class="nav__dropdown-link">Motores</a>
+            <a href="proyectos.html#launch-rails" class="nav__dropdown-link">Launch Rails</a>
+            <a href="proyectos.html#auxiliares" class="nav__dropdown-link">Proyectos auxiliares</a>
+          </div>
+        </div>
+        <a href="sponsors.html" class="nav__link">Sponsors</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="project-detail">
+    <div class="project-detail__inner">
+      <div class="project-detail__hero" id="project-hero">Imagen principal</div>
+      <h1 class="project-detail__title headline-section" id="project-title">—</h1>
+      <div class="project-detail__meta" id="project-meta"></div>
+      <div class="project-detail__body">
+        <p class="body" id="project-desc">—</p>
+        <div class="project-detail__specs" id="project-specs"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/data-projects.js"></script>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var id = params.get('id');
+      var data = window.BISKY_PROJECTS && window.BISKY_PROJECTS[id];
+      if (!data) {
+        data = { name: "Proyecto", category: "—", year: "—", status: "—", description: "Proyecto no encontrado o datos pendientes.", specs: [] };
+      }
+      document.getElementById('project-title').textContent = data.name;
+      document.getElementById('project-desc').textContent = data.description;
+      var meta = document.getElementById('project-meta');
+      meta.innerHTML = '<span>' + data.category + '</span><span>' + data.year + '</span><span>' + data.status + '</span>';
+      var specsEl = document.getElementById('project-specs');
+      if (data.specs && data.specs.length) {
+        data.specs.forEach(function (s) {
+          var div = document.createElement('div');
+          div.className = 'project-detail__spec';
+          div.innerHTML = '<div class="project-detail__spec-label">' + s.label + '</div><div class="project-detail__spec-value">' + s.value + '</div>';
+          specsEl.appendChild(div);
+        });
+      }
+      if (data.image) {
+        var hero = document.getElementById('project-hero');
+        hero.innerHTML = '';
+        var img = document.createElement('img');
+        img.src = data.image;
+        img.alt = data.name;
+        img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover';
+        hero.appendChild(img);
+      }
+      document.title = data.name + " — BiSKY Team";
+    })();
+  </script>
+  <script src="../js/navbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BiSKY Team — Ingeniería Aeroespacial Universitaria</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="index.html" class="nav__logo">BiSKY Team</a>
+      <nav class="nav__links">
+        <a href="index.html" class="nav__link" aria-current="page">Home</a>
+        <div class="nav__item nav__item--has-dropdown">
+          <a href="pages/miembros.html" class="nav__link nav__link--has-dropdown">Miembros</a>
+          <div class="nav__dropdown" aria-hidden="true">
+            <a href="pages/miembros-2025.html" class="nav__dropdown-link">Año 2025</a>
+            <a href="pages/miembros-2024.html" class="nav__dropdown-link">Año 2024</a>
+            <a href="pages/miembros-2023.html" class="nav__dropdown-link">Año 2023</a>
+          </div>
+        </div>
+        <div class="nav__item nav__item--has-dropdown">
+          <a href="pages/proyectos.html" class="nav__link nav__link--has-dropdown">Proyectos</a>
+          <div class="nav__dropdown" aria-hidden="true">
+            <a href="pages/proyectos.html#cohetes" class="nav__dropdown-link">Cohetes</a>
+            <a href="pages/proyectos.html#motores" class="nav__dropdown-link">Motores</a>
+            <a href="pages/proyectos.html#launch-rails" class="nav__dropdown-link">Launch Rails</a>
+            <a href="pages/proyectos.html#auxiliares" class="nav__dropdown-link">Proyectos auxiliares</a>
+          </div>
+        </div>
+        <a href="pages/sponsors.html" class="nav__link">Sponsors</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="hero__grid" aria-hidden="true"></div>
+      <div class="hero__cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+      <div class="hero__rocket-wrap">
+        <img src="assets/images/rocket-hero.svg" alt="" class="hero__rocket" width="120" height="180">
+      </div>
+      <div class="hero__content">
+        <div class="hero__text">
+          <h1 class="hero__headline headline-hero">Desarrollo tecnológico<br>aeroespacial</h1>
+          <p class="hero__motto">Ingeniería universitaria en cohetería. Diseño, construcción y lanzamiento.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block" id="overview">
+      <div class="container section">
+        <header class="section-block__header reveal-on-scroll">
+          <h2 class="section-block__title headline-section">Visión general</h2>
+          <p class="section-block__subtitle body-lg">BiSKY Team es un equipo universitario centrado en el desarrollo de sistemas de propulsión y vehículos de lanzamiento. Portfolio de ingeniería y proyectos.</p>
+        </header>
+        <div class="grid grid--3">
+          <a href="pages/miembros.html" class="card-link reveal-on-scroll">
+            <span class="caption">Equipo</span>
+            <h3 class="card-link__title headline-card">Miembros</h3>
+            <p class="card-link__meta">Por año y departamento</p>
+            <p class="card-link__desc">Estructura del equipo, roles y perfiles por temporada.</p>
+          </a>
+          <a href="pages/proyectos.html" class="card-link reveal-on-scroll">
+            <span class="caption">Portfolio técnico</span>
+            <h3 class="card-link__title headline-card">Proyectos</h3>
+            <p class="card-link__meta">Cohetes, motores, sistemas</p>
+            <p class="card-link__desc">Desarrollos de ingeniería agrupados por familia y tipo.</p>
+          </a>
+          <a href="pages/sponsors.html" class="card-link reveal-on-scroll">
+            <span class="caption">Apoyo</span>
+            <h3 class="card-link__title headline-card">Sponsors</h3>
+            <p class="card-link__meta">Por categoría</p>
+            <p class="card-link__desc">Organizaciones y partners que apoyan al equipo.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="container section">
+        <header class="section-block__header reveal-on-scroll">
+          <h2 class="section-block__title headline-section">Proyectos destacados</h2>
+          <p class="section-block__subtitle body-lg">Una muestra del portfolio técnico del equipo.</p>
+        </header>
+        <div class="grid grid--3">
+          <a href="pages/proyecto.html?id=aurora-1" class="project-card reveal-on-scroll">
+            <div class="project-card__media">Aurora I</div>
+            <div class="project-card__body">
+              <span class="project-card__category">Cohete</span>
+              <h3 class="project-card__title headline-card">Aurora I</h3>
+              <p class="project-card__desc">Vehículo de lanzamiento de una etapa. Altura objetivo 3.000 m.</p>
+            </div>
+          </a>
+          <a href="pages/proyecto.html?id=prometheus" class="project-card reveal-on-scroll">
+            <div class="project-card__media">Prometheus</div>
+            <div class="project-card__body">
+              <span class="project-card__category">Motor</span>
+              <h3 class="project-card__title headline-card">Prometheus</h3>
+              <p class="project-card__desc">Motor sólido experimental. Base para futuros desarrollos.</p>
+            </div>
+          </a>
+          <a href="pages/proyectos.html" class="project-card reveal-on-scroll">
+            <div class="project-card__media">Ver todos</div>
+            <div class="project-card__body">
+              <span class="project-card__category">Portfolio</span>
+              <h3 class="project-card__title headline-card">Todos los proyectos</h3>
+              <p class="project-card__desc">Acceso completo al portfolio técnico del equipo.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="container section">
+        <header class="section-block__header reveal-on-scroll">
+          <h2 class="section-block__title headline-section">Equipo por año</h2>
+          <p class="section-block__subtitle body-lg">Acceso a la composición del equipo por temporada.</p>
+        </header>
+        <div class="cluster" style="justify-content: center; gap: var(--space-4);">
+          <a href="pages/miembros-2025.html" class="year-pill reveal-on-scroll">2025</a>
+          <a href="pages/miembros-2024.html" class="year-pill reveal-on-scroll">2024</a>
+          <a href="pages/miembros-2023.html" class="year-pill reveal-on-scroll">2023</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p class="site-footer__text">BiSKY Team — Ingeniería Aeroespacial Universitaria · <a href="index.html">Home</a> · <a href="pages/miembros.html">Miembros</a> · <a href="pages/proyectos.html">Proyectos</a> · <a href="pages/sponsors.html">Sponsors</a></p>
+    </footer>
+  </main>
+
+  <script src="js/navbar.js"></script>
+  <script src="js/hero.js"></script>
+  <script src="js/scroll-reveal.js"></script>
+</body>
+</html>

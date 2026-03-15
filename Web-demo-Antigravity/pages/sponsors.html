@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sponsors — BiSKY Team</title>
+  <meta name="description" content="Sponsors y colaboradores de BiSKY Team. Empresas e instituciones que apoyan el desarrollo aeroespacial universitario.">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/sponsors.css">
+</head>
+<body>
+
+  <div class="preloader" id="preloader">
+    <span class="preloader__text">BiSKY</span>
+  </div>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="../index.html" class="navbar__logo">
+        <span class="navbar__logo-mark">B</span>
+        <span>BiSKY</span>
+      </a>
+      <ul class="navbar__links">
+        <li class="navbar__item">
+          <a href="../index.html" class="navbar__link">Home</a>
+        </li>
+        <li class="navbar__item">
+          <a href="members.html" class="navbar__link">
+            Miembros <span class="navbar__link-arrow">▾</span>
+          </a>
+          <div class="navbar__dropdown">
+            <a href="members-year.html?year=2025" class="navbar__dropdown-link">Año 2025</a>
+            <a href="members-year.html?year=2024" class="navbar__dropdown-link">Año 2024</a>
+            <a href="members-year.html?year=2023" class="navbar__dropdown-link">Año 2023</a>
+          </div>
+        </li>
+        <li class="navbar__item">
+          <a href="projects.html" class="navbar__link">
+            Proyectos <span class="navbar__link-arrow">▾</span>
+          </a>
+          <div class="navbar__dropdown">
+            <a href="projects.html#rockets" class="navbar__dropdown-link">Cohetes</a>
+            <a href="projects.html#motors" class="navbar__dropdown-link">Motores</a>
+            <a href="projects.html#launch-rails" class="navbar__dropdown-link">Launch Rails</a>
+          </div>
+        </li>
+        <li class="navbar__item">
+          <a href="sponsors.html" class="navbar__link active">Sponsors</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="page-content">
+    <header class="page-header">
+      <div class="page-header__bg"></div>
+      <div class="container">
+        <p class="page-header__label">Colaboradores</p>
+        <h1 class="page-header__title">Sponsors</h1>
+        <p class="page-header__description">Empresas e instituciones que hacen posible el desarrollo tecnológico de BiSKY Team.</p>
+      </div>
+    </header>
+
+    <section class="sponsors-content">
+      <div class="container" id="sponsors-container">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Sponsor Detail Overlay -->
+  <div class="sponsor-detail-overlay" id="sponsor-overlay">
+    <div class="sponsor-detail" id="sponsor-detail">
+      <button class="sponsor-detail__close" id="sponsor-close">✕</button>
+      <p class="sponsor-detail__tier" id="sponsor-tier"></p>
+      <h2 class="sponsor-detail__name" id="sponsor-name"></h2>
+      <p class="sponsor-detail__description" id="sponsor-desc"></p>
+      <a href="#" class="sponsor-detail__link" id="sponsor-link" target="_blank">
+        Visitar web →
+      </a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <div class="footer__brand-name">BiSKY Team</div>
+          <p class="footer__brand-desc">Equipo universitario de cohetería experimental de la UPV/EHU. Reaching beyond the sky.</p>
+        </div>
+        <div>
+          <div class="footer__col-title">Navegación</div>
+          <div class="footer__col-links">
+            <a href="../index.html" class="footer__col-link">Home</a>
+            <a href="members.html" class="footer__col-link">Miembros</a>
+            <a href="projects.html" class="footer__col-link">Proyectos</a>
+            <a href="sponsors.html" class="footer__col-link">Sponsors</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Proyectos</div>
+          <div class="footer__col-links">
+            <a href="projects.html#rockets" class="footer__col-link">Cohetes</a>
+            <a href="projects.html#motors" class="footer__col-link">Motores</a>
+            <a href="projects.html#launch-rails" class="footer__col-link">Launch Rails</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Contacto</div>
+          <div class="footer__col-links">
+            <a href="#" class="footer__col-link">contact@biskyteam.com</a>
+            <a href="#" class="footer__col-link">UPV/EHU, Bilbao</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2025 BiSKY Team. UPV/EHU.</span>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link">Instagram</a>
+          <a href="#" class="footer__social-link">LinkedIn</a>
+          <a href="#" class="footer__social-link">YouTube</a>
+          <a href="#" class="footer__social-link">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/animations.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('sponsors-container');
+
+      BISKY.sponsors.tiers.forEach(tier => {
+        const sponsors = BISKY.getSponsorsByTier(tier.id);
+        if (sponsors.length === 0) return;
+
+        const section = document.createElement('div');
+        section.className = `sponsor-tier sponsor-tier--${tier.id} reveal`;
+        section.innerHTML = `
+          <div class="sponsor-tier__header">
+            <h2 class="sponsor-tier__name">${tier.name}</h2>
+            <span class="sponsor-tier__badge">Tier ${tier.order}</span>
+          </div>
+          <div class="sponsor-tier__grid">
+            ${sponsors.map(s => `
+              <div class="sponsor-card" data-sponsor-id="${s.id}" role="button" tabindex="0">
+                <span class="sponsor-card__name">${s.name}</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        container.appendChild(section);
+      });
+
+      // CTA
+      const cta = document.createElement('div');
+      cta.className = 'sponsors-cta reveal';
+      cta.innerHTML = `
+        <h2 class="sponsors-cta__title">¿Quieres ser sponsor?</h2>
+        <p class="sponsors-cta__text">Colabora con BiSKY Team y apoya el desarrollo de la próxima generación de ingenieros aeroespaciales.</p>
+        <a href="mailto:contact@biskyteam.com" class="btn btn--primary">Contactar <span class="btn-arrow">→</span></a>
+      `;
+      container.appendChild(cta);
+
+      // Sponsor detail overlay
+      const overlay = document.getElementById('sponsor-overlay');
+      const closeBtn = document.getElementById('sponsor-close');
+
+      document.querySelectorAll('.sponsor-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const id = parseInt(card.dataset.sponsorId);
+          const sponsor = BISKY.sponsors.list.find(s => s.id === id);
+          if (!sponsor) return;
+
+          const tier = BISKY.sponsors.tiers.find(t => t.id === sponsor.tier);
+          document.getElementById('sponsor-tier').textContent = tier ? tier.name : '';
+          document.getElementById('sponsor-name').textContent = sponsor.name;
+          document.getElementById('sponsor-desc').textContent = sponsor.description;
+          document.getElementById('sponsor-link').href = sponsor.website;
+
+          overlay.classList.add('active');
+        });
+      });
+
+      closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.classList.remove('active');
+      });
+    });
+  </script>
+</body>
+</html>

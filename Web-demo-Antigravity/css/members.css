@@ -1,0 +1,307 @@
+/* ============================================================
+   BiSKY Team — Members Page Styles
+   ============================================================ */
+
+/* ——————————————————————
+   MEMBERS HUB — YEAR CARDS
+   —————————————————————— */
+.members-years {
+  padding: var(--sp-16) 0 var(--sp-32);
+}
+
+.year-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: var(--border-subtle);
+  padding: var(--sp-12);
+  overflow: hidden;
+  transition: all var(--t-slow) var(--ease-out);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 280px;
+}
+
+.year-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-4px);
+}
+
+.year-card__year {
+  font-size: var(--fs-4xl);
+  font-weight: var(--fw-extrabold);
+  color: var(--c-white);
+  line-height: 1;
+  letter-spacing: var(--ls-tight);
+  margin-bottom: var(--sp-4);
+}
+
+.year-card__meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--c-grey-500);
+}
+
+.year-card__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.year-card__count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--c-grey-500);
+  letter-spacing: var(--ls-wide);
+}
+
+.year-card__arrow {
+  font-size: var(--fs-xl);
+  color: var(--c-grey-700);
+  transition: all var(--t-base) var(--ease-out);
+}
+
+.year-card:hover .year-card__arrow {
+  color: var(--c-white);
+  transform: translateX(4px);
+}
+
+.year-card__bg-line {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 100%;
+  background: linear-gradient(135deg, transparent 40%, rgba(110, 180, 255, 0.03) 100%);
+  pointer-events: none;
+}
+
+/* ——————————————————————
+   MEMBERS YEAR PAGE
+   —————————————————————— */
+.members-year-content {
+  padding: 0 0 var(--sp-32);
+}
+
+.dept-section {
+  margin-bottom: var(--sp-16);
+}
+
+.dept-section__title {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-bottom: var(--sp-8);
+  padding-bottom: var(--sp-4);
+  border-bottom: var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.dept-section__icon {
+  font-size: var(--fs-md);
+  color: var(--c-grey-600);
+}
+
+.dept-section__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-6);
+}
+
+/* Position sub-group */
+.position-group {
+  margin-bottom: var(--sp-8);
+}
+
+.position-group__label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--c-grey-600);
+  margin-bottom: var(--sp-4);
+}
+
+/* ——————————————————————
+   MEMBER PROFILE PAGE
+   —————————————————————— */
+.member-profile {
+  padding: calc(var(--sp-40) + var(--sp-8)) 0 var(--sp-32);
+}
+
+.member-profile__grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: var(--sp-16);
+  align-items: start;
+}
+
+.member-profile__sidebar {
+  position: sticky;
+  top: calc(var(--sp-24));
+}
+
+.member-profile__avatar {
+  width: 100%;
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, var(--c-grey-900), var(--c-grey-800));
+  margin-bottom: var(--sp-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-4xl);
+  font-weight: var(--fw-bold);
+  color: var(--c-grey-600);
+  overflow: hidden;
+}
+
+.member-profile__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.member-profile__name {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--c-white);
+  margin-bottom: var(--sp-2);
+}
+
+.member-profile__role {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-wide);
+  color: var(--c-accent);
+  margin-bottom: var(--sp-1);
+}
+
+.member-profile__department {
+  font-size: var(--fs-sm);
+  color: var(--c-grey-500);
+  margin-bottom: var(--sp-6);
+}
+
+.member-profile__links {
+  display: flex;
+  gap: var(--sp-3);
+}
+
+.member-profile__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  border: var(--border-subtle);
+  color: var(--c-grey-400);
+  transition: all var(--t-base);
+}
+
+.member-profile__link:hover {
+  color: var(--c-white);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Content area */
+.member-profile__content {
+  padding-top: var(--sp-4);
+}
+
+.member-profile__section {
+  margin-bottom: var(--sp-12);
+}
+
+.member-profile__section-title {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--c-grey-500);
+  margin-bottom: var(--sp-6);
+  padding-bottom: var(--sp-3);
+  border-bottom: var(--border-subtle);
+}
+
+.member-profile__bio {
+  font-size: var(--fs-md);
+  color: var(--c-grey-300);
+  line-height: var(--lh-relaxed);
+  max-width: 600px;
+}
+
+/* History timeline */
+.member-history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.member-history__item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: var(--sp-6);
+  padding: var(--sp-4) 0;
+  border-bottom: var(--border-subtle);
+  align-items: center;
+}
+
+.member-history__year {
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--c-white);
+}
+
+.member-history__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.member-history__pos {
+  font-weight: var(--fw-medium);
+  color: var(--c-grey-300);
+}
+
+.member-history__dept {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wide);
+  color: var(--c-grey-500);
+}
+
+/* Years participated */
+.member-profile__years {
+  display: flex;
+  gap: var(--sp-3);
+}
+
+.member-profile__year-badge {
+  padding: var(--sp-2) var(--sp-4);
+  border: var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--c-grey-400);
+  transition: all var(--t-base);
+  cursor: pointer;
+}
+
+.member-profile__year-badge:hover,
+.member-profile__year-badge.active {
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+}

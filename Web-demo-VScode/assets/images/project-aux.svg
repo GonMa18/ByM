@@ -1,0 +1,9 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" fill="none">
+  <rect width="1400" height="900" fill="#12161B"/>
+  <rect x="220" y="250" width="960" height="410" rx="42" fill="#E6EAF2"/>
+  <rect x="310" y="340" width="270" height="230" rx="24" fill="#1A1F27"/>
+  <rect x="650" y="340" width="440" height="64" rx="16" fill="#1A1F27"/>
+  <rect x="650" y="436" width="350" height="64" rx="16" fill="#1A1F27"/>
+  <rect x="650" y="532" width="290" height="24" rx="12" fill="#556075"/>
+  <text x="88" y="822" fill="#E8EBF0" font-size="86" font-family="Arial, Helvetica, sans-serif">Auxiliary Development</text>
+</svg>
