@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Visor 3D - Charlie</title>
+  <title>Visor 3D - Atlas</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body { margin: 0; background: #4f4f4f; font-family: Arial, sans-serif; }
@@ -50,7 +50,7 @@
     const status = document.getElementById("status");
     const gltfUrl = "./atlas/atlas.gltf";
     const binUrl = "./atlas/atlas.bin";
-    const pngUrl = "./atlas/vinilo1.png";
+    //const pngUrl = "./atlas/vinilo1.png";
 
     async function check(url) {
       const res = await fetch(url, { method: "GET", cache: "no-store" });
@@ -63,7 +63,7 @@
       try {
         await check(gltfUrl);
         await check(binUrl);
-        await check(pngUrl);
+        //await check(pngUrl);
         status.textContent = "Archivos OK. Cargando modelo...";
         mv.src = gltfUrl;
       } catch (e) {
@@ -89,4 +89,3 @@
   </script>
 </body>
 </html>
-
