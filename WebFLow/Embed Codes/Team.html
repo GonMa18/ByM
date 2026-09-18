@@ -1,0 +1,1525 @@
+<style>
+  #bisky-blackhole-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    contain: strict;
+    transform: translateZ(0);
+  }
+  .bisky-blackhole-background__canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<div id="bisky-blackhole-background" aria-hidden="true">
+  <canvas class="bisky-blackhole-background__canvas"></canvas>
+</div>
+
+<script>
+  (function () {
+    'use strict';
+
+    var root = document.getElementById('bisky-blackhole-background');
+    if (!root || root.dataset.initialized === 'true') return;
+    root.dataset.initialized = 'true';
+
+    var mobile = window.innerWidth < 768;
+    var tablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+
+    var C = {
+      DESKTOP_CONSTELLATION_COUNT: 14,
+      TABLET_CONSTELLATION_COUNT: 10,
+      MOBILE_CONSTELLATION_COUNT: 7,
+      MIN_ACTIVE_CONSTELLATIONS: mobile ? 5 : tablet ? 8 : 10,
+      MAX_ACTIVE_CONSTELLATIONS: mobile ? 8 : tablet ? 12 : 16,
+      /* Cantidad real de estrellas sueltas por dispositivo.
+       Cambia estos tres valores; resize() los respeta automáticamente. */
+      DESKTOP_AMBIENT_STAR_COUNT: 800,
+      TABLET_AMBIENT_STAR_COUNT: 600,
+      MOBILE_AMBIENT_STAR_COUNT: 300,
+      AMBIENT_STAR_COUNT: 0,
+
+      CONSTELLATION_LINE_OPACITY: 0.22,
+      CONSTELLATION_LINE_WIDTH: 0.65,
+      STAR_SIZE_MIN: 0.85,
+      STAR_SIZE_MAX: 2.7,
+      STAR_GLOW_OPACITY: 0.012,
+
+      BLACK_HOLE_X: mobile ? 0.7 : 0.69,
+      BLACK_HOLE_Y: mobile ? 0.46 : 0.44,
+      BLACK_HOLE_RADIUS: mobile ? 30 : tablet ? 48 : 66,
+      LENSING_RADIUS: mobile ? 120 : tablet ? 210 : 300,
+      LENSING_STRENGTH: 0.92,
+      ATTRACTION_RADIUS: mobile ? 480 : 1050,
+      ATTRACTION_STRENGTH: 0.00022,
+      SPIRAL_STRENGTH: 1.35,
+      ORBITAL_STRENGTH: 0.28,
+      CONSUMPTION_PULL: 2.4,
+
+      POINTER_RADIUS: 140,
+      POINTER_REPULSION: 8.0,
+      POINTER_FALLOFF: 2.4,
+      RETURN_SPRING: 0.08,
+      PARTICLE_DAMPING: 0.82,
+      MAX_POINTER_DISPLACEMENT: 55,
+      LINKED_STAR_INFLUENCE: 0.22,
+
+      SPAWN_DELAY_MIN: 260,
+      SPAWN_DELAY_MAX: 720,
+      SPAWN_BURST_LIMIT: mobile ? 2 : 3,
+      SPAWN_BUFFER_COUNT: mobile ? 1 : tablet ? 2 : 3,
+      INITIAL_SAFE_DISTANCE: mobile ? 150 : tablet ? 280 : 410,
+
+      /* Calidad optimizada: reduce mucho el coste de píxeles sin cambiar la composición. */
+      DESKTOP_DPR_LIMIT: 1.35,
+      TABLET_DPR_LIMIT: 1.2,
+      MOBILE_DPR_LIMIT: 1.05,
+      ACCRETION_RENDER_SCALE: mobile ? 0.44 : tablet ? 0.54 : 0.62,
+      ACCRETION_UPDATE_INTERVAL: mobile ? 4 : tablet ? 3 : 2,
+    };
+
+    var TEMPLATES = {
+      orion: {
+        nodes: [
+          { id: 'betelgeuse', x: 0.15, y: 0.0, size: 1.0 },
+          { id: 'bellatrix', x: 0.85, y: 0.05, size: 0.8 },
+          { id: 'meissa', x: 0.5, y: -0.08, size: 0.4 },
+          { id: 'mintaka', x: 0.38, y: 0.4, size: 0.6 },
+          { id: 'alnilam', x: 0.5, y: 0.42, size: 0.72 },
+          { id: 'alnitak', x: 0.62, y: 0.44, size: 0.6 },
+          { id: 'saiph', x: 0.22, y: 0.9, size: 0.7 },
+          { id: 'rigel', x: 0.8, y: 0.95, size: 0.95 },
+        ],
+        edges: [
+          ['betelgeuse', 'bellatrix'],
+          ['betelgeuse', 'meissa'],
+          ['bellatrix', 'meissa'],
+          ['betelgeuse', 'mintaka'],
+          ['bellatrix', 'alnitak'],
+          ['mintaka', 'alnilam'],
+          ['alnilam', 'alnitak'],
+          ['mintaka', 'saiph'],
+          ['alnitak', 'rigel'],
+        ],
+      },
+      ursaMajor: {
+        nodes: [
+          { id: 'dubhe', x: 0.0, y: 0.0, size: 0.9 },
+          { id: 'merak', x: 0.0, y: 0.3, size: 0.75 },
+          { id: 'phecda', x: 0.28, y: 0.35, size: 0.65 },
+          { id: 'megrez', x: 0.3, y: 0.1, size: 0.55 },
+          { id: 'alioth', x: 0.55, y: 0.08, size: 0.75 },
+          { id: 'mizar', x: 0.75, y: 0.18, size: 0.8 },
+          { id: 'alkaid', x: 1.0, y: 0.35, size: 0.85 },
+        ],
+        edges: [
+          ['dubhe', 'merak'],
+          ['merak', 'phecda'],
+          ['phecda', 'megrez'],
+          ['megrez', 'dubhe'],
+          ['megrez', 'alioth'],
+          ['alioth', 'mizar'],
+          ['mizar', 'alkaid'],
+        ],
+      },
+      cassiopeia: {
+        nodes: [
+          { id: 'schedar', x: 0.0, y: 0.3, size: 0.85 },
+          { id: 'caph', x: 0.22, y: 0.0, size: 0.7 },
+          { id: 'gamma_c', x: 0.45, y: 0.42, size: 0.8 },
+          { id: 'ruchbah', x: 0.68, y: 0.05, size: 0.65 },
+          { id: 'segin', x: 0.92, y: 0.35, size: 0.7 },
+        ],
+        edges: [
+          ['schedar', 'caph'],
+          ['schedar', 'gamma_c'],
+          ['gamma_c', 'ruchbah'],
+          ['ruchbah', 'segin'],
+        ],
+      },
+      cygnus: {
+        nodes: [
+          { id: 'deneb', x: 0.5, y: 0.0, size: 1.0 },
+          { id: 'sadr', x: 0.5, y: 0.4, size: 0.75 },
+          { id: 'gienah_c', x: 0.12, y: 0.58, size: 0.6 },
+          { id: 'delta_c', x: 0.88, y: 0.58, size: 0.6 },
+          { id: 'albireo', x: 0.5, y: 0.98, size: 0.85 },
+          { id: 'eps_c', x: 0.28, y: 0.18, size: 0.45 },
+        ],
+        edges: [
+          ['deneb', 'sadr'],
+          ['sadr', 'gienah_c'],
+          ['sadr', 'delta_c'],
+          ['sadr', 'albireo'],
+          ['deneb', 'eps_c'],
+        ],
+      },
+      scorpius: {
+        nodes: [
+          { id: 'antares', x: 0.35, y: 0.32, size: 1.0 },
+          { id: 'graffias', x: 0.3, y: 0.0, size: 0.65 },
+          { id: 'dschubba', x: 0.45, y: 0.08, size: 0.7 },
+          { id: 'pi_s', x: 0.6, y: 0.15, size: 0.55 },
+          { id: 'sigma_s', x: 0.25, y: 0.5, size: 0.5 },
+          { id: 'tau_s', x: 0.18, y: 0.65, size: 0.5 },
+          { id: 'eps_s', x: 0.1, y: 0.78, size: 0.55 },
+          { id: 'lambda_s', x: 0.0, y: 0.95, size: 0.75 },
+          { id: 'ups_s', x: 0.12, y: 1.0, size: 0.5 },
+        ],
+        edges: [
+          ['graffias', 'dschubba'],
+          ['dschubba', 'pi_s'],
+          ['dschubba', 'antares'],
+          ['antares', 'sigma_s'],
+          ['sigma_s', 'tau_s'],
+          ['tau_s', 'eps_s'],
+          ['eps_s', 'lambda_s'],
+          ['lambda_s', 'ups_s'],
+        ],
+      },
+      leo: {
+        nodes: [
+          { id: 'regulus', x: 0.2, y: 0.8, size: 1.0 },
+          { id: 'denebola', x: 1.0, y: 0.4, size: 0.85 },
+          { id: 'algieba', x: 0.15, y: 0.35, size: 0.72 },
+          { id: 'zosma', x: 0.75, y: 0.35, size: 0.6 },
+          { id: 'chertan', x: 0.6, y: 0.6, size: 0.55 },
+          { id: 'eta_l', x: 0.0, y: 0.15, size: 0.5 },
+          { id: 'mu_l', x: 0.05, y: 0.55, size: 0.45 },
+        ],
+        edges: [
+          ['eta_l', 'algieba'],
+          ['algieba', 'zosma'],
+          ['zosma', 'denebola'],
+          ['algieba', 'regulus'],
+          ['regulus', 'chertan'],
+          ['chertan', 'denebola'],
+          ['algieba', 'mu_l'],
+          ['mu_l', 'regulus'],
+        ],
+      },
+      lyra: {
+        nodes: [
+          { id: 'vega', x: 0.5, y: 0.0, size: 1.0 },
+          { id: 'sheliak', x: 0.3, y: 0.55, size: 0.6 },
+          { id: 'sulafat', x: 0.7, y: 0.55, size: 0.6 },
+          { id: 'delta1_l', x: 0.2, y: 0.92, size: 0.5 },
+          { id: 'delta2_l', x: 0.42, y: 0.95, size: 0.5 },
+          { id: 'zeta_l', x: 0.72, y: 0.88, size: 0.5 },
+        ],
+        edges: [
+          ['vega', 'sheliak'],
+          ['vega', 'sulafat'],
+          ['sheliak', 'sulafat'],
+          ['sheliak', 'delta1_l'],
+          ['sheliak', 'delta2_l'],
+          ['sulafat', 'zeta_l'],
+          ['delta1_l', 'delta2_l'],
+        ],
+      },
+
+      gemini: {
+        nodes: [
+          { id: 'castor', x: 0.26, y: 0.02, size: 0.92 },
+          { id: 'pollux', x: 0.58, y: 0.08, size: 1.0 },
+          { id: 'wasat', x: 0.45, y: 0.42, size: 0.62 },
+          { id: 'mekbuda', x: 0.28, y: 0.62, size: 0.58 },
+          { id: 'tejat', x: 0.18, y: 0.92, size: 0.72 },
+          { id: 'alhena', x: 0.72, y: 0.66, size: 0.72 },
+          { id: 'propus', x: 0.78, y: 0.42, size: 0.5 },
+        ],
+        edges: [
+          ['castor', 'pollux'],
+          ['castor', 'wasat'],
+          ['pollux', 'wasat'],
+          ['wasat', 'mekbuda'],
+          ['mekbuda', 'tejat'],
+          ['wasat', 'alhena'],
+          ['alhena', 'propus'],
+        ],
+      },
+      taurus: {
+        nodes: [
+          { id: 'elnath', x: 0.88, y: 0.06, size: 0.82 },
+          { id: 'ain', x: 0.55, y: 0.28, size: 0.52 },
+          { id: 'aldebaran', x: 0.38, y: 0.44, size: 1.0 },
+          { id: 'prima_hyadum', x: 0.18, y: 0.22, size: 0.52 },
+          { id: 'theta1', x: 0.22, y: 0.62, size: 0.54 },
+          { id: 'zeta_t', x: 0.68, y: 0.54, size: 0.56 },
+          { id: 'lambda_t', x: 1.0, y: 0.38, size: 0.52 },
+        ],
+        edges: [
+          ['prima_hyadum', 'aldebaran'],
+          ['aldebaran', 'ain'],
+          ['ain', 'elnath'],
+          ['aldebaran', 'theta1'],
+          ['ain', 'zeta_t'],
+          ['elnath', 'lambda_t'],
+        ],
+      },
+      canisMajor: {
+        nodes: [
+          { id: 'sirius', x: 0.15, y: 0.72, size: 1.0 },
+          { id: 'mirzam', x: 0.05, y: 0.4, size: 0.62 },
+          { id: 'muliphein', x: 0.35, y: 0.44, size: 0.54 },
+          { id: 'wezen', x: 0.62, y: 0.55, size: 0.86 },
+          { id: 'adhara', x: 0.78, y: 0.75, size: 0.92 },
+          { id: 'aludra', x: 1.0, y: 0.98, size: 0.7 },
+        ],
+        edges: [
+          ['mirzam', 'sirius'],
+          ['sirius', 'muliphein'],
+          ['muliphein', 'wezen'],
+          ['wezen', 'adhara'],
+          ['adhara', 'aludra'],
+        ],
+      },
+      aquila: {
+        nodes: [
+          { id: 'altair', x: 0.52, y: 0.18, size: 1.0 },
+          { id: 'tarazed', x: 0.34, y: 0.3, size: 0.7 },
+          { id: 'alshain', x: 0.68, y: 0.34, size: 0.68 },
+          { id: 'delta_aq', x: 0.2, y: 0.58, size: 0.48 },
+          { id: 'theta_aq', x: 0.42, y: 0.78, size: 0.52 },
+          { id: 'lambda_aq', x: 0.8, y: 0.72, size: 0.54 },
+        ],
+        edges: [
+          ['tarazed', 'altair'],
+          ['altair', 'alshain'],
+          ['tarazed', 'delta_aq'],
+          ['altair', 'theta_aq'],
+          ['alshain', 'lambda_aq'],
+        ],
+      },
+      pegasus: {
+        nodes: [
+          { id: 'markab', x: 0.08, y: 0.7, size: 0.84 },
+          { id: 'scheat', x: 0.12, y: 0.1, size: 0.88 },
+          { id: 'algenib', x: 0.72, y: 0.78, size: 0.74 },
+          { id: 'alpheratz', x: 0.78, y: 0.14, size: 0.88 },
+          { id: 'enif', x: 1.0, y: 0.42, size: 0.82 },
+        ],
+        edges: [
+          ['markab', 'scheat'],
+          ['scheat', 'alpheratz'],
+          ['alpheratz', 'algenib'],
+          ['algenib', 'markab'],
+          ['algenib', 'enif'],
+        ],
+      },
+      andromeda: {
+        nodes: [
+          { id: 'alpheratz', x: 0.0, y: 0.5, size: 0.9 },
+          { id: 'mirach', x: 0.35, y: 0.45, size: 0.8 },
+          { id: 'almach', x: 0.7, y: 0.4, size: 0.85 },
+          { id: 'delta_a', x: 0.28, y: 0.2, size: 0.55 },
+          { id: 'mu_a', x: 0.55, y: 0.68, size: 0.5 },
+          { id: 'nu_a', x: 0.85, y: 0.18, size: 0.45 },
+        ],
+        edges: [
+          ['alpheratz', 'mirach'],
+          ['mirach', 'almach'],
+          ['mirach', 'delta_a'],
+          ['mirach', 'mu_a'],
+          ['almach', 'nu_a'],
+        ],
+      },
+    };
+
+    var templateKeys = Object.keys(TEMPLATES);
+    var canvas = root.querySelector('.bisky-blackhole-background__canvas');
+    var ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+    var W, H, dpr, bhX, bhY;
+
+    var NZ = 1024;
+    var nz = new Float32Array(NZ);
+    for (var i = 0; i < NZ; i++) nz[i] = (Math.random() - 0.5) * 2;
+
+    function N(i) {
+      var a = ((i % NZ) + NZ) % NZ;
+      var a0 = (a | 0) & (NZ - 1);
+      var a1 = (a0 + 1) & (NZ - 1);
+      var f = a - (a | 0);
+      f = f * f * (3 - 2 * f);
+      return nz[a0] * (1 - f) + nz[a1] * f;
+    }
+
+    function fbm(i, octaves) {
+      var v = 0,
+        amp = 1,
+        freq = 1,
+        total = 0;
+      for (var o = 0; o < (octaves || 3); o++) {
+        v += N(i * freq) * amp;
+        total += amp;
+        amp *= 0.5;
+        freq *= 2.1;
+      }
+      return v / total;
+    }
+
+    var bgCanvas = document.createElement('canvas');
+    var bgCtx = bgCanvas.getContext('2d', { alpha: false });
+
+    var accCanvas = document.createElement('canvas');
+    var accCtx = accCanvas.getContext('2d');
+    var accFrame = 0;
+    var accWorldSize = 0;
+    var accRenderScale = 1;
+    var ambientStars = [];
+    var resizeTimer = 0;
+
+    function renderBackgroundCache() {
+      bgCanvas.width = Math.max(1, Math.round(W));
+      bgCanvas.height = Math.max(1, Math.round(H));
+
+      bgCtx.setTransform(1, 0, 0, 1, 0, 0);
+      bgCtx.fillStyle = '#F5F8F9';
+      bgCtx.fillRect(0, 0, W, H);
+
+      var bg = bgCtx.createRadialGradient(
+        bhX,
+        bhY,
+        0,
+        bhX,
+        bhY,
+        Math.max(W, H) * 0.7
+      );
+      bg.addColorStop(0, 'rgba(218,218,218,0.08)');
+      bg.addColorStop(0.35, 'rgba(232,232,232,0.03)');
+      bg.addColorStop(1, 'rgba(245,248,249,0)');
+      bgCtx.fillStyle = bg;
+      bgCtx.fillRect(0, 0, W, H);
+    }
+
+    function resize() {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      mobile = W < 768;
+      tablet = W >= 768 && W < 1024;
+
+      var dprLimit = mobile
+        ? C.MOBILE_DPR_LIMIT
+        : tablet
+          ? C.TABLET_DPR_LIMIT
+          : C.DESKTOP_DPR_LIMIT;
+
+      dpr = Math.min(window.devicePixelRatio || 1, dprLimit);
+      canvas.width = Math.max(1, Math.round(W * dpr));
+      canvas.height = Math.max(1, Math.round(H * dpr));
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.imageSmoothingEnabled = true;
+
+      bhX = W * (mobile ? 0.7 : 0.69);
+      bhY = H * (mobile ? 0.46 : 0.44);
+
+      C.BLACK_HOLE_RADIUS = mobile ? 30 : tablet ? 48 : 66;
+      C.LENSING_RADIUS = mobile ? 120 : tablet ? 210 : 300;
+      C.ATTRACTION_RADIUS = mobile ? 480 : 1050;
+      C.AMBIENT_STAR_COUNT = mobile ? C.MOBILE_AMBIENT_STAR_COUNT : tablet ? C.TABLET_AMBIENT_STAR_COUNT : C.DESKTOP_AMBIENT_STAR_COUNT;
+      C.MIN_ACTIVE_CONSTELLATIONS = mobile ? 5 : tablet ? 8 : 10;
+      C.MAX_ACTIVE_CONSTELLATIONS = mobile ? 8 : tablet ? 12 : 16;
+
+      renderBackgroundCache();
+
+      accWorldSize = C.LENSING_RADIUS * 3.4;
+      accRenderScale = C.ACCRETION_RENDER_SCALE;
+      accCanvas.width = Math.max(1, Math.round(accWorldSize * 2 * accRenderScale));
+      accCanvas.height = Math.max(1, Math.round(accWorldSize * 2 * accRenderScale));
+
+      createAmbientStars();
+    }
+
+    resize();
+    window.addEventListener(
+      'resize',
+      function () {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(resize, 120);
+      },
+      { passive: true },
+    );
+
+    var ptr = { x: -9999, y: -9999, active: false };
+    var isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    window.addEventListener(
+      'mousemove',
+      function (e) {
+        ptr.x = e.clientX;
+        ptr.y = e.clientY;
+        ptr.active = true;
+      },
+      { passive: true },
+    );
+    window.addEventListener(
+      'mouseleave',
+      function () {
+        ptr.active = false;
+      },
+      { passive: true },
+    );
+
+    function dist(ax, ay, bx, by) {
+      var dx = ax - bx,
+        dy = ay - by;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function ss(e0, e1, x) {
+      var t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0)));
+      return t * t * (3 - 2 * t);
+    }
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+    function rng(a, b) {
+      return a + Math.random() * (b - a);
+    }
+    function pick(a) {
+      return a[(Math.random() * a.length) | 0];
+    }
+
+    function lens(px, py, time) {
+      var dx = px - bhX,
+        dy = py - bhY;
+      var r = Math.sqrt(dx * dx + dy * dy);
+      var bhR = C.BLACK_HOLE_RADIUS;
+      var lR = C.LENSING_RADIUS;
+
+      if (r > lR * 1.8 || r < 1) return { x: px, y: py, s: 1 };
+
+      var angle = Math.atan2(dy, dx);
+      var t = 1 - ss(bhR * 0.6, lR * 1.7, r);
+      var lf = t * t * C.LENSING_STRENGTH;
+      var asym = 1 + 0.42 * Math.sin(angle * 2.1 + time * 0.08) + 0.18 * Math.cos(angle * 3.2 - time * 0.05);
+      lf *= asym;
+
+      var eR = bhR * 2.1;
+      var deflection = (lf * (eR * eR)) / (r * r + bhR * 0.35);
+
+      if (r < bhR * 2.8) {
+        var ringT = 1 - ss(bhR * 0.9, bhR * 2.8, r);
+        deflection += ringT * ringT * 1.1;
+      }
+
+      var newAngle = angle + deflection;
+      var rOut = r;
+
+      if (r < bhR * 4) {
+        var ct = 1 - ss(bhR * 0.8, bhR * 4, r);
+        rOut = r * (1 + ct * lf * 0.32);
+      }
+
+      return {
+        x: bhX + Math.cos(newAngle) * rOut,
+        y: bhY + Math.sin(newAngle) * rOut,
+        s: 1 + lf * 0.45 * (1 - ss(bhR, lR, r)),
+      };
+    }
+
+    function buildAmbientStar(spawnFromEdge) {
+      var r = Math.random();
+      var sz, op, col, halo, flare;
+
+      if (r < 0.62) {
+        sz = rng(0.42, 0.92);
+        op = rng(0.88, 0.96);
+        col = '#000000';
+        halo = rng(0.0, 0.009);
+        flare = 0;
+      } else if (r < 0.92) {
+        sz = rng(0.78, 1.28);
+        op = rng(0.92, 0.98);
+        col = '#000000';
+        halo = rng(0.012, 0.028);
+        flare = rng(0.15, 0.4);
+      } else {
+        sz = rng(1.2, 1.95);
+        op = rng(0.96, 1);
+        col = '#000000';
+        halo = rng(0.025, 0.05);
+        flare = rng(0.35, 0.72);
+      }
+
+      var x,
+        y,
+        margin = 18;
+      if (spawnFromEdge) {
+        var edge = (Math.random() * 4) | 0;
+        if (edge === 0) {
+          x = -margin;
+          y = rng(0, H);
+        } else if (edge === 1) {
+          x = W + margin;
+          y = rng(0, H);
+        } else if (edge === 2) {
+          x = rng(0, W);
+          y = -margin;
+        } else {
+          x = rng(0, W);
+          y = H + margin;
+        }
+      } else {
+        x = Math.random() * W;
+        y = Math.random() * H;
+      }
+
+      var dx = bhX - x,
+        dy = bhY - y;
+      var d = Math.sqrt(dx * dx + dy * dy) || 1;
+      var nx = dx / d,
+        ny = dy / d;
+      var tangent = Math.random() > 0.5 ? 1 : -1;
+      var drift = rng(0.02, 0.12);
+
+      return {
+        x: x,
+        y: y,
+        vx: nx * drift + -ny * tangent * drift * 0.35,
+        vy: ny * drift + nx * tangent * drift * 0.35,
+        pDx: 0,
+        pDy: 0,
+        sz: sz,
+        bsz: sz,
+        op: op,
+        bop: op,
+        halo: halo,
+        flare: flare,
+        ph: Math.random() * 6.28,
+        sp: rng(0.28, 1.0),
+        col: col,
+        tDir: tangent,
+      };
+    }
+
+    function resetAmbientStar(s, spawnFromEdge) {
+      var fresh = buildAmbientStar(spawnFromEdge);
+      for (var k in fresh) s[k] = fresh[k];
+    }
+
+    function createAmbientStars() {
+      ambientStars = [];
+      for (var i = 0; i < C.AMBIENT_STAR_COUNT; i++) {
+        ambientStars.push(buildAmbientStar(false));
+      }
+    }
+
+    function updateAmbient(dt) {
+      var bhR = C.BLACK_HOLE_RADIUS;
+      var lR = C.LENSING_RADIUS;
+      var aR = C.ATTRACTION_RADIUS;
+      var margin = 36;
+
+      for (var i = 0; i < ambientStars.length; i++) {
+        var s = ambientStars[i];
+        var dx = bhX - s.x,
+          dy = bhY - s.y;
+        var d = Math.sqrt(dx * dx + dy * dy) || 1;
+        var nx = dx / d,
+          ny = dy / d;
+
+        var attr = gravityForce(d, bhR, lR, aR) * 1.8;
+        s.vx += nx * attr * dt;
+        s.vy += ny * attr * dt;
+
+        var tx = -ny * s.tDir,
+          ty = nx * s.tDir;
+        var orbit = C.ORBITAL_STRENGTH * attr * 0.18;
+        if (d < lR * 1.7) orbit *= ss(bhR * 1.2, lR * 1.7, d);
+        if (d < bhR * 5.0) orbit *= ss(bhR * 0.8, bhR * 5.0, d) * 0.22;
+        s.vx += tx * orbit * dt;
+        s.vy += ty * orbit * dt;
+
+        if (d < lR * 1.25) {
+          var spiral = (1 - ss(bhR * 1.1, lR * 1.25, d)) * C.SPIRAL_STRENGTH * 0.0019;
+          s.vx += nx * spiral * dt * 60;
+          s.vy += ny * spiral * dt * 60;
+        }
+
+        if (ptr.active && !isTouch) {
+          var pdx = s.x - ptr.x,
+            pdy = s.y - ptr.y;
+          var pD = Math.sqrt(pdx * pdx + pdy * pdy);
+          if (pD < C.POINTER_RADIUS && pD > 0.5) {
+            var pFall = Math.pow(1 - pD / C.POINTER_RADIUS, C.POINTER_FALLOFF);
+            var pF = C.POINTER_REPULSION * pFall * 0.2;
+            s.pDx += (pdx / pD) * pF;
+            s.pDy += (pdy / pD) * pF;
+          }
+        }
+
+        s.pDx *= C.PARTICLE_DAMPING;
+        s.pDy *= C.PARTICLE_DAMPING;
+        s.pDx += -s.pDx * (C.RETURN_SPRING * 0.75);
+        s.pDy += -s.pDy * (C.RETURN_SPRING * 0.75);
+
+        var pdLen = Math.sqrt(s.pDx * s.pDx + s.pDy * s.pDy);
+        if (pdLen > C.MAX_POINTER_DISPLACEMENT * 0.35) {
+          s.pDx = (s.pDx / pdLen) * C.MAX_POINTER_DISPLACEMENT * 0.35;
+          s.pDy = (s.pDy / pdLen) * C.MAX_POINTER_DISPLACEMENT * 0.35;
+        }
+
+        s.vx *= 0.992;
+        s.vy *= 0.992;
+        s.x += s.vx * dt + s.pDx * 0.05;
+        s.y += s.vy * dt + s.pDy * 0.05;
+
+        if (d < bhR * 0.74) {
+          resetAmbientStar(s, true);
+          continue;
+        }
+
+        if (d < bhR * 2.6) {
+          s.op = ss(bhR * 0.74, bhR * 2.6, d) * s.bop;
+          s.sz = lerp(0.18, s.bsz, s.op / Math.max(0.001, s.bop));
+        } else {
+          s.op += (s.bop - s.op) * 0.06;
+          s.sz += (s.bsz - s.sz) * 0.06;
+        }
+
+        if (s.x < -margin || s.x > W + margin || s.y < -margin || s.y > H + margin) {
+          resetAmbientStar(s, true);
+        }
+      }
+    }
+
+    var constellations = [];
+    var lastSpawnT = 0;
+    var lastSpawnEdge = -1;
+    var lastSpawnKey = '';
+    var nextSpawnDelay = rng(C.SPAWN_DELAY_MIN, C.SPAWN_DELAY_MAX);
+
+    function createConstellation(key, edge) {
+      var tmpl = TEMPLATES[key];
+      var scale = mobile ? rng(42, 72) : tablet ? rng(58, 98) : rng(76, 132);
+      var rot = rng(0, 6.28);
+      var e = edge !== undefined ? edge : (Math.random() * 4) | 0;
+
+      if (e === lastSpawnEdge && Math.random() > 0.2) {
+        e = (e + 1 + ((Math.random() * 3) | 0)) % 4;
+      }
+      lastSpawnEdge = e;
+
+      var sx, sy;
+      var edgeOffset = scale * rng(0.12, 0.3);
+
+      /* Las constelaciones nuevas aparecen ya parcialmente visibles. */
+      switch (e) {
+        case 0:
+          sx = rng(W * 0.04, W * 0.96);
+          sy = -edgeOffset;
+          break;
+        case 1:
+          sx = W + edgeOffset;
+          sy = rng(H * 0.04, H * 0.96);
+          break;
+        case 2:
+          sx = rng(W * 0.04, W * 0.96);
+          sy = H + edgeOffset;
+          break;
+        default:
+          sx = -edgeOffset;
+          sy = rng(H * 0.04, H * 0.96);
+          break;
+      }
+
+      var tdx = bhX - sx,
+        tdy = bhY - sy;
+      var tlen = Math.sqrt(tdx * tdx + tdy * tdy) || 1;
+      var spd = mobile ? rng(0.22, 0.4) : rng(0.26, 0.52);
+      var vx = (tdx / tlen) * spd + rng(-0.05, 0.05);
+      var vy = (tdy / tlen) * spd + rng(-0.05, 0.05);
+
+      var cr = Math.cos(rot),
+        sr = Math.sin(rot);
+      var stars = [];
+
+      for (var n = 0; n < tmpl.nodes.length; n++) {
+        var nd = tmpl.nodes[n];
+        var lx = (nd.x - 0.5) * scale;
+        var ly = (nd.y - 0.5) * scale;
+        var rx = lx * cr - ly * sr;
+        var ry = lx * sr + ly * cr;
+
+        stars.push({
+          id: nd.id,
+          x: sx + rx,
+          y: sy + ry,
+          offX: rx,
+          offY: ry,
+          vx: 0,
+          vy: 0,
+          pDx: 0,
+          pDy: 0,
+          sz: lerp(C.STAR_SIZE_MIN, C.STAR_SIZE_MAX, nd.size),
+          bsz: nd.size,
+          op: 0,
+          col: '#000000',
+          dead: false,
+        });
+      }
+
+      var smap = {};
+      for (var j = 0; j < stars.length; j++) smap[stars[j].id] = stars[j];
+
+      var adj = {};
+      for (var a = 0; a < stars.length; a++) adj[stars[a].id] = [];
+      for (var k = 0; k < tmpl.edges.length; k++) {
+        adj[tmpl.edges[k][0]].push(tmpl.edges[k][1]);
+        adj[tmpl.edges[k][1]].push(tmpl.edges[k][0]);
+      }
+
+      var edges = tmpl.edges.map(function (pair) {
+        return { a: pair[0], b: pair[1] };
+      });
+
+      return {
+        key: key,
+        stars: stars,
+        smap: smap,
+        adj: adj,
+        edges: edges,
+        cx: sx,
+        cy: sy,
+        vx: vx,
+        vy: vy,
+        scale: scale,
+        alive: true,
+        age: 0,
+        tDir: Math.random() > 0.5 ? 1 : -1,
+        phase: rng(0, 6.28),
+      };
+    }
+
+    function initialSpawn() {
+      var cnt = mobile ? C.MOBILE_CONSTELLATION_COUNT : tablet ? C.TABLET_CONSTELLATION_COUNT : C.DESKTOP_CONSTELLATION_COUNT;
+
+      var used = [];
+      var columns = mobile ? 3 : tablet ? 4 : 5;
+      var rows = Math.ceil(cnt / columns);
+      var cellW = W / columns;
+      var cellH = H / rows;
+      var safeDistance = Math.max(C.INITIAL_SAFE_DISTANCE, C.LENSING_RADIUS * 1.22, C.BLACK_HOLE_RADIUS * 5.2);
+
+      for (var i = 0; i < cnt; i++) {
+        var key;
+        do {
+          key = pick(templateKeys);
+        } while (used.indexOf(key) >= 0 && used.length < templateKeys.length);
+        used.push(key);
+
+        var c = createConstellation(key);
+        var column = i % columns;
+        var row = Math.floor(i / columns);
+
+        /* Reparto inicial por toda la pantalla usando una cuadrícula irregular. */
+        var targetX = (column + 0.5) * cellW + rng(-cellW * 0.24, cellW * 0.24);
+        var targetY = (row + 0.5) * cellH + rng(-cellH * 0.24, cellH * 0.24);
+
+        targetX = Math.max(54, Math.min(W - 54, targetX));
+        targetY = Math.max(48, Math.min(H - 48, targetY));
+
+        /* Ninguna constelación inicial nace demasiado cerca del agujero. */
+        var holeDx = targetX - bhX;
+        var holeDy = targetY - bhY;
+        var holeDistance = Math.sqrt(holeDx * holeDx + holeDy * holeDy) || 1;
+
+        if (holeDistance < safeDistance) {
+          var push = safeDistance - holeDistance + rng(30, 100);
+          targetX += (holeDx / holeDistance) * push;
+          targetY += (holeDy / holeDistance) * push;
+          targetX = Math.max(54, Math.min(W - 54, targetX));
+          targetY = Math.max(48, Math.min(H - 48, targetY));
+        }
+
+        var moveX = targetX - c.cx;
+        var moveY = targetY - c.cy;
+
+        for (var j = 0; j < c.stars.length; j++) {
+          c.stars[j].x += moveX;
+          c.stars[j].y += moveY;
+          c.stars[j].op = rng(0.82, 0.96);
+        }
+
+        c.cx += moveX;
+        c.cy += moveY;
+
+        /* Movimiento inicial lento para que la pantalla no se vacíe enseguida. */
+        var toHoleX = bhX - c.cx;
+        var toHoleY = bhY - c.cy;
+        var toHoleLength = Math.sqrt(toHoleX * toHoleX + toHoleY * toHoleY) || 1;
+        var baseSpeed = mobile ? rng(0.055, 0.11) : rng(0.06, 0.14);
+
+        c.vx = (toHoleX / toHoleLength) * baseSpeed + rng(-0.025, 0.025);
+        c.vy = (toHoleY / toHoleLength) * baseSpeed + rng(-0.025, 0.025);
+
+        constellations.push(c);
+      }
+    }
+
+    initialSpawn();
+
+    function gravityForce(distToBh, bhR, lR, aR) {
+      var radial = C.ATTRACTION_STRENGTH;
+      if (distToBh < aR) {
+        var tA = 1 - distToBh / aR;
+        radial += tA * tA * tA * 0.0022;
+      }
+      if (distToBh < lR * 2.2) {
+        var near = 1 - ss(bhR * 1.2, lR * 2.2, distToBh);
+        radial += near * near * C.CONSUMPTION_PULL * 0.0018;
+      }
+      if (distToBh < bhR * 6) {
+        var consume = 1 - ss(bhR * 0.9, bhR * 6, distToBh);
+        radial += consume * consume * C.CONSUMPTION_PULL * 0.0045;
+      }
+      return radial;
+    }
+
+    function updateConstellation(c, dt) {
+      if (!c.alive) return;
+
+      var bhR = C.BLACK_HOLE_RADIUS;
+      var lR = C.LENSING_RADIUS;
+      var aR = C.ATTRACTION_RADIUS;
+      c.age += dt;
+
+      var cdx = bhX - c.cx,
+        cdy = bhY - c.cy;
+      var cD = Math.sqrt(cdx * cdx + cdy * cdy) || 1;
+      var cnx = cdx / cD,
+        cny = cdy / cD;
+
+      if (cD > bhR * 0.15) {
+        var attr = gravityForce(cD, bhR, lR, aR);
+        c.vx += cnx * attr * dt;
+        c.vy += cny * attr * dt;
+
+        var tx = -cny * c.tDir,
+          ty = cnx * c.tDir;
+        var orbF = C.ORBITAL_STRENGTH * attr;
+        if (cD < lR * 2) {
+          var orbitFade = ss(bhR * 1.8, lR * 2, cD);
+          orbF *= orbitFade;
+        }
+        if (cD < bhR * 4.5) {
+          orbF *= ss(bhR * 0.8, bhR * 4.5, cD) * 0.35;
+        }
+
+        c.vx += tx * orbF * dt;
+        c.vy += ty * orbF * dt;
+
+        if (cD < lR * 1.6) {
+          var spiral = (1 - ss(bhR * 1.5, lR * 1.6, cD)) * C.SPIRAL_STRENGTH * 0.0009;
+          c.vx += cnx * spiral * dt * 60;
+          c.vy += cny * spiral * dt * 60;
+        }
+
+        c.vx *= 0.996;
+        c.vy *= 0.996;
+
+        var spd = Math.sqrt(c.vx * c.vx + c.vy * c.vy);
+        if (spd > 3.6) {
+          c.vx = (c.vx / spd) * 3.6;
+          c.vy = (c.vy / spd) * 3.6;
+        }
+      }
+
+      c.cx += c.vx * dt;
+      c.cy += c.vy * dt;
+
+      var allDead = true;
+
+      for (var i = 0; i < c.stars.length; i++) {
+        var s = c.stars[i];
+        if (s.dead) continue;
+        allDead = false;
+
+        var tX = c.cx + s.offX;
+        var tY = c.cy + s.offY;
+        var sdx = bhX - tX,
+          sdy = bhY - tY;
+        var sD = Math.sqrt(sdx * sdx + sdy * sdy) || 1;
+        var snx = sdx / sD,
+          sny = sdy / sD;
+
+        if (sD > bhR * 0.12) {
+          var sAttr = gravityForce(sD, bhR, lR, aR) * 2.8;
+          s.vx += snx * sAttr * dt;
+          s.vy += sny * sAttr * dt;
+
+          var stx = -sny * c.tDir,
+            sty = snx * c.tDir;
+          var sOrb = C.ORBITAL_STRENGTH * sAttr * 0.55;
+          if (sD < lR * 1.8) sOrb *= ss(bhR * 1.6, lR * 1.8, sD);
+          if (sD < bhR * 5) sOrb *= ss(bhR * 0.7, bhR * 5, sD) * 0.25;
+          s.vx += stx * sOrb * dt;
+          s.vy += sty * sOrb * dt;
+
+          if (sD < lR * 1.4) {
+            var sSpiral = (1 - ss(bhR * 1.2, lR * 1.4, sD)) * C.SPIRAL_STRENGTH * 0.0016;
+            s.vx += snx * sSpiral * dt * 60;
+            s.vy += sny * sSpiral * dt * 60;
+          }
+
+          if (sD < lR * 2.5) {
+            var stretch = (1 - ss(bhR, lR * 2.5, sD)) * 0.55;
+            s.offX += snx * stretch * 0.22 * dt;
+            s.offY += sny * stretch * 0.22 * dt;
+          }
+        }
+
+        tX += s.vx;
+        tY += s.vy;
+
+        if (ptr.active && !isTouch) {
+          var pdx = tX - ptr.x,
+            pdy = tY - ptr.y;
+          var pD = Math.sqrt(pdx * pdx + pdy * pdy);
+          if (pD < C.POINTER_RADIUS && pD > 0.5) {
+            var pFall = Math.pow(1 - pD / C.POINTER_RADIUS, C.POINTER_FALLOFF);
+            var pF = C.POINTER_REPULSION * pFall;
+            s.pDx += (pdx / pD) * pF;
+            s.pDy += (pdy / pD) * pF;
+
+            var neighbors = c.adj[s.id];
+            if (neighbors) {
+              for (var ni = 0; ni < neighbors.length; ni++) {
+                var ns = c.smap[neighbors[ni]];
+                if (ns && !ns.dead) {
+                  ns.pDx += (pdx / pD) * pF * C.LINKED_STAR_INFLUENCE;
+                  ns.pDy += (pdy / pD) * pF * C.LINKED_STAR_INFLUENCE;
+                }
+              }
+            }
+          }
+        }
+
+        s.pDx *= C.PARTICLE_DAMPING;
+        s.pDy *= C.PARTICLE_DAMPING;
+        s.pDx += -s.pDx * C.RETURN_SPRING;
+        s.pDy += -s.pDy * C.RETURN_SPRING;
+
+        var pdLen = Math.sqrt(s.pDx * s.pDx + s.pDy * s.pDy);
+        if (pdLen > C.MAX_POINTER_DISPLACEMENT) {
+          s.pDx = (s.pDx / pdLen) * C.MAX_POINTER_DISPLACEMENT;
+          s.pDy = (s.pDy / pdLen) * C.MAX_POINTER_DISPLACEMENT;
+        }
+
+        s.vx *= 0.962;
+        s.vy *= 0.962;
+
+        s.x = tX + s.pDx;
+        s.y = tY + s.pDy;
+
+        var fD = dist(s.x, s.y, bhX, bhY);
+        if (fD < bhR * 0.72) {
+          s.dead = true;
+          s.op = 0;
+        } else if (fD < bhR * 2.4) {
+          s.op = ss(bhR * 0.72, bhR * 2.4, fD) * 0.96;
+          s.sz = lerp(0.2, lerp(C.STAR_SIZE_MIN, C.STAR_SIZE_MAX, s.bsz), s.op);
+        } else {
+          s.op = Math.min(0.96, s.op + 0.024);
+        }
+      }
+
+      if (allDead) c.alive = false;
+    }
+
+    function getTargetConstellationCount() {
+      return mobile ? C.MOBILE_CONSTELLATION_COUNT : tablet ? C.TABLET_CONSTELLATION_COUNT : C.DESKTOP_CONSTELLATION_COUNT;
+    }
+
+    function getLivingStarRatio(c) {
+      var living = 0;
+
+      for (var i = 0; i < c.stars.length; i++) {
+        if (!c.stars[i].dead) living++;
+      }
+
+      return c.stars.length ? living / c.stars.length : 0;
+    }
+
+    function isVisuallyAvailable(c) {
+      if (!c.alive || getLivingStarRatio(c) < 0.48) return false;
+
+      var margin = c.scale * 0.6;
+      var onScreen = c.cx > -margin && c.cx < W + margin && c.cy > -margin && c.cy < H + margin;
+
+      if (!onScreen) return false;
+
+      /* Cuando ya está entrando en la zona de consumo deja de contar como
+       constelación disponible y su reemplazo nace antes de que desaparezca. */
+      var holeDistance = dist(c.cx, c.cy, bhX, bhY);
+      return holeDistance > C.LENSING_RADIUS * 0.96;
+    }
+
+    function spawnReplacementConstellation() {
+      var key;
+
+      do {
+        key = pick(templateKeys);
+      } while (key === lastSpawnKey && templateKeys.length > 1);
+
+      lastSpawnKey = key;
+      constellations.push(createConstellation(key));
+    }
+
+    function manageSpawning(now) {
+      for (var i = constellations.length - 1; i >= 0; i--) {
+        if (!constellations[i].alive) {
+          constellations.splice(i, 1);
+        }
+      }
+
+      var target = getTargetConstellationCount();
+      var maximum = C.MAX_ACTIVE_CONSTELLATIONS;
+      var bufferTarget = Math.min(maximum, target + C.SPAWN_BUFFER_COUNT);
+      var visibleCount = 0;
+
+      for (var j = 0; j < constellations.length; j++) {
+        if (isVisuallyAvailable(constellations[j])) {
+          visibleCount++;
+        }
+      }
+
+      /* Corrige inmediatamente una pantalla vacía o poco poblada.
+       Se pueden crear varias constelaciones en la misma actualización. */
+      if (visibleCount < target && constellations.length < maximum) {
+        var deficit = target - visibleCount;
+        var freeSlots = maximum - constellations.length;
+        var burst = Math.min(deficit, freeSlots, C.SPAWN_BURST_LIMIT);
+
+        for (var b = 0; b < burst; b++) {
+          spawnReplacementConstellation();
+        }
+
+        if (burst > 0) {
+          lastSpawnT = now;
+          nextSpawnDelay = rng(C.SPAWN_DELAY_MIN, C.SPAWN_DELAY_MAX);
+          return;
+        }
+      }
+
+      /* Mantiene constelaciones de reserva entrando por los bordes antes de
+       que las actuales terminen de ser absorbidas. */
+      if (constellations.length < bufferTarget && now - lastSpawnT > nextSpawnDelay) {
+        spawnReplacementConstellation();
+        lastSpawnT = now;
+        nextSpawnDelay = rng(C.SPAWN_DELAY_MIN, C.SPAWN_DELAY_MAX);
+      }
+    }
+
+    function renderAccretion(time) {
+      var size = accWorldSize;
+      var cx = size,
+        cy = size;
+      var bhR = C.BLACK_HOLE_RADIUS;
+      var ac = accCtx;
+
+      ac.setTransform(1, 0, 0, 1, 0, 0);
+      ac.clearRect(0, 0, accCanvas.width, accCanvas.height);
+      ac.setTransform(accRenderScale, 0, 0, accRenderScale, 0, 0);
+
+      var sets = mobile ? 4 : tablet ? 6 : 7;
+      var strokes = mobile ? 10 : tablet ? 16 : 22;
+
+      for (var si = 0; si < sets; si++) {
+        var tilt = -0.22 + si * 0.06 + fbm(si * 17, 2) * 0.14;
+        var bR = bhR * (1.15 + si * 0.42);
+        var ecc = 0.48 + fbm(si * 23, 2) * 0.24;
+        var phase = time * (0.065 + si * 0.016) + si * 1.15;
+
+        for (var st = 0; st < strokes; st++) {
+          var t = st / strokes;
+          var startA = phase + t * 6.28;
+          var arcL = Math.PI * (0.28 + fbm(si * 7 + st * 3, 2) * 0.62 + 0.35);
+          ac.beginPath();
+          var pts = mobile ? 14 : tablet ? 20 : 26;
+
+          for (var p = 0; p <= pts; p++) {
+            var pt = p / pts;
+            var a = startA + pt * arcL;
+            var flow = fbm(si * 11 + st * 5 + pt * 3 + time * 2.2, 2) * 0.18;
+            var rx = bR * (1 + ecc * 0.5 * Math.cos(a - phase + flow));
+            var ry = bR * (0.22 + (0.11 * si) / sets);
+            rx += fbm(si * 11 + st * 5 + p * 2 + time * 2.0, 2) * 12;
+            ry += fbm(si * 13 + st * 7 + p * 3 + time * 1.5, 2) * 6;
+
+            var lx = Math.cos(a) * rx;
+            var ly = Math.sin(a) * ry;
+            var cT = Math.cos(tilt),
+              sT = Math.sin(tilt);
+            var fx = lx * cT - ly * sT;
+            var fy = lx * sT + ly * cT;
+
+            if (p === 0) ac.moveTo(cx + fx, cy + fy);
+            else ac.lineTo(cx + fx, cy + fy);
+          }
+
+          var w = 0.6 + fbm(si * 9 + st * 11, 2) * 2.8 + (1 - t) * 1.1;
+          var op = 0.028 + fbm(si * 3 + st * 13, 2) * 0.042;
+          var midA = startA + arcL * 0.5;
+          op *= 0.55 + 0.85 * Math.cos(midA + 0.5);
+          op *= 1 - si * 0.04;
+
+          var cols = ['rgba(2,4,6,', 'rgba(22,22,22,', 'rgba(38,38,38,', 'rgba(52,52,52,', 'rgba(72,72,72,', 'rgba(46,46,46,'];
+          ac.strokeStyle = cols[(si + st) % cols.length] + Math.max(0, op) + ')';
+          ac.lineWidth = w;
+          ac.lineCap = 'round';
+          ac.stroke();
+        }
+      }
+
+      var wisps = mobile ? 6 : tablet ? 11 : 15;
+      for (var wi = 0; wi < wisps; wi++) {
+        var wA = fbm(wi * 19 + time * 0.32, 3) * 6.28;
+        var wR = bhR * (1.0 + wi * 0.18 + fbm(wi * 7, 2) * 0.45);
+        var wL = Math.PI * (0.45 + fbm(wi * 11, 2) * 0.75);
+        ac.beginPath();
+        var wPts = mobile ? 10 : tablet ? 15 : 20;
+
+        for (var wp = 0; wp <= wPts; wp++) {
+          var wt = wp / wPts;
+          var wa = wA + wt * wL;
+          var wr = wR + fbm(wi * 13 + wp * 4 + time * 1.2, 2) * 16;
+          var wry = wr * (0.16 + 0.09 * Math.sin(wa * 2 + time * 0.3));
+          var wTilt = -0.08 + wi * 0.022;
+          var wcT = Math.cos(wTilt),
+            wsT = Math.sin(wTilt);
+          var wrx2 = Math.cos(wa) * wr;
+          var wry2 = Math.sin(wa) * wry;
+          var wfx = wrx2 * wcT - wry2 * wsT;
+          var wfy = wrx2 * wsT + wry2 * wcT;
+          if (wp === 0) ac.moveTo(cx + wfx, cy + wfy);
+          else ac.lineTo(cx + wfx, cy + wfy);
+        }
+
+        var wOp = 0.032 + fbm(wi * 17, 2) * 0.038;
+        ac.strokeStyle = 'rgba(18,18,18,' + wOp + ')';
+        ac.lineWidth = 1.0 + fbm(wi * 21, 2) * 2.6;
+        ac.lineCap = 'round';
+        ac.stroke();
+      }
+
+      var glow = ac.createRadialGradient(cx, cy, bhR * 0.4, cx, cy, bhR * 2.8);
+      glow.addColorStop(0, 'rgba(2,4,6,0.22)');
+      glow.addColorStop(0.35, 'rgba(38,38,38,0.12)');
+      glow.addColorStop(0.7, 'rgba(92,92,92,0.05)');
+      glow.addColorStop(1, 'rgba(245,248,249,0)');
+      ac.fillStyle = glow;
+      ac.fillRect(0, 0, size * 2, size * 2);
+    }
+
+    function drawBlackHole(time) {
+      var bhR = C.BLACK_HOLE_RADIUS;
+      var lR = C.LENSING_RADIUS;
+
+      ctx.save();
+      var fldN = mobile ? 10 : tablet ? 17 : 22;
+      for (var fl = 0; fl < fldN; fl++) {
+        var bA = (fl / fldN) * 6.28 + time * 0.015;
+        var sR = lR * (0.55 + N(fl * 17) * 0.14);
+        var eR = bhR * 1.35;
+        var st = mobile ? 10 : tablet ? 16 : 19;
+        ctx.beginPath();
+
+        for (var s = 0; s <= st; s++) {
+          var t = s / st;
+          var r = lerp(sR, eR, t * t * t);
+          var aw = bA + t * t * 1.6 * (fl % 2 === 0 ? 1 : -1);
+          aw += N(fl * 7 + s * 3 + time * 0.45) * 0.12 * t;
+          var fx = bhX + Math.cos(aw) * r;
+          var fy = bhY + Math.sin(aw) * r;
+          if (s === 0) ctx.moveTo(fx, fy);
+          else ctx.lineTo(fx, fy);
+        }
+
+        ctx.strokeStyle = 'rgba(34,34,34,' + (0.035 + N(fl * 11 + time * 0.18) * 0.022) + ')';
+        ctx.lineWidth = 0.45 + N(fl * 5) * 0.55;
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      accFrame++;
+      if (accFrame % C.ACCRETION_UPDATE_INTERVAL === 0) renderAccretion(time);
+
+      var acSize = accWorldSize;
+      ctx.drawImage(accCanvas, 0, 0, accCanvas.width, accCanvas.height, bhX - acSize, bhY - acSize, acSize * 2, acSize * 2);
+
+      ctx.save();
+      var prN = mobile ? 36 : tablet ? 56 : 68;
+      var rings = [
+        { r: bhR * 1.02, w: 2.2, op: 0.26 },
+        { r: bhR * 1.06, w: 1.4, op: 0.17 },
+        { r: bhR * 1.12, w: 1.0, op: 0.1 },
+      ];
+
+      for (var ri = 0; ri < rings.length; ri++) {
+        var rg = rings[ri];
+        ctx.beginPath();
+        for (var ps = 0; ps <= prN; ps++) {
+          var pA = (ps / prN) * 6.28;
+          var pw = N(ps * 3 + ri * 20 + time * 0.55) * 2.8;
+          var px = bhX + Math.cos(pA) * (rg.r + pw);
+          var py = bhY + Math.sin(pA) * (rg.r + pw);
+          if (ps === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = 'rgba(70,70,70,' + rg.op * (0.82 + 0.28 * Math.sin(time * 0.28 + ri * 1.4)) + ')';
+        ctx.lineWidth = rg.w;
+        ctx.stroke();
+      }
+
+      ctx.beginPath();
+      var bS = -0.35 + time * 0.04;
+      for (var ba = 0; ba <= 32; ba++) {
+        var bt = ba / 32;
+        var bA = lerp(bS, bS + Math.PI * 0.82, bt);
+        var bR2 = bhR * 1.04 + N(ba * 2 + time * 0.75) * 2.0;
+        var bx = bhX + Math.cos(bA) * bR2;
+        var by = bhY + Math.sin(bA) * bR2;
+        if (ba === 0) ctx.moveTo(bx, by);
+        else ctx.lineTo(bx, by);
+      }
+      ctx.strokeStyle = 'rgba(105,105,105,0.32)';
+      ctx.lineWidth = 2.6;
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.save();
+      ctx.beginPath();
+      var ehN = mobile ? 40 : 80;
+      for (var eh = 0; eh <= ehN; eh++) {
+        var eA = (eh / ehN) * 6.28;
+        var ew = N(eh * 5 + time * 0.18) * 1.8;
+        var er = bhR + ew;
+        if (eh === 0) ctx.moveTo(bhX + Math.cos(eA) * er, bhY + Math.sin(eA) * er);
+        else ctx.lineTo(bhX + Math.cos(eA) * er, bhY + Math.sin(eA) * er);
+      }
+      ctx.closePath();
+      ctx.fillStyle = '#020406';
+      ctx.fill();
+
+      var ig = ctx.createRadialGradient(bhX - bhR * 0.14, bhY - bhR * 0.1, bhR * 0.12, bhX, bhY, bhR * 1.15);
+      ig.addColorStop(0, 'rgba(2,4,6,1)');
+      ig.addColorStop(0.55, 'rgba(2,4,6,0.98)');
+      ig.addColorStop(1, 'rgba(5,7,9,0.5)');
+      ctx.fillStyle = ig;
+      ctx.fill();
+      ctx.restore();
+
+      ctx.save();
+      var frN = mobile ? 4 : 9;
+      for (var f = 0; f < frN; f++) {
+        var fA = time * 0.06 + f * 0.58 + N(f * 19) * 0.45;
+        var fR = bhR * (0.62 + f * 0.11);
+        ctx.beginPath();
+        var fPts = mobile ? 14 : 28;
+        for (var fp = 0; fp <= fPts; fp++) {
+          var ft = fp / fPts;
+          var fa = fA + ft * Math.PI * (0.38 + N(f * 5) * 0.28);
+          var frx = fR * (1.45 + N(f * 7 + fp + time * 0.28) * 0.35);
+          var fry = fR * (0.18 + (0.07 * f) / frN);
+          var fTilt = 0.12 + f * 0.032;
+          var fcT = Math.cos(fTilt),
+            fsT = Math.sin(fTilt);
+          var fxx = Math.cos(fa) * frx,
+            fyy = Math.sin(fa) * fry;
+          var rfx = fxx * fcT - fyy * fsT;
+          var rfy = fxx * fsT + fyy * fcT;
+          if (fp === 0) ctx.moveTo(bhX + rfx, bhY + rfy);
+          else ctx.lineTo(bhX + rfx, bhY + rfy);
+        }
+        ctx.strokeStyle = 'rgba(2,4,6,' + (0.05 + N(f * 13) * 0.035) + ')';
+        ctx.lineWidth = 1.2 + N(f * 9) * 2.4;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawConstellations(time) {
+      var bhR = C.BLACK_HOLE_RADIUS;
+
+      for (var ci = 0; ci < constellations.length; ci++) {
+        var c = constellations[ci];
+        if (!c.alive) continue;
+
+        for (var ei = 0; ei < c.edges.length; ei++) {
+          var edge = c.edges[ei];
+          var sa = c.smap[edge.a],
+            sb = c.smap[edge.b];
+          if (!sa || !sb || sa.dead || sb.dead) continue;
+          if (sa.op < 0.015 && sb.op < 0.015) continue;
+
+          var lOp = Math.min(sa.op, sb.op) * C.CONSTELLATION_LINE_OPACITY;
+          if (lOp < 0.006) continue;
+
+          var mX = (sa.x + sb.x) * 0.5,
+            mY = (sa.y + sb.y) * 0.5;
+          var mD = dist(mX, mY, bhX, bhY);
+
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(0,0,0,' + Math.min(0.95, lOp * 1.35) + ')';
+          ctx.lineWidth = C.CONSTELLATION_LINE_WIDTH;
+
+          if (mD < C.LENSING_RADIUS * 1.8) {
+            var segs = mobile ? 10 : tablet ? 14 : 16;
+            for (var sg = 0; sg <= segs; sg++) {
+              var st2 = sg / segs;
+              var ix = lerp(sa.x, sb.x, st2);
+              var iy = lerp(sa.y, sb.y, st2);
+              var lp = lens(ix, iy, time);
+              if (dist(lp.x, lp.y, bhX, bhY) < bhR * 0.8) break;
+              if (sg === 0) ctx.moveTo(lp.x, lp.y);
+              else ctx.lineTo(lp.x, lp.y);
+            }
+          } else {
+            ctx.moveTo(sa.x, sa.y);
+            ctx.lineTo(sb.x, sb.y);
+          }
+          ctx.stroke();
+        }
+
+        for (var si = 0; si < c.stars.length; si++) {
+          var star = c.stars[si];
+          if (star.dead || star.op < 0.006) continue;
+
+          var rp = lens(star.x, star.y, time);
+          if (dist(rp.x, rp.y, bhX, bhY) < bhR * 0.78) continue;
+
+          var drawSz = star.sz * (rp.s || 1);
+          ctx.save();
+          ctx.globalAlpha = star.op;
+          ctx.fillStyle = star.col;
+          ctx.beginPath();
+          ctx.arc(rp.x, rp.y, drawSz, 0, 6.28);
+          ctx.fill();
+
+          if (star.bsz > 0.65 && drawSz > 2) {
+            ctx.globalAlpha = star.op * C.STAR_GLOW_OPACITY;
+            ctx.beginPath();
+            ctx.arc(rp.x, rp.y, drawSz * 2.4, 0, 6.28);
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+      }
+    }
+
+    function drawAmbient(time) {
+      var bhR = C.BLACK_HOLE_RADIUS;
+      var bhHideRadiusSq = bhR * 1.05 * bhR * 1.05;
+      var lensRadius = C.LENSING_RADIUS * 1.6;
+      var lensRadiusSq = lensRadius * lensRadius;
+
+      ctx.fillStyle = '#000000';
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 0.65;
+
+      for (var i = 0; i < ambientStars.length; i++) {
+        var s = ambientStars[i];
+        var dx = s.x - bhX;
+        var dy = s.y - bhY;
+        var distanceSq = dx * dx + dy * dy;
+
+        if (distanceSq < bhHideRadiusSq) continue;
+
+        var rp = distanceSq < lensRadiusSq ? lens(s.x, s.y, time) : s;
+        var twinkle = 0.9 + 0.1 * Math.sin(time * s.sp + s.ph);
+        var op = s.op * twinkle;
+
+        /* La mayoría de estrellas son puntos simples: fillRect es mucho más barato. */
+        ctx.globalAlpha = op;
+        if (s.sz < 1.05) {
+          var pointSize = Math.max(0.72, s.sz * 1.25);
+          ctx.fillRect(
+            rp.x - pointSize * 0.5,
+            rp.y - pointSize * 0.5,
+            pointSize,
+            pointSize,
+          );
+        } else {
+          ctx.beginPath();
+          ctx.arc(rp.x, rp.y, s.sz, 0, 6.28);
+          ctx.fill();
+        }
+
+        /* Halos y destellos solo para las estrellas realmente grandes. */
+        if (s.halo > 0.024 && s.sz > 1.18) {
+          ctx.globalAlpha = s.halo * twinkle;
+          ctx.beginPath();
+          ctx.arc(rp.x, rp.y, s.sz * 3.1, 0, 6.28);
+          ctx.fill();
+        }
+
+        if (s.flare > 0.46 && s.sz > 1.28) {
+          ctx.globalAlpha = op * s.flare * 0.44;
+          var flareLen = s.sz * 3.3;
+          ctx.beginPath();
+          ctx.moveTo(rp.x - flareLen, rp.y);
+          ctx.lineTo(rp.x + flareLen, rp.y);
+          ctx.moveTo(rp.x, rp.y - flareLen);
+          ctx.lineTo(rp.x, rp.y + flareLen);
+          ctx.stroke();
+        }
+      }
+
+      ctx.globalAlpha = 1;
+    }
+
+    var lastT = 0,
+      aT = 0,
+      hidden = false;
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.addEventListener('visibilitychange', function () {
+      hidden = document.hidden;
+    });
+
+    function frame(ts) {
+      if (hidden) {
+        lastT = ts;
+        requestAnimationFrame(frame);
+        return;
+      }
+
+      var dt = Math.min(ts - lastT, 50);
+      lastT = ts;
+      if (!reduced) aT += dt * 0.001;
+
+      ctx.globalAlpha = 1;
+      ctx.drawImage(bgCanvas, 0, 0, bgCanvas.width, bgCanvas.height, 0, 0, W, H);
+
+      if (!reduced) {
+        for (var i = 0; i < constellations.length; i++) {
+          updateConstellation(constellations[i], dt * 0.06);
+        }
+        manageSpawning(Date.now());
+        updateAmbient(dt * 0.06);
+      }
+
+      drawAmbient(aT);
+      drawConstellations(aT);
+      drawBlackHole(aT);
+
+      requestAnimationFrame(frame);
+    }
+
+    requestAnimationFrame(frame);
+  })();
+</script>
