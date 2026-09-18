@@ -1,0 +1,1401 @@
+<!-- =========================================================
+     BISKY · HERO
+========================================================= -->
+
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"></script>
+
+<style>
+  #bisky-hero,
+  #bisky-hero *,
+  #bisky-hero *::before,
+  #bisky-hero *::after {
+    box-sizing: border-box;
+  }
+
+  #bisky-hero {
+    /* Altura real de la navbar fija */
+    --bisky-navbar-height: 100px;
+
+    /* Altura adicional del hero y, por tanto, de la rejilla */
+    --bisky-extra-grid-height: 300px;
+
+    --bisky-bg: #f5f6f6;
+    --bisky-ink: #171a1e;
+    --bisky-muted: #666c72;
+    --bisky-blue: #154873;
+    --bisky-red: #e3262e;
+
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh + var(--bisky-extra-grid-height));
+    min-height: calc(100svh + var(--bisky-extra-grid-height));
+    overflow: hidden;
+    isolation: isolate;
+
+    color: var(--bisky-ink);
+
+    background: radial-gradient(circle at 73% 78%, rgba(126, 191, 226, 0.13), transparent 25%), radial-gradient(circle at 91% 78%, rgba(240, 166, 130, 0.09), transparent 25%), radial-gradient(circle at 57% 91%, rgba(193, 150, 190, 0.08), transparent 30%), var(--bisky-bg);
+
+    font-family: Arial, Helvetica, sans-serif;
+    touch-action: pan-y;
+
+    /* Evita seleccionar o resaltar el texto al arrastrar */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  #bisky-hero a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* =========================================================
+     REJILLA
+  ========================================================= */
+
+  #bisky-hero .bisky-hero-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  #bisky-hero .bisky-hero-grid::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    background: radial-gradient(circle at 17% 28%, rgba(227, 38, 46, 0.82) 0 2px, transparent 3px), radial-gradient(circle at 85% 18%, rgba(21, 72, 115, 0.58) 0 2px, transparent 3px);
+
+    pointer-events: none;
+  }
+
+  #bisky-hero .bisky-hero-grid-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+  }
+
+  #bisky-hero.bisky-grid-dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  /* =========================================================
+     CONTENEDOR
+  ========================================================= */
+
+  #bisky-hero .bisky-hero-inner {
+    position: relative;
+    z-index: 1;
+    min-height: calc(100vh + var(--bisky-extra-grid-height));
+    min-height: calc(100svh + var(--bisky-extra-grid-height));
+  }
+
+  #bisky-hero .bisky-hero-inner::after {
+    content: '';
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -32%;
+    z-index: 1;
+
+    width: 22%;
+
+    background: linear-gradient(90deg, transparent, rgba(91, 175, 226, 0.015), rgba(91, 175, 226, 0.04), transparent);
+
+    transform: skewX(-13deg);
+    animation: bisky-hero-scan 13s ease-in-out infinite;
+
+    pointer-events: none;
+  }
+
+  @keyframes bisky-hero-scan {
+    0%,
+    20% {
+      left: -32%;
+      opacity: 0;
+    }
+
+    32% {
+      opacity: 1;
+    }
+
+    70% {
+      opacity: 0.55;
+    }
+
+    88%,
+    100% {
+      left: 114%;
+      opacity: 0;
+    }
+  }
+
+  /* =========================================================
+     TEXTO
+  ========================================================= */
+
+  #bisky-hero .bisky-hero-copy {
+    position: relative;
+    z-index: 8;
+
+    width: min(1120px, 88%);
+
+    padding: calc(var(--bisky-navbar-height) + clamp(58px, 9vh, 110px)) 0 170px clamp(20px, 4vw, 68px);
+
+    pointer-events: none;
+  }
+
+  #bisky-hero .bisky-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    margin: 0;
+
+    color: var(--bisky-muted);
+
+    font-size: 9px;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+  }
+
+  #bisky-hero .bisky-hero-eyebrow::before {
+    content: '';
+
+    width: 28px;
+    height: 1px;
+
+    background: currentColor;
+  }
+
+  #bisky-hero .bisky-hero-title {
+    margin: 24px 0 0;
+
+    font-size: clamp(64px, 9.5vw, 164px);
+    font-weight: 400;
+    line-height: 0.79;
+    letter-spacing: -0.078em;
+  }
+
+  #bisky-hero .bisky-hero-title-line {
+    display: block;
+  }
+
+  #bisky-hero .bisky-hero-title-shift {
+    margin-left: clamp(0px, 8vw, 150px);
+  }
+
+  #bisky-hero .bisky-hero-title-outline {
+    color: transparent;
+
+    -webkit-text-stroke: 1px rgba(23, 26, 30, 0.44);
+  }
+
+  #bisky-hero .bisky-hero-description {
+    max-width: 490px;
+    margin: 38px 0 0;
+
+    color: #3b4147;
+
+    font-size: clamp(15px, 1.35vw, 20px);
+    line-height: 1.5;
+  }
+
+  /* =========================================================
+     MODELO 3D
+  ========================================================= */
+
+  #bisky-hero .bisky-hero-model-wrap {
+    position: absolute;
+    z-index: 3;
+
+    top: var(--bisky-navbar-height);
+    right: -4%;
+    bottom: 0;
+
+    width: 64%;
+
+    pointer-events: auto;
+  }
+
+  #bisky-hero model-viewer {
+    width: 100%;
+    height: 100%;
+
+    background: transparent;
+    outline: none;
+
+    --poster-color: transparent;
+  }
+
+  #bisky-hero model-viewer::part(default-progress-bar) {
+    height: 2px;
+    background: var(--bisky-blue);
+  }
+
+  /* =========================================================
+     ESTADO DEL MODELO
+  ========================================================= */
+
+  #bisky-hero .bisky-hero-status {
+    position: absolute;
+    z-index: 12;
+
+    top: calc(var(--bisky-navbar-height) + 24px);
+    right: clamp(20px, 4vw, 68px);
+
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    color: var(--bisky-muted);
+
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+
+    pointer-events: none;
+  }
+
+  #bisky-hero .bisky-hero-status-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #bd9b55;
+    box-shadow: 0 0 0 5px rgba(189, 155, 85, 0.11);
+  }
+
+  #bisky-hero.bisky-hero-loaded .bisky-hero-status-dot {
+    background: #2b8b67;
+    box-shadow: 0 0 0 5px rgba(43, 139, 103, 0.11);
+  }
+
+  #bisky-hero.bisky-hero-error .bisky-hero-status-dot {
+    background: #bd3e45;
+    box-shadow: 0 0 0 5px rgba(189, 62, 69, 0.11);
+  }
+
+  /* =========================================================
+     PARTE INFERIOR
+  ========================================================= */
+
+  #bisky-hero .bisky-hero-bottom {
+    position: absolute;
+    z-index: 11;
+
+    right: clamp(20px, 4vw, 68px);
+    bottom: 38px;
+    left: clamp(20px, 4vw, 68px);
+
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+
+    pointer-events: none;
+  }
+
+  #bisky-hero .bisky-hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    width: fit-content;
+
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--bisky-ink);
+
+    font-size: 13px;
+
+    pointer-events: auto;
+
+    transition:
+      gap 180ms ease,
+      opacity 180ms ease;
+  }
+
+  #bisky-hero .bisky-hero-cta:hover {
+    gap: 17px;
+    opacity: 0.68;
+  }
+
+  #bisky-hero .bisky-hero-cta-arrow {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  #bisky-hero .bisky-hero-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 24px;
+
+    justify-self: end;
+
+    padding: 14px 19px;
+
+    border: 1px solid rgba(23, 26, 30, 0.1);
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.68);
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    pointer-events: auto;
+  }
+
+  #bisky-hero .bisky-hero-meta-item span,
+  #bisky-hero .bisky-hero-meta-item strong {
+    display: block;
+  }
+
+  #bisky-hero .bisky-hero-meta-item span {
+    color: var(--bisky-muted);
+
+    font-size: 7px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  #bisky-hero .bisky-hero-meta-item strong {
+    margin-top: 5px;
+
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  /* =========================================================
+     INDICACIÓN
+  ========================================================= */
+
+  #bisky-hero .bisky-hero-drag-note {
+    position: absolute;
+    z-index: 11;
+
+    top: 50%;
+    right: clamp(20px, 3vw, 48px);
+
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    color: var(--bisky-muted);
+
+    font-size: 8px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+
+    transform: translateY(-50%) rotate(90deg);
+
+    transform-origin: right center;
+
+    pointer-events: none;
+  }
+
+  #bisky-hero .bisky-hero-drag-note::before {
+    content: '↔';
+
+    display: grid;
+    place-items: center;
+
+    width: 28px;
+    height: 28px;
+
+    border: 1px solid rgba(23, 26, 30, 0.12);
+    border-radius: 50%;
+
+    color: var(--bisky-ink);
+
+    font-size: 14px;
+
+    transform: rotate(-90deg);
+  }
+
+  /* =========================================================
+     TABLET
+  ========================================================= */
+
+  @media (max-width: 1024px) {
+    #bisky-hero .bisky-hero-model-wrap {
+      right: -17%;
+      width: 80%;
+      opacity: 0.9;
+    }
+
+    #bisky-hero .bisky-hero-copy {
+      width: 92%;
+    }
+
+    #bisky-hero .bisky-hero-title {
+      font-size: clamp(62px, 11vw, 124px);
+    }
+  }
+
+  /* =========================================================
+     MÓVIL
+  ========================================================= */
+
+  @media (max-width: 760px) {
+    #bisky-hero {
+      --bisky-navbar-height: 70px;
+      --bisky-extra-grid-height: 180px;
+
+      min-height: calc(760px + var(--bisky-extra-grid-height));
+    }
+
+    #bisky-hero .bisky-hero-inner {
+      min-height: calc(760px + var(--bisky-extra-grid-height));
+    }
+
+    #bisky-hero .bisky-hero-inner::after {
+      display: none;
+    }
+
+    #bisky-hero .bisky-hero-copy {
+      width: 100%;
+      padding: calc(var(--bisky-navbar-height) + 58px) 16px 0;
+    }
+
+    #bisky-hero .bisky-hero-title {
+      font-size: clamp(54px, 18vw, 88px);
+      line-height: 0.82;
+    }
+
+    #bisky-hero .bisky-hero-title-shift {
+      margin-left: 0;
+    }
+
+    #bisky-hero .bisky-hero-description {
+      max-width: 300px;
+      margin-top: 28px;
+
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    #bisky-hero .bisky-hero-model-wrap {
+      top: calc(var(--bisky-navbar-height) + 205px);
+      right: -35%;
+      bottom: 74px;
+
+      width: 140%;
+      opacity: 0.82;
+    }
+
+    #bisky-hero .bisky-hero-status {
+      top: calc(var(--bisky-navbar-height) + 18px);
+      right: 16px;
+    }
+
+    #bisky-hero .bisky-hero-bottom {
+      right: 16px;
+      bottom: 22px;
+      left: 16px;
+
+      grid-template-columns: 1fr;
+    }
+
+    #bisky-hero .bisky-hero-meta {
+      justify-self: stretch;
+      justify-content: space-between;
+
+      gap: 12px;
+      padding: 12px 14px;
+    }
+
+    #bisky-hero .bisky-hero-drag-note {
+      display: none;
+    }
+  }
+
+  @media (max-width: 470px) {
+    #bisky-hero .bisky-hero-meta-item:nth-child(2) {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #bisky-hero .bisky-hero-inner::after {
+      animation: none;
+    }
+
+    #bisky-hero .bisky-hero-cta {
+      transition: none;
+    }
+  }
+</style>
+
+<!-- =========================================================
+     HTML
+========================================================= -->
+
+<section id="bisky-hero" data-model-url="https://cohete-charlie.netlify.app/charlie.glb">
+  <div class="bisky-hero-grid" aria-hidden="true">
+    <canvas class="bisky-hero-grid-canvas"></canvas>
+  </div>
+
+  <div class="bisky-hero-inner">
+    <div class="bisky-hero-copy">
+      <p class="bisky-hero-eyebrow">University rocketry · Basque Country</p>
+
+      <h1 class="bisky-hero-title">
+        <span class="bisky-hero-title-line"> FORMING THE NEXT </span>
+
+        <span class="bisky-hero-title-line bisky-hero-title-shift"> GENERATION OF </span>
+
+        <span class="bisky-hero-title-line bisky-hero-title-outline"> SPACE SCIENTISTS </span>
+      </h1>
+
+      <p class="bisky-hero-description">
+        We design, build, and launch what takes us closer to space.
+        <br />
+
+        BiSKY Team is where engineering ambition becomes reality.
+        <br />
+
+        Each rocket is a step closer to space.
+      </p>
+    </div>
+
+    <div class="bisky-hero-model-wrap">
+      <model-viewer id="bisky-hero-model" alt="Modelo tridimensional interactivo del cohete Charlie" camera-controls touch-action="pan-y" auto-rotate auto-rotate-delay="0" rotation-per-second="8deg" interaction-prompt="none" camera-orbit="-30deg 74deg auto" camera-target="auto auto auto" field-of-view="27deg" min-field-of-view="18deg" max-field-of-view="42deg" interpolation-decay="160" environment-image="neutral" shadow-intensity="0.55" shadow-softness="0.9" exposure="1.1" loading="eager"></model-viewer>
+    </div>
+
+    <div class="bisky-hero-status" aria-live="polite">
+      <span class="bisky-hero-status-dot"></span>
+
+      <span class="bisky-hero-status-text"> Loading model </span>
+    </div>
+
+    <div class="bisky-hero-drag-note" aria-hidden="true">Click a line and drag</div>
+
+    <div class="bisky-hero-bottom">
+      <a class="bisky-hero-cta" href="#team">
+        Discover the BiSKY Team
+
+        <span class="bisky-hero-cta-arrow"> ↗ </span>
+      </a>
+
+      <div class="bisky-hero-meta" aria-label="Información del modelo">
+        <div class="bisky-hero-meta-item">
+          <span>Vehicle</span>
+          <strong>Charlie</strong>
+        </div>
+
+        <div class="bisky-hero-meta-item">
+          <span>Experience</span>
+          <strong>Interactive 3D</strong>
+        </div>
+
+        <div class="bisky-hero-meta-item">
+          <span>Status</span>
+          <strong>Development</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+  (function () {
+    'use strict';
+
+    var root = document.getElementById('bisky-hero');
+
+    var viewer = document.getElementById('bisky-hero-model');
+
+    var canvas = root ? root.querySelector('.bisky-hero-grid-canvas') : null;
+
+    if (!root || !viewer || !canvas || root.dataset.initialized === 'true') {
+      return;
+    }
+
+    root.dataset.initialized = 'true';
+
+    /* =====================================================
+       MODELO 3D
+    ===================================================== */
+
+    var statusText = root.querySelector('.bisky-hero-status-text');
+
+    var modelUrl = (root.dataset.modelUrl || '').trim();
+
+    function setStatus(text, stateClass) {
+      if (statusText) {
+        statusText.textContent = text;
+      }
+
+      root.classList.remove('bisky-hero-loaded', 'bisky-hero-error');
+
+      if (stateClass) {
+        root.classList.add(stateClass);
+      }
+    }
+
+    viewer.addEventListener('load', function () {
+      setStatus('Model ready', 'bisky-hero-loaded');
+    });
+
+    viewer.addEventListener('error', function (event) {
+      setStatus('Model unavailable', 'bisky-hero-error');
+
+      console.error('BiSKY hero model error:', event.detail || event);
+    });
+
+    if (!modelUrl) {
+      setStatus('Missing model URL', 'bisky-hero-error');
+    } else {
+      viewer.setAttribute('src', modelUrl);
+    }
+
+    window.setTimeout(function () {
+      if (!customElements.get('model-viewer')) {
+        setStatus('3D library unavailable', 'bisky-hero-error');
+      }
+    }, 2500);
+
+    /* =====================================================
+       REJILLA CRT
+    ===================================================== */
+
+    var ctx = canvas.getContext('2d');
+
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    var state = {
+      width: 0,
+      height: 0,
+      columns: 0,
+      rows: 0,
+      activeLine: null,
+
+      /*
+        Desplazamiento suave de toda la rejilla
+        siguiendo ligeramente al puntero.
+      */
+      gridOffsetTargetX: 0,
+      gridOffsetTargetY: 0,
+      gridOffsetCurrentX: 0,
+      gridOffsetCurrentY: 0,
+    };
+
+    /*
+      AJUSTES PRINCIPALES
+    */
+
+    var CRT_CURVE = 0.06;
+    var CLICK_TOLERANCE = 28;
+    var MAX_STRETCH = 99999;
+
+    /*
+      Movimiento ambiental de la rejilla.
+
+      La rejilla sigue al ratón solo unos píxeles,
+      sin deformarse. El valor horizontal puede
+      ser ligeramente mayor que el vertical.
+    */
+    var GRID_FOLLOW_MAX_X = 11;
+    var GRID_FOLLOW_MAX_Y = 7;
+    var GRID_FOLLOW_SMOOTHING = 0.065;
+
+    var HAS_FINE_POINTER = window.matchMedia('(pointer: fine)').matches;
+
+    /*
+      Anchura mínima de la deformación.
+
+      Se utiliza cuando apenas se ha
+      estirado la línea.
+    */
+    var ELASTIC_RADIUS_MIN = 0.045;
+
+    /*
+      Anchura máxima de la deformación.
+
+      Se alcanza al acercarse a
+      MAX_STRETCH.
+    */
+    var ELASTIC_RADIUS_MAX = 0.6;
+
+    /*
+      Controla la velocidad a la que
+      crece el radio.
+
+      Menor de 1:
+      crece rápidamente al principio.
+
+      Mayor de 1:
+      tarda más en extenderse.
+    */
+    var ELASTIC_GROWTH_POWER = 0.28;
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function resizeCanvas() {
+      var rect = root.getBoundingClientRect();
+
+      state.width = Math.max(1, rect.width);
+
+      state.height = Math.max(1, rect.height);
+
+      canvas.width = Math.round(state.width * dpr);
+
+      canvas.height = Math.round(state.height * dpr);
+
+      canvas.style.width = state.width + 'px';
+
+      canvas.style.height = state.height + 'px';
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      state.columns = Math.max(7, Math.round(state.width / 145));
+
+      state.rows = Math.max(6, Math.round(state.height / 115));
+    }
+
+    /* =====================================================
+       CURVATURA CRT
+    ===================================================== */
+
+    function applyCrtCurve(x, y) {
+      var halfWidth = state.width * 0.5;
+
+      var halfHeight = state.height * 0.5;
+
+      var nx = (x - halfWidth) / halfWidth;
+
+      var ny = (y - halfHeight) / halfHeight;
+
+      var radiusSquared = nx * nx + ny * ny;
+
+      var factor = 1 + CRT_CURVE * radiusSquared;
+
+      return {
+        x: halfWidth + nx * halfWidth * factor,
+
+        y: halfHeight + ny * halfHeight * factor,
+      };
+    }
+
+    function getBasePoint(type, index, t) {
+      var x;
+      var y;
+
+      if (type === 'vertical') {
+        x = (index / state.columns) * state.width;
+
+        y = t * state.height;
+      } else {
+        x = t * state.width;
+
+        y = (index / state.rows) * state.height;
+      }
+
+      var curvedPoint = applyCrtCurve(x, y);
+
+      return {
+        x: curvedPoint.x + state.gridOffsetCurrentX,
+
+        y: curvedPoint.y + state.gridOffsetCurrentY,
+      };
+    }
+
+    /* =====================================================
+       SELECCIÓN DE LÍNEAS
+    ===================================================== */
+
+    function distanceToSegment(px, py, ax, ay, bx, by) {
+      var abx = bx - ax;
+      var aby = by - ay;
+
+      var apx = px - ax;
+      var apy = py - ay;
+
+      var lengthSquared = abx * abx + aby * aby;
+
+      var segmentPosition = lengthSquared > 0 ? (apx * abx + apy * aby) / lengthSquared : 0;
+
+      segmentPosition = clamp(segmentPosition, 0, 1);
+
+      var nearestX = ax + abx * segmentPosition;
+
+      var nearestY = ay + aby * segmentPosition;
+
+      var dx = px - nearestX;
+
+      var dy = py - nearestY;
+
+      return {
+        distance: Math.sqrt(dx * dx + dy * dy),
+
+        segmentPosition: segmentPosition,
+      };
+    }
+
+    function findNearestLine(pointerX, pointerY) {
+      var nearest = null;
+      var nearestDistance = Infinity;
+
+      var samples = 70;
+
+      function inspectLine(type, index) {
+        var previous = getBasePoint(type, index, 0);
+
+        for (var sample = 1; sample <= samples; sample++) {
+          var currentT = sample / samples;
+
+          var current = getBasePoint(type, index, currentT);
+
+          var result = distanceToSegment(pointerX, pointerY, previous.x, previous.y, current.x, current.y);
+
+          if (result.distance < nearestDistance) {
+            var previousT = (sample - 1) / samples;
+
+            var exactT = previousT + (currentT - previousT) * result.segmentPosition;
+
+            nearestDistance = result.distance;
+
+            nearest = {
+              type: type,
+              index: index,
+              t: exactT,
+              distance: result.distance,
+            };
+          }
+
+          previous = current;
+        }
+      }
+
+      var column;
+
+      for (column = 0; column <= state.columns; column++) {
+        inspectLine('vertical', column);
+      }
+
+      var row;
+
+      for (row = 0; row <= state.rows; row++) {
+        inspectLine('horizontal', row);
+      }
+
+      if (nearest && nearest.distance <= CLICK_TOLERANCE) {
+        return nearest;
+      }
+
+      return null;
+    }
+
+    /* =====================================================
+       RADIO ELÁSTICO DINÁMICO
+    ===================================================== */
+
+    function getDynamicElasticRadius(active) {
+      var stretch = Math.sqrt(active.currentX * active.currentX + active.currentY * active.currentY);
+
+      var stretchRatio = clamp(stretch / MAX_STRETCH, 0, 1);
+
+      /*
+        Convierte la distancia estirada
+        en una expansión progresiva.
+      */
+
+      var growth = Math.pow(stretchRatio, ELASTIC_GROWTH_POWER);
+
+      return ELASTIC_RADIUS_MIN + (ELASTIC_RADIUS_MAX - ELASTIC_RADIUS_MIN) * growth;
+    }
+
+    /*
+      Solo devuelve desplazamiento
+      para la línea seleccionada.
+    */
+
+    function getLineOffset(type, index, t) {
+      var active = state.activeLine;
+
+      if (!active || active.type !== type || active.index !== index) {
+        return {
+          x: 0,
+          y: 0,
+        };
+      }
+
+      var elasticRadius = getDynamicElasticRadius(active);
+
+      var parameterDistance = Math.abs(t - active.grabT);
+
+      var normalized = parameterDistance / elasticRadius;
+
+      if (normalized >= 1) {
+        return {
+          x: 0,
+          y: 0,
+        };
+      }
+
+      /*
+        Perfil compacto y suave.
+
+        El centro acompaña totalmente
+        al cursor y los extremos de la
+        deformación regresan suavemente
+        a la línea original.
+      */
+
+      var influence = Math.pow(1 - normalized * normalized, 2.35);
+
+      /*
+        Mantiene los extremos completos
+        de la línea anclados.
+      */
+
+      var endpointLock = Math.sin(Math.PI * t);
+
+      endpointLock = Math.pow(Math.max(0, endpointLock), 0.55);
+
+      influence *= endpointLock;
+
+      return {
+        x: active.currentX * influence,
+
+        y: active.currentY * influence,
+      };
+    }
+
+    /* =====================================================
+       DIBUJO
+    ===================================================== */
+
+    function createLinePoints(type, index) {
+      var points = [];
+      var samples = 86;
+
+      for (var sample = 0; sample <= samples; sample++) {
+        var t = sample / samples;
+
+        var point = getBasePoint(type, index, t);
+
+        var offset = getLineOffset(type, index, t);
+
+        points.push({
+          x: point.x + offset.x,
+
+          y: point.y + offset.y,
+        });
+      }
+
+      return points;
+    }
+
+    function strokeSmoothLine(points, color, width, alpha) {
+      if (!points.length) {
+        return;
+      }
+
+      ctx.save();
+
+      ctx.beginPath();
+
+      ctx.moveTo(points[0].x, points[0].y);
+
+      for (var index = 1; index < points.length; index++) {
+        var previous = points[index - 1];
+
+        var current = points[index];
+
+        var middleX = (previous.x + current.x) * 0.5;
+
+        var middleY = (previous.y + current.y) * 0.5;
+
+        ctx.quadraticCurveTo(previous.x, previous.y, middleX, middleY);
+      }
+
+      var last = points[points.length - 1];
+
+      ctx.lineTo(last.x, last.y);
+
+      ctx.strokeStyle = color;
+
+      ctx.lineWidth = width;
+
+      ctx.globalAlpha = alpha;
+
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function getLineStyle(type, index) {
+      var major = type === 'vertical' ? index % 4 === 0 : index % 3 === 0;
+
+      return major
+        ? {
+            color: 'rgba(21,72,115,0.16)',
+
+            width: 1,
+          }
+        : {
+            color: 'rgba(21,72,115,0.085)',
+
+            width: 0.75,
+          };
+    }
+
+    function drawGridLine(type, index) {
+      var points = createLinePoints(type, index);
+
+      var style = getLineStyle(type, index);
+
+      /*
+        La línea activa mantiene el
+        mismo color y grosor.
+      */
+
+      strokeSmoothLine(points, style.color, style.width, 1);
+    }
+
+    function drawGrabPoint() {
+      var active = state.activeLine;
+
+      if (!active || !active.dragging) {
+        return;
+      }
+
+      var base = getBasePoint(active.type, active.index, active.grabT);
+
+      var x = base.x + active.currentX;
+
+      var y = base.y + active.currentY;
+
+      ctx.save();
+
+      ctx.beginPath();
+
+      ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+
+      ctx.fillStyle = 'rgba(21,72,115,0.8)';
+
+      ctx.fill();
+
+      ctx.beginPath();
+
+      ctx.arc(x, y, 10, 0, Math.PI * 2);
+
+      ctx.strokeStyle = 'rgba(21,72,115,0.16)';
+
+      ctx.lineWidth = 1;
+
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawGrid() {
+      ctx.clearRect(0, 0, state.width, state.height);
+
+      var column;
+
+      for (column = 0; column <= state.columns; column++) {
+        drawGridLine('vertical', column);
+      }
+
+      var row;
+
+      for (row = 0; row <= state.rows; row++) {
+        drawGridLine('horizontal', row);
+      }
+
+      drawGrabPoint();
+    }
+
+    /* =====================================================
+       MUELLE
+    ===================================================== */
+
+    function updateSpring() {
+      var active = state.activeLine;
+
+      if (!active) {
+        return;
+      }
+
+      var stiffness = active.dragging ? 0.34 : 0.13;
+
+      var damping = active.dragging ? 0.62 : 0.82;
+
+      var accelerationX = (active.targetX - active.currentX) * stiffness;
+
+      var accelerationY = (active.targetY - active.currentY) * stiffness;
+
+      active.velocityX = (active.velocityX + accelerationX) * damping;
+
+      active.velocityY = (active.velocityY + accelerationY) * damping;
+
+      active.currentX += active.velocityX;
+
+      active.currentY += active.velocityY;
+
+      if (!active.dragging && Math.abs(active.currentX) < 0.08 && Math.abs(active.currentY) < 0.08 && Math.abs(active.velocityX) < 0.08 && Math.abs(active.velocityY) < 0.08) {
+        state.activeLine = null;
+
+        root.classList.remove('bisky-grid-dragging');
+      }
+    }
+
+    function updateGridFollowMotion() {
+      state.gridOffsetCurrentX += (state.gridOffsetTargetX - state.gridOffsetCurrentX) * GRID_FOLLOW_SMOOTHING;
+
+      state.gridOffsetCurrentY += (state.gridOffsetTargetY - state.gridOffsetCurrentY) * GRID_FOLLOW_SMOOTHING;
+    }
+
+    function animate() {
+      updateSpring();
+      updateGridFollowMotion();
+      drawGrid();
+
+      window.requestAnimationFrame(animate);
+    }
+
+    /* =====================================================
+       EVENTOS
+    ===================================================== */
+
+    function getPointerPosition(event) {
+      var bounds = root.getBoundingClientRect();
+
+      return {
+        x: event.clientX - bounds.left,
+
+        y: event.clientY - bounds.top,
+      };
+    }
+
+    function updateGridFollowTarget(event) {
+      if (!HAS_FINE_POINTER) {
+        return;
+      }
+
+      var active = state.activeLine;
+
+      /*
+        Mientras se está estirando una línea,
+        la posición general de la rejilla queda
+        congelada para no interferir con el agarre.
+      */
+      if (active && active.dragging) {
+        return;
+      }
+
+      var bounds = root.getBoundingClientRect();
+
+      if (bounds.width <= 0 || bounds.height <= 0) {
+        return;
+      }
+
+      var relativeX = clamp((event.clientX - bounds.left) / bounds.width, 0, 1);
+
+      var relativeY = clamp((event.clientY - bounds.top) / bounds.height, 0, 1);
+
+      state.gridOffsetTargetX = (relativeX - 0.5) * 2 * GRID_FOLLOW_MAX_X;
+
+      state.gridOffsetTargetY = (relativeY - 0.5) * 2 * GRID_FOLLOW_MAX_Y;
+    }
+
+    function resetGridFollowTarget() {
+      var active = state.activeLine;
+
+      if (active && active.dragging) {
+        return;
+      }
+
+      state.gridOffsetTargetX = 0;
+      state.gridOffsetTargetY = 0;
+    }
+
+    function limitDisplacement(x, y) {
+      var length = Math.sqrt(x * x + y * y);
+
+      if (length <= MAX_STRETCH) {
+        return {
+          x: x,
+          y: y,
+        };
+      }
+
+      var scale = MAX_STRETCH / length;
+
+      return {
+        x: x * scale,
+
+        y: y * scale,
+      };
+    }
+
+    function onPointerDown(event) {
+      if (event.button !== undefined && event.button !== 0) {
+        return;
+      }
+
+      var interactive = event.target && event.target.closest ? event.target.closest('a, button, input, textarea, select') : null;
+
+      if (interactive) {
+        return;
+      }
+
+      /*
+        Fija temporalmente el movimiento ambiental
+        mientras se agarra una línea.
+      */
+      state.gridOffsetTargetX = state.gridOffsetCurrentX;
+
+      state.gridOffsetTargetY = state.gridOffsetCurrentY;
+
+      var pointer = getPointerPosition(event);
+
+      var selected = findNearestLine(pointer.x, pointer.y);
+
+      if (!selected) {
+        return;
+      }
+
+      var grabPoint = getBasePoint(selected.type, selected.index, selected.t);
+
+      state.activeLine = {
+        type: selected.type,
+
+        index: selected.index,
+
+        grabT: selected.t,
+
+        grabX: grabPoint.x,
+
+        grabY: grabPoint.y,
+
+        targetX: 0,
+        targetY: 0,
+
+        currentX: 0,
+        currentY: 0,
+
+        velocityX: 0,
+        velocityY: 0,
+
+        dragging: true,
+
+        pointerId: event.pointerId,
+      };
+
+      root.classList.add('bisky-grid-dragging');
+
+      try {
+        root.setPointerCapture(event.pointerId);
+      } catch (error) {}
+
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    function onPointerMove(event) {
+      var active = state.activeLine;
+
+      /*
+        Sin arrastre activo, el movimiento del ratón
+        desplaza sutilmente toda la rejilla.
+      */
+      if (!active || !active.dragging) {
+        updateGridFollowTarget(event);
+
+        return;
+      }
+
+      if (active.pointerId !== event.pointerId) {
+        return;
+      }
+
+      var pointer = getPointerPosition(event);
+
+      var displacement = limitDisplacement(
+        pointer.x - active.grabX,
+
+        pointer.y - active.grabY,
+      );
+
+      active.targetX = displacement.x;
+
+      active.targetY = displacement.y;
+
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    function releaseActiveLine(event) {
+      var active = state.activeLine;
+
+      if (!active) {
+        return;
+      }
+
+      if (event && event.pointerId !== undefined && active.pointerId !== event.pointerId) {
+        return;
+      }
+
+      active.dragging = false;
+      active.targetX = 0;
+      active.targetY = 0;
+
+      if (event) {
+        updateGridFollowTarget(event);
+      }
+
+      root.classList.remove('bisky-grid-dragging');
+
+      if (event && event.pointerId !== undefined) {
+        try {
+          if (root.hasPointerCapture(event.pointerId)) {
+            root.releasePointerCapture(event.pointerId);
+          }
+        } catch (error) {}
+      }
+    }
+
+    resizeCanvas();
+    drawGrid();
+    animate();
+
+    window.addEventListener('resize', resizeCanvas);
+
+    root.addEventListener('pointerdown', onPointerDown, true);
+
+    root.addEventListener('pointermove', onPointerMove, true);
+
+    root.addEventListener('pointerleave', resetGridFollowTarget);
+
+    root.addEventListener('pointerup', releaseActiveLine, true);
+
+    root.addEventListener('pointercancel', releaseActiveLine, true);
+
+    window.addEventListener('pointerup', releaseActiveLine);
+
+    window.addEventListener('blur', function () {
+      releaseActiveLine();
+    });
+  })();
+</script>
