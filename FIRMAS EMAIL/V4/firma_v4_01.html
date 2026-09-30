@@ -1,0 +1,139 @@
+<!--
+================================================================================
+ BiSKY Team — FIRMA V4 · version 01
+================================================================================
+ ESTILO: minimalista blanco y negro tomado de biskyteam.webflow.io
+         (se mantiene el logo a color, como pediste)
+
+ SISTEMA VISUAL EXTRAIDO DE LA WEB (valores reales, medidos en su CSS)
+ --------------------------------------------------------------------------------
+   Texto principal .... #1a1b1f   (negro suave, no #000 puro)
+   Gris medio ......... #758696   (subtitulos, rol)
+   Gris claro ......... #a6b1bf   (tagline)
+   Gris linea ......... #e4ebf3   (separador horizontal)
+   Azul de marca ...... #0050bd   (NO se usa: la version es blanco y negro)
+   Tipografia ......... Montserrat, con fallback Arial/Helvetica
+   Escala ............. 14px cuerpo / 12px secundario
+   Etiquetas .......... uppercase + letter-spacing 2px
+   Display ............ 80px y 110px (en firma se baja a 17px por espacio)
+
+ DECISIONES DE DISENO
+ --------------------------------------------------------------------------------
+ - Logo a color, 72x72 px. El archivo real es 3402x3402 (cuadrado), asi que
+   72x72 no deforma nada.
+ - Tipografia: se PIDE Montserrat primero. En un cliente de correo no se puede
+   cargar una webfont desde Google Fonts (la bloquean), por lo que casi todos
+   la veran en Arial. Es el unico limite honesto de este diseño.
+ - Se han ELIMINADO datos de la V2 por ruido en un correo corto:
+     · direccion completa (Escuela de Ingenieria, Planta 0, local P0111)
+     · info@biskyteam.com (redundante: cada persona tiene su correo)
+     · el borde azul de 3px y la tabla de 3 filas
+     · la frase en cursiva centrada
+ - Se mantiene: nombre, rol, equipo, correo, telefono, web, LinkedIn/IG/YouTube
+   y el tagline de la marca.
+
+ ANCHOS (medidos en Chrome con los datos de ejemplo)
+   Tabla 400 x 96 px · logo 72 · contenido 304
+   Si un nombre muy largo desborda, sube "contenido" y el width de la tabla.
+
+ NOTAS DE COMPATIBILIDAD
+   · Todo el CSS va en style="" en linea: el <head><style> lo borra Gmail.
+   · Maquetacion con <table role="presentation">, sin flex/grid/calc/var.
+   · Sin target="_blank" (falla en Outlook de escritorio).
+   · Colores de enlace explicitos: "inherit" no es fiable en Word.
+   · Los separadores son celdas de 1px con bgcolor, no <hr>: mas fiable.
+   · Cada <img> lleva width, height y alt. Si el cliente bloquea imagenes
+     remotas, se ve el texto.
+================================================================================
+-->
+
+<!--[if mso]>
+<xml>
+  <o:OfficeDocumentSettings>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+  </o:OfficeDocumentSettings>
+</xml>
+<![endif]-->
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="400" align="left" valign="top"
+       style="width:400px;border-collapse:collapse;font-family:'Montserrat',Arial,Helvetica,sans-serif;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+
+  <tr>
+    <!-- ==================== LOGO ==================== -->
+    <td role="presentation" width="88" valign="top" align="left"
+        style="width:88px;vertical-align:top;padding:0;">
+      <img src="https://docs.biskyteam.com/logo.png" width="72" height="72" alt="BiSKY Team"
+           style="display:block;width:72px;height:72px;border:0;outline:none;text-decoration:none;">
+    </td>
+
+    <!-- ==================== CONTENIDO ==================== -->
+    <td role="presentation" width="312" valign="top" align="left"
+        style="width:312px;vertical-align:top;padding:0;">
+
+      <!-- Nombre -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:17px;line-height:22px;color:#1a1b1f;font-weight:bold;letter-spacing:-0.2px;padding:0;">
+        {{NOMBRE}}
+      </div>
+
+      <!-- Rol + equipo -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;color:#758696;text-transform:uppercase;letter-spacing:1.5px;padding:2px 0 0 0;">
+        {{CARGO}}
+      </div>
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;color:#a6b1bf;text-transform:uppercase;letter-spacing:1.5px;padding:0;">
+        {{EQUIPO}}
+      </div>
+
+      <!-- Separador -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" align="left" valign="top"
+             style="width:100%;border-collapse:collapse;margin:9px 0 9px 0;">
+        <tr>
+          <td role="presentation" height="1" bgcolor="#e4ebf3"
+              style="height:1px;line-height:1px;font-size:1px;background-color:#e4ebf3;">&nbsp;</td>
+        </tr>
+      </table>
+
+      <!-- Correo (dato principal) -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:12px;line-height:17px;padding:0;">
+        <a href="mailto:{{CORREO}}" style="color:#1a1b1f;text-decoration:none;font-weight:bold;">
+          {{CORREO}}
+        </a>
+      </div>
+
+      <!-- Telefono -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;color:#758696;padding:1px 0 0 0;">
+        <a href="tel:+34946017221" style="color:#758696;text-decoration:none;">
+          +34 946 01 72 21
+        </a>
+      </div>
+
+      <!-- Web -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;padding:1px 0 0 0;">
+        <a href="https://biskyteam.com" style="color:#758696;text-decoration:none;">
+          biskyteam.com
+        </a>
+      </div>
+
+      <!-- Redes -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;padding:6px 0 0 0;">
+        <a href="{{LINKEDIN}}" style="text-decoration:none;border:0;">
+          <img src="https://www.biskyteam.com/wp-content/uploads/LinkedIn_icon.svg_.webp" width="15" height="15" alt="LinkedIn"
+               style="width:15px;height:15px;vertical-align:middle;margin:0 6px 0 0;border:0;outline:none;">
+        </a>
+        <a href="https://www.instagram.com/bisky_team" style="text-decoration:none;border:0;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="15" height="15" alt="Instagram"
+               style="width:15px;height:15px;vertical-align:middle;margin:0 6px 0 0;border:0;outline:none;">
+        </a>
+        <a href="https://www.youtube.com/@BiSKYTeam" style="text-decoration:none;border:0;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" width="17" height="12" alt="YouTube"
+               style="width:17px;height:12px;vertical-align:middle;margin:0 0 1px 0;border:0;outline:none;">
+        </a>
+      </div>
+
+      <!-- Tagline -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:9px;line-height:13px;color:#a6b1bf;text-transform:uppercase;letter-spacing:1.6px;padding:8px 0 0 0;">
+        Forming the next generation of scientists
+      </div>
+
+    </td>
+  </tr>
+</table>

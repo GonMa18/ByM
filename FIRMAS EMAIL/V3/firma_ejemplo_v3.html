@@ -1,0 +1,240 @@
+<!--
+================================================================================
+ BiSKY Team — PLANTILLA DE FIRMA V3 · "email-safe"
+================================================================================
+ IMPORTANTE: esta V3 es una TRADUCCION LITERAL del CSS de la V2 a atributos
+ style="" en linea. No se ha redisenado nada. Los estilos de la V2 eran:
+
+     .tabla          { border-collapse:collapse; table-layout:fixed;
+                       overflow:hidden; min-width:470px }
+     .celda          { background-color:#fff;
+                       border:1px solid rgba(0,0,0,0); white-space:nowrap }
+     .celda.linkedin { width:40px; height:40px;
+                       border-left:3px solid #2257B0; padding:4px }
+     .celda.inferior { width:40px; border-top:3px solid #2257B0 }
+     .celda.nombre / .cargo-equipo / .telefono / .correo { height:20px }
+     .celda.web / .ubicacion / .info-email / .frase { text-align:center }
+     .celda.social   { width:60px }
+     .nombre         { font-size:15px; color:#3781c7; font-weight:bold;
+                       padding-right:10px }
+     .cargo          { font-size:9px; color:#2257B0; font-style:italic }
+     .equipo         { font-size:9px; color:#3781c7; margin-left:20px }
+     .icono          { height:13px; vertical-align:middle; margin-right:5px }
+     .logo-bisky     { width:100px }
+     .icono-linkedin { width:40px; height:40px }
+     .icono-social   { width:16px; vertical-align:middle; margin-right:2px }
+     .span-*         { font-size:9px; color:black }
+     .span-lugar     { font-size:9px; color:#2257B0; vertical-align:middle;
+                       margin-left:4px }
+     .span-frase     { font-size:9px; color:#2257B0; font-style:italic;
+                       padding-left:21px; padding-right:10px; display:block;
+                       margin:2px 0 }
+     a               { color:inherit; text-decoration:none }
+
+ Cada regla se ha copiado tal cual a la celda o al div que la usaba.
+
+ ---------------------------------------------------------------------------------
+ QUE SE HA CAMBIADO PARA QUE SOBRE EN GMAIL / OUTLOOK (sin alterar el diseño)
+ ---------------------------------------------------------------------------------
+ - Clases -> atributos style="" en linea. El <head><style> lo borra el editor
+   de firmas de Gmail, y ahi se perdia todo el formato.
+ - a { color:inherit } -> color explicito en cada enlace. "inherit" no es
+   fiable en Outlook. Los colores son los mismos que se veian en la V2.
+ - border:1px solid transparent -> #ffffff. Sobre fondo blanco es
+   identico, y "transparent"/rgba() no es soportado por el motor de Word.
+ - Se quitan overflow:hidden y min-width:470px. En la V2 no tenian efecto
+   visual (el contenido siempre es mas ancho de 470px) y no existen en
+   clientes de correo.
+ - Cabecera condicional <!--[if mso]> para que Outlook/Word use 96 PPI y las
+   imagenes no salgan deformadas en pantallas HiDPI.
+ - target="_blank" eliminado: da error en algunos clientes de escritorio.
+
+ LO QUE NO SE HA TOCADO (a proposito)
+ - NO se ha puesto line-height. La V2 no lo tiene; el navegador usa "normal".
+   Ponerlo (por ejemplo line-height:20px) cambia la altura de todas las filas.
+ - NO se ha fijado width a las columnas. La V2 NO fija el ancho de la tabla:
+   usa table-layout:fixed pero deja que el navegador reparta segun el
+   contenido. Fijar 540px / 428px / 130 / 238 / 60 da un resultado distinto.
+ - Las imagenes conservan SOLO las dimensiones que tenia la V2: el logo solo
+   width, los iconos solo height, las de redes solo width. Anadir la dimension
+   que falta las deformaria.
+
+ ---------------------------------------------------------------------------------
+ ANCHOS QUE RESULVAN AL MEDIR (con los datos de ejemplo)
+   Tabla exterior : 555 x 113 px      Tabla interior : 451 x 50 px
+   logo 103 | nombre 245 | linkedin 50 | contacto 156
+   interior: web 128 | ubicacion 318 / info 128 | frase 255 | redes 63
+   Si al cambiar los datos se te descuadra, mira la nota de abajo.
+
+ ---------------------------------------------------------------------------------
+ POR QUE NO HAY UN width FIJO EN LA TABLA
+ ---------------------------------------------------------------------------------
+ Es decision de la V2 original y conviene mantenerla: el ancho depende de la
+ largura del nombre y del correo. Por eso el bloque de texto de abajo (frase
+ y redes) se ensancha o se encoge segun cada persona.
+ Si algun dia quieres columnas SIEMPRE iguales, hay que fijar el ancho de la
+ tabla y de cada celda, pero eso ya no seria la V2: habria que elegir los
+ pixeles y probar en los 4 clientes. Avisa y lo preparo como una V4.
+
+ ---------------------------------------------------------------------------------
+ SUSTITUIR LAS IMAGENES
+ ---------------------------------------------------------------------------------
+ Sube las 10 imagenes a tu servidor y cambia SOLO las URL de los src.
+ Usa nombres versionados (logo.v1.png) para que la URL nunca caduque.
+ Tamanos que necesitas, tal y como los usa la V2:
+   logo 100 px de ancho | linkedin grande 40x40 | linkedin redes 16 px ancho
+   iconos 13 px de alto (telefono, correo x2, web, ubicacion)
+   redes 16 px de ancho (linkedin, instagram, youtube)
+ NO anadas width a los iconos ni height a las imagenes de redes: la V2 solo
+ fija una dimension y respeta la proporcion real del archivo.
+ Si un cliente bloquea las imagenes remotas, se vera el texto alt.
+================================================================================
+-->
+
+<!--[if mso]>
+<xml>
+  <o:OfficeDocumentSettings>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+  </o:OfficeDocumentSettings>
+</xml>
+<![endif]-->
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" align="left" valign="top"
+       style="border-collapse:collapse;table-layout:fixed;font-family:'Segoe UI',Tahoma,Arial,Helvetica,sans-serif;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+  <tr>
+    <!-- .celda .logo-bisky -->
+    <td role="presentation" rowspan="4" width="100" valign="top" align="center"
+        style="width:100px;background-color:#ffffff;border:1px solid #ffffff;white-space:nowrap;">
+      <img src="https://docs.biskyteam.com/logo.png" width="100" alt="BiSky Team Logo"
+           style="width:100px;border:0;outline:none;text-decoration:none;">
+    </td>
+    <!-- .celda .nombre -->
+    <td role="presentation" valign="top" align="left"
+        style="height:20px;background-color:#ffffff;border:1px solid #ffffff;white-space:nowrap;">
+      <div style="font-size:15px;color:#3781c7;font-weight:bold;padding-right:10px;">
+        {{NOMBRE}}
+      </div>
+    </td>
+    <!-- .celda .linkedin -->
+    <td role="presentation" rowspan="2" valign="middle" align="center"
+        style="width:40px;height:40px;border:1px solid #ffffff;border-left:3px solid #2257B0;padding:4px;background-color:#ffffff;white-space:nowrap;">
+      <a href="{{LINKEDIN}}" style="color:#2257B0;text-decoration:none;border:0;">
+        <img src="https://www.biskyteam.com/wp-content/uploads/LinkedIn_icon.svg_.webp" width="40" height="40" alt="LinkedIn Logo"
+             style="width:40px;height:40px;border:0;outline:none;text-decoration:none;">
+      </a>
+    </td>
+    <!-- .celda .telefono -->
+    <td role="presentation" valign="middle" align="left"
+        style="height:20px;background-color:#ffffff;border:1px solid #ffffff;white-space:nowrap;">
+      <span>
+        <img src="https://cdn-icons-png.flaticon.com/128/597/597177.png" alt="Teléfono"
+             style="height:13px;vertical-align:middle;margin-right:5px;border:0;outline:none;">
+        <span style="font-size:9px;color:#000000;">
+          946 01 72 21
+        </span>
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <!-- .celda .cargo-equipo -->
+    <td role="presentation" valign="top" align="left"
+        style="height:20px;background-color:#ffffff;border:1px solid #ffffff;white-space:nowrap;">
+      <div style="font-size:9px;color:#2257B0;font-style:italic;">
+        {{CARGO}}
+      </div>
+      <div style="font-size:9px;color:#3781c7;margin-left:20px;">
+        {{EQUIPO}}
+      </div>
+    </td>
+    <!-- .celda .correo -->
+    <td role="presentation" valign="middle" align="left"
+        style="height:20px;background-color:#ffffff;border:1px solid #ffffff;white-space:nowrap;">
+      <a href="mailto:{{CORREO}}" style="color:#000000;text-decoration:none;border:0;">
+        <span>
+          <img src="https://cdn-icons-png.flaticon.com/128/561/561127.png" alt="Email"
+               style="height:13px;vertical-align:middle;margin-right:5px;border:0;outline:none;">
+          <span style="font-size:9px;color:#000000;">
+            {{CORREO}}
+          </span>
+        </span>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <!-- .celda .inferior -->
+    <td role="presentation" colspan="3" valign="top" align="left"
+        style="width:40px;border-top:3px solid #2257B0;background-color:#ffffff;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" align="left" valign="top"
+             style="border-collapse:collapse;width:100%;font-family:'Segoe UI',Tahoma,Arial,Helvetica,sans-serif;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+        <tr>
+          <!-- .celda .web -->
+          <td role="presentation" valign="top" align="center"
+              style="text-align:center;background-color:#ffffff;border:1px solid #ffffff;white-space:nowrap;">
+            <a href="https://biskyteam.com" style="color:#000000;text-decoration:none;border:0;">
+              <span>
+                <img src="https://cdn-icons-png.flaticon.com/128/561/561103.png" alt="Web"
+                     style="height:13px;vertical-align:middle;margin-right:5px;border:0;outline:none;">
+                <span style="font-size:9px;color:#000000;">
+                  www.biskyteam.com
+                </span>
+              </span>
+            </a>
+          </td>
+          <!-- .celda .ubicacion -->
+          <td role="presentation" colspan="2" valign="top" align="center"
+              style="text-align:center;background-color:#ffffff;border:1px solid #ffffff;white-space:nowrap;">
+            <a href="https://maps.app.goo.gl/24Ygynh5qn32Gmhx8" style="color:#2257B0;text-decoration:none;border:0;">
+              <span>
+                <img src="https://cdn-icons-png.flaticon.com/128/8978/8978251.png" alt="Lugar"
+                     style="height:13px;vertical-align:middle;margin-right:5px;border:0;outline:none;">
+                <span style="font-size:9px;color:#2257B0;vertical-align:middle;margin-left:4px;">
+                  <b>Escuela de Ingeniería de Bilbao</b>, Planta 0, local P0111
+                </span>
+              </span>
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <!-- .celda .info-email -->
+          <td role="presentation" valign="top" align="center"
+              style="text-align:center;background-color:#ffffff;border:1px solid #ffffff;white-space:nowrap;">
+            <a href="mailto:info@biskyteam.com" style="color:#000000;text-decoration:none;border:0;">
+              <span>
+                <img src="https://cdn-icons-png.flaticon.com/128/561/561127.png" alt="Mail"
+                     style="height:13px;vertical-align:middle;margin-right:5px;border:0;outline:none;">
+                <span style="font-size:9px;color:#000000;">
+                  info@biskyteam.com
+                </span>
+              </span>
+            </a>
+          </td>
+          <!-- .celda .frase -->
+          <td role="presentation" valign="top" align="center"
+              style="text-align:center;background-color:#ffffff;border:1px solid #ffffff;">
+            <span style="font-size:9px;color:#2257B0;font-style:italic;padding-left:21px;padding-right:10px;display:block;margin:2px 0;">
+              &ldquo;Forming the next generation of scientists&rdquo;
+            </span>
+          </td>
+          <!-- .celda .social -->
+          <td role="presentation" valign="top" align="center"
+              style="width:60px;text-align:center;background-color:#ffffff;border:1px solid #ffffff;">
+            <span style="font-size:9px;color:#000000;">
+              <a href="https://www.linkedin.com/company/biskyteam" style="color:#000000;text-decoration:none;border:0;">
+                <img src="https://www.biskyteam.com/wp-content/uploads/LinkedIn_icon.svg_.webp" alt="LinkedIn"
+                     style="width:16px;vertical-align:middle;margin-right:2px;border:0;outline:none;">
+              </a>
+              <a href="https://www.instagram.com/bisky_team?utm_source=ig_web_button_share_sheet&amp;igsh=MTlycWNzbDdyMWpwdA==" style="color:#000000;text-decoration:none;border:0;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram"
+                     style="width:16px;vertical-align:middle;margin-right:2px;border:0;outline:none;">
+              </a>
+              <a href="https://www.youtube.com/@BiSKYTeam" style="color:#000000;text-decoration:none;border:0;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube"
+                     style="width:16px;vertical-align:middle;margin-right:2px;border:0;outline:none;">
+              </a>
+            </span>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

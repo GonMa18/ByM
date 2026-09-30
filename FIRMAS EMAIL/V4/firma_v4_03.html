@@ -1,0 +1,122 @@
+<!--
+================================================================================
+ BiSKY Team — FIRMA V4 · version 03
+================================================================================
+ QUE CORRIGE ESTA VERSION (medido en Chrome, no a ojo)
+ --------------------------------------------------------------------------------
+ 1. LA LINEA DE ROL SE PARTIA EN DOS  <-- fallo de la v02
+    Medida en la v02:
+        DIV y=22  h=38  fs=11px  "Coordinador de la linea de For.."
+    de los 38px, solo 23 corresponden a UNA linea (15 de texto + 8 de
+    padding). Los 15px sobrantes son un salto de linea: el texto se partia.
+    Motivo: 45 caracteres en MAYUSCULAS con letter-spacing:1.4px ocupan
+    unos 378px y la columna de contenido solo tiene 312px.
+
+    Aqui se ha迎来uelto la mayuscula SOLO en esa linea. La jerarquia se
+    sostiene con el color (#758696) y el tamano (11px), no gritando.
+    En caja normal la misma frase ocupa unos 248px y entra de sobra.
+
+    El tratamiento en MAYUSCULAS + letter-spacing se conserva a proposito
+    solo en el tagline, que si es corto (265px) y es donde la web lo usa
+    como firma de marca.
+
+ 2. COLOR DEL SEPARADOR DE PUNTOS
+    #c8d2dd no estaba en la paleta. Ahora #d3d3d3, que si aparece en el
+    CSS del sitio.
+
+ MEDIDAS DE ESTA VERSION
+   Tabla 400 x ~131 px · logo 72 · separacion 16 · contenido 312
+   Cada bloque de texto cabe en UNA linea y el separador ya no solapa.
+
+ NOTA HONESTA SOBRE LA TIPOGRAFIA
+   Se pide Montserrat primero, como en la web. En un cliente de correo no se
+   puede cargar una webfont (los clientes bloquean Google Fonts), asi que
+   casi todos la veran en Arial. Por eso esta version NO depende de una
+   fuente concreta para que la composicion aguante: los anchos estan
+   calculados con Arial, que es la mas ancha de las dos.
+
+ QUE SE HA ELIMINADO DE LA V2
+   Direccion completa, info@biskyteam.com, borde azul, 4 iconos de contacto
+   y la frase en cursiva. Se conserva nombre, rol, equipo, correo, telefono,
+   web, las 3 redes y el tagline.
+
+ COMPATIBILIDAD
+   CSS 100% en linea (el <head><style> lo borra Gmail) · tablas
+   role="presentation" · sin flex/grid/calc/var/min-width · sin
+   target="_blank" · colores de enlace explicitos (en Word "inherit" no
+   vale) · cada <img> con width, height y alt · logo real 3402x3402
+   (cuadrado) para que 72x72 no lo deforme.
+================================================================================
+-->
+
+<!--[if mso]>
+<xml>
+  <o:OfficeDocumentSettings>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+  </o:OfficeDocumentSettings>
+</xml>
+<![endif]-->
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="400" align="left" valign="top"
+       style="width:400px;border-collapse:collapse;font-family:'Montserrat',Arial,Helvetica,sans-serif;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+
+  <tr>
+    <!-- ==================== LOGO ==================== -->
+    <td role="presentation" width="88" valign="top" align="left"
+        style="width:88px;vertical-align:top;padding:0;">
+      <img src="https://docs.biskyteam.com/logo.png" width="72" height="72" alt="BiSKY Team"
+           style="display:block;width:72px;height:72px;border:0;outline:none;text-decoration:none;">
+    </td>
+
+    <!-- ==================== CONTENIDO ==================== -->
+    <td role="presentation" width="312" valign="top" align="left"
+        style="width:312px;vertical-align:top;padding:0;">
+
+      <!-- Nombre -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:17px;line-height:22px;color:#1a1b1f;font-weight:bold;letter-spacing:-0.2px;padding:0;">
+        {{NOMBRE}}
+      </div>
+
+      <!-- Rol + equipo: en caja normal, sin mayusculas (v03) -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:15px;color:#758696;padding:2px 0 7px 0;">
+        {{CARGO}} &middot; {{EQUIPO}}
+      </div>
+
+      <!-- Separador: border-top, sin tabla anidada ni margenes -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:12px;line-height:17px;border-top:1px solid #e4ebf3;padding:7px 0 0 0;margin:0;">
+        <a href="mailto:{{CORREO}}" style="color:#1a1b1f;text-decoration:none;font-weight:bold;">
+          {{CORREO}}
+        </a>
+      </div>
+
+      <!-- Telefono + web -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;color:#758696;padding:1px 0 0 0;">
+        <a href="tel:+34946017221" style="color:#758696;text-decoration:none;">+34 946 01 72 21</a>
+        <span style="color:#d3d3d3;">&nbsp;&middot;&nbsp;</span>
+        <a href="https://biskyteam.com" style="color:#758696;text-decoration:none;">biskyteam.com</a>
+      </div>
+
+      <!-- Redes -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;padding:7px 0 0 0;">
+        <a href="{{LINKEDIN}}" style="text-decoration:none;border:0;">
+          <img src="https://www.biskyteam.com/wp-content/uploads/LinkedIn_icon.svg_.webp" width="15" height="15" alt="LinkedIn"
+               style="width:15px;height:15px;vertical-align:middle;margin:0 5px 0 0;border:0;outline:none;">
+        </a>
+        <a href="https://www.instagram.com/bisky_team" style="text-decoration:none;border:0;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="15" height="15" alt="Instagram"
+               style="width:15px;height:15px;vertical-align:middle;margin:0 5px 0 0;border:0;outline:none;">
+        </a>
+        <a href="https://www.youtube.com/@BiSKYTeam" style="text-decoration:none;border:0;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" width="15" height="11" alt="YouTube"
+               style="width:15px;height:11px;vertical-align:middle;margin:0 0 2px 0;border:0;outline:none;">
+        </a>
+      </div>
+
+      <!-- Tagline: aqui si en mayusculas, como en la web -->
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:8px;line-height:12px;color:#a6b1bf;text-transform:uppercase;letter-spacing:1.5px;padding:7px 0 0 0;">
+        Forming the next generation of scientists
+      </div>
+
+    </td>
+  </tr>
+</table>

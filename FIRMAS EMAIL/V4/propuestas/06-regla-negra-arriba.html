@@ -1,0 +1,68 @@
+<!--
+================================================================================
+ BiSKY Team â€” 06-regla-negra-arriba Â· REGLA NEGRA ARRIBA, LOGO A LA IZQUIERDA
+================================================================================
+ QUE ES
+   Una barra negra de 3px arriba del todo y, debajo, el logo de 104px a la
+   izquierda con el texto a la derecha. 440px de ancho.
+
+ POR QUE
+   La barra da un punto de partida claro a la firma: separa el bloque de datos
+   del cuerpo del correo. Es el unico elemento "grueso" de todo el diseno, por
+   eso mide solo 3px. El equipo (BiFIVE) pasa a su propia linea para no
+   alargar la de arriba. Con el logo a 120px y centrado verticalmente la
+   columna del logo queda a 143px y solo sobran 23px, repartidos 11 arriba y
+   11 abajo: es aire, no un corte en el diseno.
+
+ Paleta : #1a1b1f texto Â· #758696 gris Â· #a6b1bf gris claro Â· #e4ebf3 linea
+ Fuente  : Montserrat con fallback Arial (en correo no cargan webfonts, por eso
+           los anchos estan calculados con Arial, que es la mas ancha)
+ Imagenes: el logo real es 3402x3402 (cuadrado) y LinkedIn 1280x1280 (cuadrado),
+           asi que ambos se pueden escalar a cualquier tamano sin deformarse.
+           YouTube es 1024x721 (proporcion 1,4202) y por eso lleva dos medidas.
+ Reglas  : CSS 100% en linea Â· tablas role="presentation" Â· sin flex/grid/
+           calc/var/min-width Â· sin target="_blank" Â· colores de enlace
+           explicitos (en Word "inherit" no vale) Â· cada img con w/h/alt
+================================================================================
+-->
+
+<!--[if mso]>
+<xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
+<![endif]-->
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="440" align="left" valign="top" style="width:440px;border-collapse:collapse;font-family:'Montserrat',Arial,Helvetica,sans-serif;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+  <tr>
+    <td role="presentation" height="3" bgcolor="#1a1b1f" style="height:3px;line-height:3px;font-size:1px;background-color:#1a1b1f;">&nbsp;</td>
+  </tr>
+  <tr>
+    <td role="presentation" valign="top" align="left" style="padding:12px 0 0 0;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="440" align="left" valign="top" style="width:440px;border-collapse:collapse;">
+        <tr>
+          <td role="presentation" width="132" valign="middle" align="left" style="width:132px;vertical-align:middle;padding:0;">
+            <img src="https://docs.biskyteam.com/logo.png" width="120" height="120" alt="BiSKY Team" style="display:block;width:120px;height:120px;border:0;outline:none;">
+          </td>
+          <td role="presentation" width="20" style="width:20px;padding:0;font-size:1px;line-height:1px;">&nbsp;</td>
+          <td role="presentation" width="288" valign="middle" align="left" style="width:288px;vertical-align:middle;padding:0;">
+            <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:18px;line-height:23px;color:#1a1b1f;font-weight:bold;letter-spacing:-0.2px;">{{NOMBRE}}</div>
+            <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:15px;color:#758696;padding:2px 0 0 0;">{{CARGO}}</div>
+            <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:15px;color:#a6b1bf;padding:1px 0 9px 0;">{{EQUIPO}}</div>
+            <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:12px;line-height:17px;">
+              <a href="mailto:{{CORREO}}" style="color:#1a1b1f;text-decoration:none;font-weight:bold;">{{CORREO}}</a>
+            </div>
+            <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;color:#758696;padding:2px 0 0 0;">
+              <a href="tel:+34946017221" style="color:#758696;text-decoration:none;">+34 946 01 72 21</a>
+              <span style="color:#d3d3d3;">&nbsp;&middot;&nbsp;</span>
+              <a href="https://biskyteam.com" style="color:#758696;text-decoration:none;">biskyteam.com</a>
+            </div>
+            <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;padding:7px 0 0 0;">
+  <a href="{{{{LINKEDIN}}}}" style="text-decoration:none;border:0;"><img src="https://www.biskyteam.com/wp-content/uploads/LinkedIn_icon.svg_.webp" width="15" height="15" alt="LinkedIn" style="width:15px;height:15px;vertical-align:middle;margin:0 5px 0 0;border:0;outline:none;"></a>
+  <a href="https://www.instagram.com/bisky_team" style="text-decoration:none;border:0;"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="15" height="15" alt="Instagram" style="width:15px;height:15px;vertical-align:middle;margin:0 5px 0 0;border:0;outline:none;"></a>
+  <a href="https://www.youtube.com/@BiSKYTeam" style="text-decoration:none;border:0;"><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" width="15" height="11" alt="YouTube" style="width:15px;height:11px;vertical-align:middle;margin:0 0 2px 0;border:0;outline:none;"></a>
+</div>
+            <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:8px;line-height:12px;color:#a6b1bf;text-transform:uppercase;letter-spacing:1.5px;padding:7px 0 0 0;">{{TAGLINE}}</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,65 @@
+<!--
+================================================================================
+ BiSKY Team â€” 10-apellido-en-grande Â· APELLIDO EN GRANDE, NOMBRE DEBAJO
+================================================================================
+ QUE ES
+   El apellido es lo grande (19px en negrita) y el nombre de pila baja a 11px
+   en gris, como las tarjetas de visita japonesas. Luego rol, equipo, y el
+   contacto. 448px de ancho.
+
+ NOTA
+   Usa dos marcadores en vez de uno: {{APELLIDOS}} y {{NOMBRE_PILA}}. En el
+   generador hay que separarlos.
+
+ POR QUE
+   Con el logo de 80px la columna del logo media 148px y quedaban 68px de hueco
+   debajo, que es justo lo que complained. Subiendo el logo a 116px y centrando
+   verticalmente (valign="middle") el reparto queda equilibrado.
+
+ NOTA 2
+   El rol va en minÃºsculas y con 0,5px de letter-spacing, no en mayÃºsculas. En
+   mayÃºsculas con 1,1px "Coordinador de la linea de Formatting - BiFIVE" mide
+   315px y no cabe en la columna de 300px; en minÃºsculas a 0,5px mide 287px.
+
+ Paleta : #1a1b1f texto Â· #758696 gris Â· #a6b1bf gris claro Â· #e4ebf3 linea
+ Fuente  : Montserrat con fallback Arial (en correo no cargan webfonts, por eso
+           los anchos estan calculados con Arial, que es la mas ancha)
+ Imagenes: el logo real es 3402x3402 (cuadrado) y LinkedIn 1280x1280 (cuadrado),
+           asi que ambos se pueden escalar a cualquier tamano sin deformarse.
+           YouTube es 1024x721 (proporcion 1,4202) y por eso lleva dos medidas.
+ Reglas  : CSS 100% en linea Â· tablas role="presentation" Â· sin flex/grid/
+           calc/var/min-width Â· sin target="_blank" Â· colores de enlace
+           explicitos (en Word "inherit" no vale) Â· cada img con w/h/alt
+================================================================================
+-->
+
+<!--[if mso]>
+<xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
+<![endif]-->
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="448" align="left" valign="top" style="width:448px;border-collapse:collapse;font-family:'Montserrat',Arial,Helvetica,sans-serif;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+  <tr>
+    <td role="presentation" width="128" valign="middle" align="left" style="width:128px;vertical-align:middle;padding:0;">
+      <img src="https://docs.biskyteam.com/logo.png" width="116" height="116" alt="BiSKY Team" style="display:block;width:116px;height:116px;border:0;outline:none;">
+    </td>
+    <td role="presentation" width="20" style="width:20px;padding:0;font-size:1px;line-height:1px;">&nbsp;</td>
+    <td role="presentation" width="300" valign="middle" align="left" style="width:300px;vertical-align:middle;padding:0;">
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:19px;line-height:24px;color:#1a1b1f;font-weight:bold;letter-spacing:-0.2px;">{{APELLIDOS}}</div>
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:15px;color:#758696;padding:2px 0 0 0;">{{NOMBRE_PILA}}</div>
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;color:#a6b1bf;letter-spacing:0.5px;padding:2px 0 9px 0;">{{CARGO}} &middot; {{EQUIPO}}</div>
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:12px;line-height:17px;border-top:1px solid #1a1b1f;padding:8px 0 0 0;margin:0;">
+        <a href="mailto:{{CORREO}}" style="color:#1a1b1f;text-decoration:none;font-weight:bold;">{{CORREO}}</a>
+      </div>
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;color:#758696;padding:2px 0 0 0;">
+        <a href="tel:+34946017221" style="color:#758696;text-decoration:none;">+34 946 01 72 21</a>
+        <span style="color:#d3d3d3;">&nbsp;&middot;&nbsp;</span>
+        <a href="https://biskyteam.com" style="color:#758696;text-decoration:none;">biskyteam.com</a>
+      </div>
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;padding:7px 0 0 0;">
+  <a href="{{{{LINKEDIN}}}}" style="text-decoration:none;border:0;"><img src="https://www.biskyteam.com/wp-content/uploads/LinkedIn_icon.svg_.webp" width="15" height="15" alt="LinkedIn" style="width:15px;height:15px;vertical-align:middle;margin:0 5px 0 0;border:0;outline:none;"></a>
+  <a href="https://www.instagram.com/bisky_team" style="text-decoration:none;border:0;"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="15" height="15" alt="Instagram" style="width:15px;height:15px;vertical-align:middle;margin:0 5px 0 0;border:0;outline:none;"></a>
+  <a href="https://www.youtube.com/@BiSKYTeam" style="text-decoration:none;border:0;"><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" width="15" height="11" alt="YouTube" style="width:15px;height:11px;vertical-align:middle;margin:0 0 2px 0;border:0;outline:none;"></a>
+</div>
+    </td>
+  </tr>
+</table>

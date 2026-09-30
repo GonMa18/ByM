@@ -1,0 +1,4 @@
+rtsp://work-cam-1:rtp-work-cam-1@192.168.0.111/stream1
+rtsp://work-cam-2:rtp-work-cam-2@192.168.0.109/stream1
+rtsp://launch-cam-1:rtp-launch-cam-1@192.168.0.103/stream1
+rtsp://launch-cam-2:rtp-launch-cam-2@192.168.0.105/stream1

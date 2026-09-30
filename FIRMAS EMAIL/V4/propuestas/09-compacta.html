@@ -1,0 +1,53 @@
+<!--
+================================================================================
+ BiSKY Team â€” 09-compacta Â· COMPACTA, SIN TAGLINE
+================================================================================
+ QUE ES
+   Lo minimo: logo de 96px, nombre, rol, correo, telefono, web y los iconos
+   en dos lineas. 420px de ancho, ~96px de alto. Sin tagline, sin regla, sin
+   mayusculas.
+
+ POR QUE
+   Para quien prefiera que la firma no ocupe. Cuatro lineas y ya. El logo va
+   centrado verticalmente (valign="middle") para que no sobre espacio ni abajo.
+
+ Paleta : #1a1b1f texto Â· #758696 gris Â· #a6b1bf gris claro Â· #e4ebf3 linea
+ Fuente  : Montserrat con fallback Arial (en correo no cargan webfonts, por eso
+           los anchos estan calculados con Arial, que es la mas ancha)
+ Imagenes: el logo real es 3402x3402 (cuadrado) y LinkedIn 1280x1280 (cuadrado),
+           asi que ambos se pueden escalar a cualquier tamano sin deformarse.
+           YouTube es 1024x721 (proporcion 1,4202) y por eso lleva dos medidas.
+ Reglas  : CSS 100% en linea Â· tablas role="presentation" Â· sin flex/grid/
+           calc/var/min-width Â· sin target="_blank" Â· colores de enlace
+           explicitos (en Word "inherit" no vale) Â· cada img con w/h/alt
+================================================================================
+-->
+
+<!--[if mso]>
+<xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
+<![endif]-->
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="420" align="left" valign="top" style="width:420px;border-collapse:collapse;font-family:'Montserrat',Arial,Helvetica,sans-serif;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+  <tr>
+    <td role="presentation" width="108" valign="middle" align="left" style="width:108px;vertical-align:middle;padding:0;">
+      <img src="https://docs.biskyteam.com/logo.png" width="96" height="96" alt="BiSKY Team" style="display:block;width:96px;height:96px;border:0;outline:none;">
+    </td>
+    <td role="presentation" width="20" style="width:20px;padding:0;font-size:1px;line-height:1px;">&nbsp;</td>
+    <td role="presentation" width="292" valign="middle" align="left" style="width:292px;vertical-align:middle;padding:0;">
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:17px;line-height:21px;color:#1a1b1f;font-weight:bold;letter-spacing:-0.2px;">{{NOMBRE}}</div>
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:15px;color:#758696;padding:1px 0 0 0;">{{CARGO}}</div>
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;padding:7px 0 0 0;">
+        <a href="mailto:{{CORREO}}" style="color:#1a1b1f;text-decoration:none;font-weight:bold;">{{CORREO}}</a>
+      </div>
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:15px;color:#758696;padding:1px 0 0 0;">
+        <a href="tel:+34946017221" style="color:#758696;text-decoration:none;">+34 946 01 72 21</a>
+        <span style="color:#d3d3d3;">&nbsp;&middot;&nbsp;</span>
+        <a href="https://biskyteam.com" style="color:#758696;text-decoration:none;">biskyteam.com</a>
+        <span style="color:#d3d3d3;">&nbsp;&middot;&nbsp;</span>
+        <a href="{{LINKEDIN}}" style="text-decoration:none;border:0;"><img src="https://www.biskyteam.com/wp-content/uploads/LinkedIn_icon.svg_.webp" width="14" height="14" alt="LinkedIn" style="width:14px;height:14px;vertical-align:middle;margin:0 4px 0 0;border:0;outline:none;"></a>
+        <a href="https://www.instagram.com/bisky_team" style="text-decoration:none;border:0;"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="14" height="14" alt="Instagram" style="width:14px;height:14px;vertical-align:middle;margin:0 4px 0 0;border:0;outline:none;"></a>
+        <a href="https://www.youtube.com/@BiSKYTeam" style="text-decoration:none;border:0;"><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" width="14" height="10" alt="YouTube" style="width:14px;height:10px;vertical-align:middle;margin:0;border:0;outline:none;"></a>
+      </div>
+    </td>
+  </tr>
+</table>
