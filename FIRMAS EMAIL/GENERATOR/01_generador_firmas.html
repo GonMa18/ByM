@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Generador de firmas — 01</title>
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script><!-- Excel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script><!-- ZIP -->
+<style>
+    * { box-sizing: border-box; }
+    body {
+        background: #F7F9FC;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        font-family: 'Inter', Arial, sans-serif;
+        margin: 0;
+        padding: 24px 12px;
+    }
+    .container {
+        background: white;
+        border-radius: 14px;
+        box-shadow: 0 4px 24px rgba(40,60,121,0.09);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 32px 28px 28px 28px;
+        width: 100%;
+        max-width: 620px;
+    }
+    h2 {
+        margin: 0 0 4px 0;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #1a315d;
+        text-align: center;
+    }
+    .sub {
+        margin: 0 0 24px 0;
+        font-size: 13px;
+        color: #758696;
+        text-align: center;
+        line-height: 1.5;
+    }
+    .ver {
+        display: inline-block;
+        margin-top: 6px;
+        padding: 2px 9px;
+        border-radius: 20px;
+        background: #eef2f9;
+        color: #1a315d;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .4px;
+    }
+    .step {
+        border: 1px solid #e4ebf3;
+        border-radius: 10px;
+        padding: 16px 16px 18px 16px;
+        margin-bottom: 14px;
+        background: #fcfdff;
+    }
+    .step h3 {
+        margin: 0 0 4px 0;
+        font-size: 12px;
+        font-weight: 700;
+        color: #2257b0;
+        letter-spacing: .7px;
+        text-transform: uppercase;
+    }
+    .step p {
+        margin: 0 0 12px 0;
+        font-size: 13px;
+        color: #5b6a7e;
+        line-height: 1.5;
+    }
+    .file-input { display: none; }
+    .custom-file-btn {
+        display: inline-block;
+        background: #2257b0;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 11px 26px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .custom-file-btn:hover { background: #3969c1; }
+    .custom-file-btn.alt { background: #4a6b52; }
+    .custom-file-btn.alt:hover { background: #5d8367; }
+    .fileLabel {
+        display: block;
+        font-size: 13px;
+        color: #1a315d;
+        margin-top: 10px;
+        word-break: break-all;
+        line-height: 1.5;
+    }
+    .fileLabel b { color: #2257b0; }
+    .fileLabel.none { color: #97a3b4; }
+    .row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .tamlab {
+        color: #1a315d;
+        font-size: 13px;
+    }
+    #tamano {
+        width: 84px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        text-align: center;
+    }
+    #exportBtn {
+        width: 100%;
+        background: #2257b0;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        padding: 14px 0;
+        margin-top: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background .15s;
+    }
+    #exportBtn:disabled { background-color: #bbc8da; cursor: not-allowed; }
+    #exportBtn:not(:disabled):hover { background: #3969c1; }
+    #output {
+        margin-top: 16px;
+        color: #1a315d;
+        font-size: 13px;
+        text-align: center;
+        font-weight: 500;
+        line-height: 1.6;
+    }
+    #preview {
+        margin-top: 16px;
+        border: 1px solid #e4ebf3;
+        border-radius: 10px;
+        background: #fff;
+        padding: 18px;
+        overflow-x: auto;
+    }
+    #preview .ph {
+        font-size: 11px;
+        color: #97a3b4;
+        text-align: center;
+        letter-spacing: .5px;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+    .warn {
+        margin-top: 12px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: #fff8e6;
+        border: 1px solid #f2dfae;
+        color: #7a5b12;
+        font-size: 12px;
+        line-height: 1.55;
+        text-align: left;
+    }
+    .warn b { color: #5c430a; }
+    details.help { margin-top: 18px; font-size: 12px; color: #5b6a7e; }
+    details.help summary {
+        cursor: pointer;
+        color: #2257b0;
+        font-weight: 600;
+        font-size: 12px;
+        padding: 6px 0;
+    }
+    details.help table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 8px;
+        font-size: 12px;
+    }
+    details.help td {
+        border-top: 1px solid #eef2f6;
+        padding: 5px 4px;
+        vertical-align: top;
+    }
+    details.help td:first-child {
+        font-family: Consolas, 'Courier New', monospace;
+        color: #1a315d;
+        white-space: nowrap;
+        width: 1%;
+        padding-right: 12px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Generador de firmas</h2>
+    <p class="sub">Une el Excel de miembros con una plantilla HTML y descarga un ZIP con una firma por persona.<span class="ver">VERSION 01</span></p>
+
+    <!-- ============ PASO 1: EXCEL ============ -->
+    <div class="step">
+        <h3>1 · Archivo Excel</h3>
+        <p>Hoja <b>Miembros</b>. Se genera una firma por cada fila con nombre.</p>
+        <label class="custom-file-btn">
+            Seleccionar Excel
+            <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls,.xlsm,.csv" />
+        </label>
+        <span id="fileLabel" class="fileLabel none">Ningún archivo seleccionado</span>
+    </div>
+
+    <!-- ============ PASO 2: PLANTILLA HTML ============ -->
+    <div class="step">
+        <h3>2 · Plantilla HTML</h3>
+        <p>El HTML desde el que se construyen las firmas. Se rellenan los <code>{{PLACEHOLDER}}</code> con los datos de cada fila.</p>
+        <label class="custom-file-btn alt">
+            Seleccionar plantilla
+            <input type="file" id="tplInput" class="file-input" accept=".html,.htm" />
+        </label>
+        <span id="tplLabel" class="fileLabel none">Usando la plantilla integrada por defecto</span>
+    </div>
+
+    <!-- ============ PASO 3: TAMAÑO LOGO ============ -->
+    <div class="step">
+        <h3>3 · Tamaño del logo</h3>
+        <p>Se aplica alreplace de <code>--tamaño--</code> o <code>{{TAMANO_LOGO}}</code> en la plantilla.</p>
+        <div class="row">
+            <label class="tamlab" for="tamano">Tamaño (px):</label>
+            <input type="number" id="tamano" value="100" min="40" max="200" step="2">
+        </div>
+    </div>
+
+    <button id="exportBtn" disabled>Exportar ZIP con HTMLs</button>
+    <div id="output"></div>
+    <div id="warnBox"></div>
+
+    <details class="help">
+        <summary>Placeholders disponibles en la plantilla</summary>
+        <table>
+            <tr><td>{{NOMBRE}}</td><td>Nombre completo tal cual está en el Excel</td></tr>
+            <tr><td>{{NOMBRE_PILA}}</td><td>Solo el primer nombre (para saludos)</td></tr>
+            <tr><td>{{APELLIDOS}}</td><td>Los apellidos, sin el nombre</td></tr>
+            <tr><td>{{CARGO}}</td><td>Columna «Tipo de Participante»</td></tr>
+            <tr><td>{{EQUIPO}}</td><td>Columna «EQUIPO»</td></tr>
+            <tr><td>{{CORREO}}</td><td>Columna «CORREO DOMINIO PROPIO»</td></tr>
+            <tr><td>{{LINKEDIN}}</td><td>URL real de LinkedIn (leída del hipervínculo del Excel)</td></tr>
+            <tr><td>{{TELEFONO}}</td><td>Columna «TELÉFONO»</td></tr>
+            <tr><td>{{TAGLINE}}</td><td>«Forming the next generation of space scientist»</td></tr>
+            <tr><td>{{TAMANO_LOGO}}</td><td>Número de píxeles del campo de tamaño</td></tr>
+        </table>
+    </details>
+
+    <div id="preview"><div class="ph">Vista previa</div></div>
+</div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   CONFIGURACIÓN
+   ============================================================ */
+
+var HOJA = "Miembros";
+
+// Mapea cada placeholder a su columna real en la cabecera del Excel.
+// Se comparan ignorando tildes y mayúsculas por seguridad.
+var COLUMNAS = {
+    NOMBRE:      "NOMBRE +2 apellidos",
+    CARGO:       "Tipo de Participante",
+    EQUIPO:      "EQUIPO",
+    CORREO:      "CORREO DOMINIO PROPIO",
+    LINKEDIN:    "Linked In",
+    TELEFONO:    "TELÉFONO"
+};
+
+var TAGLINE = "Forming the next generation of space scientist";
+
+/* ============================================================
+   PLANTILLA POR DEFECTO
+   Se usa si el usuario no carga ningún HTML externo.
+   ============================================================ */
+
+var PLANTILLA_POR_DEFECTO = [
+'<head>',
+'<style>',
+'  .tabla{',
+'    border-collapse: collapse;',
+'    table-layout: fixed;',
+'    overflow: hidden;',
+'  }',
+'  .celda{',
+'    background-color: #fff;',
+'    border: 1px solid rgba(0, 0, 0, 0);',
+'    white-space: nowrap;',
+'  }',
+'  .celda.linkedin {',
+'    width: 40px;',
+'    height: 40px;',
+'    border-left:  #2257B0 solid 3px;',
+'    padding: 4px;',
+'  }',
+'  .celda.inferior {',
+'    width: 40px;',
+'    border-top:#2257B0 solid 3px;',
+'  }',
+'  .celda.nombre{ height: 20px; }',
+'  .celda.cargo-equipo { height: 20px; }',
+'  .celda.telefono { height: 20px; }',
+'  .celda.correo { height: 20px; }',
+'  .celda.web { text-align: center; }',
+'  .celda.ubicacion { text-align: center; }',
+'  .celda.info-email { text-align: center; }',
+'  .celda.frase { text-align: center; }',
+'  .celda.social { width: 60px; }',
+'  .nombre {',
+'    font-size: 15px;',
+'    color: #3781c7;',
+'    font-weight: bold;',
+'    padding-right: 10px;',
+'  }',
+'  .cargo {',
+'    font-size: 9px;',
+'    color: #2257B0;',
+'    font-style: italic;',
+'  }',
+'  .equipo {',
+'    font-size: 9px;',
+'    color: #3781c7;',
+'    margin-left: 20px;',
+'  }',
+'  .icono {',
+'    height: 13px;',
+'    vertical-align: middle;',
+'    margin-right: 5px;',
+'  }',
+'  .logo-bisky {',
+'    width: --tamaño--;',
+'  }',
+'  .icono-linkedin {',
+'    width: 40px;',
+'    height: 40px;',
+'  }',
+'  .icono-social {',
+'    width: 16px;',
+'    vertical-align: middle;',
+'    margin-right: 2px;',
+'  }',
+'  .span-web {',
+'    font-size: 9px;',
+'    color: black;',
+'  }',
+'  .span-social {',
+'    font-size: 9px;',
+'    color: black;',
+'  }',
+'  .span-email {',
+'    font-size: 9px;',
+'    color: black;',
+'  }',
+'  .span-telefono {',
+'    font-size: 9px;',
+'    color: black;',
+'  }',
+'  .span-lugar {',
+'    font-size: 9px;',
+'    color: #2257B0;',
+'    vertical-align: middle;',
+'    margin-left: 4px;',
+'  }',
+'  .span-frase {',
+'    font-size: 9px;',
+'    color: #2257B0;',
+'    font-style: italic;',
+'    padding-left: 21px;',
+'    padding-right: 10px;',
+'    display: block;',
+'    margin: 2px 0;',
+'  }',
+'  a {',
+'    color: inherit;',
+'    text-decoration: none;',
+'  }',
+'</style>',
+'</head>',
+'',
+'<table class="tabla">',
+'  <tr>',
+'    <td colspan="1" rowspan="4" class="celda logo-bisky">',
+'      <img src="https://docs.biskyteam.com/logo.png" alt="BiSky Team Logo" class="logo-bisky">',
+'    </td>',
+'    <td colspan="1" rowspan="1" class="celda nombre">',
+'      <div class="nombre">',
+'        {{NOMBRE}}',
+'      </div>',
+'    </td>',
+'    <td colspan="1" rowspan="2" class="celda linkedin">',
+'      <a href="{{LINKEDIN}}" target="_blank">',
+'        <img src="https://www.biskyteam.com/wp-content/uploads/LinkedIn_icon.svg_.webp" alt="LinkedIn Logo" class="icono-linkedin">',
+'      </a>',
+'    </td>',
+'    <td colspan="1" rowspan="1" class="celda telefono">',
+'      <span>',
+'        <img src="https://cdn-icons-png.flaticon.com/128/597/597177.png" class="icono" alt="Teléfono">',
+'        <span class="span-telefono">',
+'          {{TELEFONO}}',
+'        </span>',
+'      </span>',
+'    </td>',
+'  </tr>',
+'  <tr>',
+'    <td class="celda cargo-equipo">',
+'      <div class="cargo">{{CARGO}}</div>',
+'      <div class="equipo">{{EQUIPO}}</div>',
+'    </td>',
+'    <td colspan="2" rowspan="1" class="celda correo">',
+'      <a href="mailto:{{CORREO}}" target="_blank">',
+'        <span>',
+'          <img src="https://cdn-icons-png.flaticon.com/128/561/561127.png" class="icono" alt="Email">',
+'          <span class="span-email">',
+'            {{CORREO}}',
+'          </span>',
+'        </span>',
+'      </a>',
+'    </td>',
+'  </tr>',
+'  <tr>',
+'    <td colspan="3" rowspan="1" class="celda inferior" style="border-collapse: collapse;">',
+'      <table style="border-collapse: collapse; overflow: hidden; width: 100%;">',
+'        <tr>',
+'          <td class="celda web">',
+'            <a href="https://biskyteam.com" target="_blank">',
+'              <span>',
+'                <img src="https://cdn-icons-png.flaticon.com/128/561/561103.png" class="icono" alt="Web">',
+'                <span class="span-web">',
+'                  www.biskyteam.com',
+'                </span>',
+'              </span>',
+'            </a>',
+'          </td>',
+'          <td colspan="2" class="celda ubicacion">',
+'            <a href="https://maps.app.goo.gl/24Ygynh5qn32Gmhx8" target="_blank">',
+'              <span>',
+'                <img src="https://cdn-icons-png.flaticon.com/128/8978/8978251.png" class="icono" alt="Lugar">',
+'                <span class="span-lugar">',
+'                  <b>Escuela de Ingeniería de Bilbao</b>, Planta 0, local P0111',
+'                </span>',
+'              </span>',
+'            </a>',
+'          </td>',
+'        </tr>',
+'        <tr>',
+'          <td class="celda info-email">',
+'            <a href="mailto:info@biskyteam.com" target="_blank">',
+'              <span>',
+'                <img src="https://cdn-icons-png.flaticon.com/128/561/561127.png" class="icono" alt="Mail">',
+'                <span class="span-email">',
+'                  info@biskyteam.com',
+'                </span>',
+'              </span>',
+'            </a>',
+'          </td>',
+'          <td class="celda frase">',
+'            <span class="span-frase">“{{TAGLINE}}”</span>',
+'          </td>',
+'          <td class="celda social">',
+'            <span class="span-social">',
+'              <a href="https://www.linkedin.com/company/biskyteam" target="_blank">',
+'                <img src="https://www.biskyteam.com/wp-content/uploads/LinkedIn_icon.svg_.webp" class="icono-social" alt="LinkedIn">',
+'              </a>',
+'              <a href="https://www.instagram.com/bisky_team?utm_source=ig_web_button_share_sheet&igsh=MTlycWNzbDdyMWpwdA==" target="_blank">',
+'                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="icono-social" alt="Instagram">',
+'              </a>',
+'              <a href="https://www.youtube.com/@BiSKYTeam" target="_blank">',
+'                <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" class="icono-social" alt="YouTube">',
+'              </a>',
+'            </span>',
+'          </td>',
+'        </tr>',
+'      </table>',
+'    </td>',
+'  </tr>',
+'</table>'
+].join("\n");
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
+
+var filas = [];          // datos ya normalizados, uno por miembro
+var excelCargado = false;
+var plantillaActual = PLANTILLA_POR_DEFECTO;
+var plantillaNombre = "";
+var avisoLinkedIn = 0;   // miembros sin URL de LinkedIn
+
+/* ============================================================
+   UTILIDADES
+   ============================================================ */
+
+// Normaliza para comparar cabeceras: minúsculas, sin tildes, sin espacios extra.
+function norm(s) {
+    return String(s == null ? "" : s)
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase().trim();
+}
+
+// Escapa el contenido que se inyecta dentro del HTML.
+// Imprescindible: equipos como "Structures & Fabrication" romperían el HTML.
+function esc(s) {
+    return String(s == null ? "" : s)
+        .replace(/&(?![a-zA-Z#][a-zA-Z0-9]*;)/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
+
+// Escapa solo para atributos (además comillas simples).
+function escAttr(s) {
+    return esc(s).replace(/'/g, "&#39;");
+}
+
+function partirNombre(nombre) {
+    var partes = String(nombre || "").trim().split(/\s+/).filter(Boolean);
+    return {
+        pila: partes[0] || "",
+        apellidos: partes.slice(1).join(" ")
+    };
+}
+
+// Nombre de archivo seguro: sin acentos rare, espacios ni símbolos.
+function nombreArchivo(s) {
+    return String(s || "")
+        .replace(/ /g, "_")
+        .replace(/[^a-zA-Z0-9\u00C0-\u024F_]/g, "")
+        .replace(/_+/g, "_")
+        .replace(/^_|_$/g, "") || "miembro";
+}
+
+function setEstado(html) { document.getElementById("output").innerHTML = html; }
+
+function aviso(html) {
+    document.getElementById("warnBox").innerHTML = html ? '<div class="warn">' + html + '</div>' : "";
+}
+
+/* ============================================================
+   LECTURA DE HIPERVÍNCULOS DEL XLSX
+   SheetJS (edición comunitaria) NO expone los hipervínculos en
+   worksheet["!hyperlinks"], así que hay que leer el XML del
+   .xlsx por dentro con JSZip. Sin esto, {{LINKEDIN}} salía con
+   el texto visible ("LinkedIn Unai Ruiz") en vez de la URL.
+   ============================================================ */
+
+function relacionesDe(xml) {
+    var mapa = {};
+    var re = /<Relationship\b[^>]*>/g, m;
+    while ((m = re.exec(xml)) !== null) {
+        var tag = m[0];
+        var id = (tag.match(/Id="([^"]+)"/) || [])[1];
+        var target = (tag.match(/Target="([^"]+)"/) || [])[1];
+        if (id && target) mapa[id] = target;
+    }
+    return mapa;
+}
+
+// Devuelve un objeto { "S4": "https://...", ... } con todas las URLs
+// de una hoja, resueltas desde sus .rels.
+function extraerLinks(zip, rutaHoja) {
+    var tareaRel = zip.file(rutaHoja.replace(/worksheets\/([^/]+)$/, "worksheets/_rels/$1.rels"));
+    if (!tareaRel) return Promise.resolve({});
+    return tareaRel.async("string").then(function (xmlRel) {
+        var rels = relacionesDe(xmlRel);
+        return zip.file(rutaHoja).async("string").then(function (xmlHoja) {
+            var mapa = {};
+            var re = /<hyperlink\b[^>]*>/g, m;
+            while ((m = re.exec(xmlHoja)) !== null) {
+                var tag = m[0];
+                var ref = (tag.match(/ref="([^"]+)"/) || [])[1];
+                var rid = (tag.match(/r:id="([^"]+)"/) || [])[1];
+                var loc = (tag.match(/location="([^"]+)"/) || [])[1];
+                var url = rid ? rels[rid] : "";
+                if (!url && loc) url = loc.indexOf("http") === 0 ? loc : "https://www.linkedin.com" + loc;
+                if (ref && url) mapa[ref] = url;
+            }
+            return mapa;
+        });
+    });
+}
+
+// Localiza el fichero XML que corresponde a una hoja por su nombre.
+function rutaDeHoja(zip, nombreHoja) {
+    return Promise.all([zip.file("xl/workbook.xml").async("string"),
+                        zip.file("xl/_rels/workbook.xml.rels").async("string")])
+        .then(function (r) {
+            var wbXml = r[0], rels = relacionesDe(r[1]);
+            var re = /<sheet\b[^>]*>/g, m;
+            while ((m = re.exec(wbXml)) !== null) {
+                var tag = m[0];
+                var nm = (tag.match(/name="([^"]+)"/) || [])[1];
+                var rid = (tag.match(/r:id="([^"]+)"/) || [])[1];
+                if (nm === nombreHoja && rid && rels[rid]) {
+                    return "xl/" + rels[rid].replace(/^\/?xl\//, "").replace(/^\//, "");
+                }
+            }
+            return null;
+        });
+}
+
+/* ============================================================
+   PASO 1 · EXCEL
+   ============================================================ */
+
+document.getElementById("fileInput").addEventListener("change", function (ev) {
+    var file = ev.target.files[0];
+    var lbl = document.getElementById("fileLabel");
+    if (!file) {
+        filas = []; excelCargado = false;
+        lbl.textContent = "Ningún archivo seleccionado";
+        lbl.className = "fileLabel none";
+        actualizarBoton(); limpiarPreview();
+        return;
+    }
+    lbl.textContent = "Leyendo " + file.name + "…";
+    lbl.className = "fileLabel";
+
+    var reader = new FileReader();
+    reader.onerror = function () {
+        setEstado("No se pudo leer el archivo.");
+        lbl.className = "fileLabel none";
+    };
+    reader.onload = function (e) {
+        var buf = new Uint8Array(e.target.result);
+        var wb;
+        try {
+            wb = XLSX.read(buf, { type: "array" });
+        } catch (err) {
+            setEstado("El archivo no es un Excel válido.");
+            return;
+        }
+        if (wb.SheetNames.indexOf(HOJA) === -1) {
+            setEstado("La hoja «" + HOJA + "» no existe. Hojas encontradas: " + wb.SheetNames.join(", "));
+            filas = []; excelCargado = false;
+            actualizarBoton(); lbl.className = "fileLabel none";
+            return;
+        }
+        var ws = wb.Sheets[HOJA];
+
+        // Índice real de cada columna buscada, leído de la fila de cabecera.
+        // No se fía del orden de las claves del objeto, porque SheetJS omite
+        // las celdas cuya cabecera está vacía y eso desplaza los índices.
+        // Las claves ya vienen como dirección de celda ("S1"), así que la
+        // letra es directamente el prefijo.
+        var letras = {};
+        var claves = Object.keys(ws);
+        for (var i = 0; i < claves.length; i++) {
+            var k = claves[i];
+            if (!/^[A-Z]+1$/.test(k)) continue;
+            var letra = k.replace(/1$/, "");
+            letras[norm(ws[k].v)] = letra;
+        }
+
+        var filasCrudas = XLSX.utils.sheet_to_row_object_array(ws, { defval: "" });
+        var colReal = {};
+        Object.keys(COLUMNAS).forEach(function (ph) {
+            colReal[ph] = letras[norm(COLUMNAS[ph])] || null;
+        });
+
+        // URLs reales de los hipervínculos, por celda.
+        var zip = new JSZip();
+        zip.loadAsync(buf).then(function () {
+            return rutaDeHoja(zip, HOJA);
+        }).then(function (ruta) {
+            if (!ruta) return {};
+            return extraerLinks(zip, ruta);
+        }).then(function (linkMap) {
+            var col = colReal.LINKEDIN;
+            avisoLinkedIn = 0;
+            filas = filasCrudas.filter(function (r) {
+                return r[COLUMNAS.NOMBRE] && String(r[COLUMNAS.NOMBRE]).trim() !== "";
+            }).map(function (r, idx) {
+                var nombre = String(r[COLUMNAS.NOMBRE]).trim();
+                var partes = partirNombre(nombre);
+                var link = "";
+                if (col) {
+                    link = linkMap[col + (idx + 2)] || "";
+                }
+                if (!link) {
+                    // Si la celda ya contiene una URL suelta, se usa esa.
+                    var bruto = String(r[COLUMNAS.LINKEDIN] || "").trim();
+                    if (/^https?:\/\//i.test(bruto)) link = bruto;
+                }
+                if (!link) avisoLinkedIn++;
+                return {
+                    nombre: nombre,
+                    nombrePila: partes.pila,
+                    apellidos: partes.apellidos,
+                    cargo: r[COLUMNAS.CARGO] || "",
+                    equipo: r[COLUMNAS.EQUIPO] || "",
+                    correo: String(r[COLUMNAS.CORREO] || "").trim(),
+                    linkedin: link,
+                    telefono: String(r[COLUMNAS.TELEFONO] || "").trim()
+                };
+            });
+
+            excelCargado = true;
+            lbl.innerHTML = "<b>" + esc(file.name) + "</b> · " + filas.length + " miembros";
+            lbl.className = "fileLabel";
+
+            setEstado(filas.length > 0
+                ? "<strong>" + filas.length + " miembros</strong> listos para exportar."
+                : "No se encontraron miembros con nombre.");
+
+            if (avisoLinkedIn > 0) {
+                aviso("<b>Atención:</b> " + avisoLinkedIn + " de " + filas.length +
+                      " miembros no tienen hipervínculo de LinkedIn en el Excel, así que su " +
+                      "botón de LinkedIn quedará sin enlace. Añádelo en la columna «Linked In» del Excel.");
+            } else {
+                aviso("");
+            }
+            actualizarBoton();
+            pintarPreview();
+        }).catch(function (err) {
+            // Si el ZIP falla, seguimos con los datos pero sin links.
+            console.error(err);
+            aviso("<b>Atención:</b> no se pudieron leer los hipervínculos del Excel. " +
+                  "Los datos están cargados, pero LinkedIn quedará sin enlace.");
+            excelCargado = true;
+            filas = filasCrudas.filter(function (r) {
+                return r[COLUMNAS.NOMBRE] && String(r[COLUMNAS.NOMBRE]).trim() !== "";
+            }).map(function (r) {
+                var partes = partirNombre(r[COLUMNAS.NOMBRE]);
+                return {
+                    nombre: String(r[COLUMNAS.NOMBRE]).trim(),
+                    nombrePila: partes.pila,
+                    apellidos: partes.apellidos,
+                    cargo: r[COLUMNAS.CARGO] || "",
+                    equipo: r[COLUMNAS.EQUIPO] || "",
+                    correo: String(r[COLUMNAS.CORREO] || "").trim(),
+                    linkedin: "",
+                    telefono: String(r[COLUMNAS.TELEFONO] || "").trim()
+                };
+            });
+            setEstado("<strong>" + filas.length + " miembros</strong> listos para exportar.");
+            actualizarBoton();
+            pintarPreview();
+        });
+    };
+    reader.readAsArrayBuffer(file);
+});
+
+/* ============================================================
+   PASO 2 · PLANTILLA HTML
+   ============================================================ */
+
+document.getElementById("tplInput").addEventListener("change", function (ev) {
+    var file = ev.target.files[0];
+    var lbl = document.getElementById("tplLabel");
+    if (!file) {
+        plantillaActual = PLANTILLA_POR_DEFECTO;
+        plantillaNombre = "";
+        lbl.textContent = "Usando la plantilla integrada por defecto";
+        lbl.className = "fileLabel none";
+        pintarPreview();
+        return;
+    }
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        var texto = String(e.target.result);
+        if (!/\{\{[A-Z_]+\}\}/.test(texto)) {
+            aviso("<b>Atención:</b> el HTML cargado no contiene ningún <code>{{PLACEHOLDER}}</code>. " +
+                  "Se generarán firmas idénticas para todos los miembros.");
+        }
+        plantillaActual = texto;
+        plantillaNombre = file.name;
+        lbl.innerHTML = "<b>" + esc(file.name) + "</b> · " + (texto.length / 1024).toFixed(1) + " KB";
+        lbl.className = "fileLabel";
+        pintarPreview();
+    };
+    reader.readAsText(file, "UTF-8");
+});
+
+/* ============================================================
+   PASO 3 · TAMAÑO DEL LOGO
+   ============================================================ */
+
+var inputTamano = document.getElementById("tamano");
+inputTamano.addEventListener("input", function () {
+    pintarPreview();
+});
+
+/* ============================================================
+   SUSTITUCIÓN DE PLACEHOLDERS
+   ============================================================ */
+
+function construirHTML(fila, tamano) {
+    var d = {
+        "NOMBRE": escAttr(fila.nombre),
+        "NOMBRE_PILA": esc(fila.nombrePila),
+        "APELLIDOS": esc(fila.apellidos),
+        "CARGO": esc(fila.cargo),
+        "EQUIPO": esc(fila.equipo),
+        "CORREO": escAttr(fila.correo),
+        "LINKEDIN": escAttr(fila.linkedin),
+        "TELEFONO": esc(fila.telefono),
+        "TAGLINE": esc(TAGLINE),
+        "TAMANO_LOGO": tamano + "px"
+    };
+    var html = plantillaActual;
+
+    // Acepta {{CLAVE}} y también {{CLAVE}} con llaves de más
+    // ({{CLAVE}}, {{{CLAVE}}}, {{{{{CLAVE}}}}}): las propuestas V4
+    // se generaron desde PowerShell y quedaron con llaves dobles.
+    var re = /\{+(NOMBRE_PILA|APELLIDOS|NOMBRE|CARGO|EQUIPO|CORREO|LINKEDIN|TELEFONO|TAGLINE|TAMANO_LOGO)\}+/g;
+    html = html.replace(re, function (todo, clave) { return d[clave]; });
+
+    // Soporta también el token antiguo usado por la versión anterior.
+    html = html.split("--tamaño--").join(tamano + "px");
+    return html;
+}
+
+function tamanoActual() {
+    var n = parseInt(inputTamano.value, 10);
+    if (isNaN(n)) n = 100;
+    if (n < 40) n = 40;
+    if (n > 200) n = 200;
+    return n;
+}
+
+/* ============================================================
+   VISTA PREVIA
+   ============================================================ */
+
+/* Detecta placeholders que la plantilla use pero el generador no rellene,
+   para avisar en vez de dejar llaves visibles en la firma. */
+var RE_PENDIENTE = /\{+\s*([A-Z][A-Z_]*)\s*\}+/g;
+
+function placeholdersPendientes(html) {
+    var vistas = {}, out = [];
+    var m;
+    RE_PENDIENTE.lastIndex = 0;
+    while ((m = RE_PENDIENTE.exec(html)) !== null) {
+        if (!vistas[m[1]]) { vistas[m[1]] = true; out.push("{{" + m[1] + "}}"); }
+    }
+    return out;
+}
+
+function limpiarPreview() {
+    document.getElementById("preview").innerHTML = '<div class="ph">Vista previa</div>';
+}
+
+function pintarPreview() {
+    var cont = document.getElementById("preview");
+    if (!filas.length) { limpiarPreview(); return; }
+    var html = construirHTML(filas[0], tamanoActual());
+    var pendientes = placeholdersPendientes(html);
+    cont.innerHTML = '<div class="ph">Vista previa · ' + esc(filas[0].nombre) + "</div>" +
+                     '<div style="margin-top:12px">' + html + "</div>" +
+                     (pendientes.length
+                        ? '<div class="warn" style="margin-top:12px">Placeholders sin sustituir en la plantilla: <b>' +
+                          pendientes.map(esc).join(", ") + "</b></div>"
+                        : "");
+}
+
+/* ============================================================
+   EXPORTAR
+   ============================================================ */
+
+function actualizarBoton() {
+    document.getElementById("exportBtn").disabled = !filas.length;
+}
+
+document.getElementById("exportBtn").addEventListener("click", function () {
+    var zip = new JSZip();
+    var tam = tamanoActual();
+    var usados = {};
+
+    filas.forEach(function (fila) {
+        var html = construirHTML(fila, tam);
+        placeholdersPendientes(html).forEach(function (p) {
+            usados[p] = (usados[p] || 0) + 1;
+        });
+        zip.file("firmas/" + nombreArchivo(fila.nombre) + ".html", html);
+    });
+
+    // Resumen de lo que la plantilla usó de verdad.
+    var resumen = Object.keys(usados).sort().map(function (p) {
+        return p + " (" + usados[p] + ")";
+    });
+    if (resumen.length) {
+        zip.file("_RESUMEN.txt",
+            "Firmas generadas: " + filas.length + "\n" +
+            "Plantilla: " + (plantillaNombre || "(integrada)") + "\n" +
+            "Logo: " + tam + "px\n\n" +
+            "Placeholders sin sustituir:\n  " + (resumen.join("\n  ") || "ninguno") + "\n");
+    }
+
+    zip.generateAsync({ type: "blob" }).then(function (blob) {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = "firmas_html.zip";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        setEstado("<strong>ZIP descargado</strong> con " + filas.length + " firmas.");
+    });
+});
+</script>
+</body>
+</html>

@@ -1,36 +1,23 @@
-<!--
-================================================================================
- BiSKY Team â€” 03-texto-izq-logo-der Â· TEXTO IZQUIERDA, LOGO A LA DERECHA
-================================================================================
- QUE ES
-   El espejo de la 01: el texto a la izquierda y el logo de 120px a la derecha.
+﻿<!--
+  PLANTILLA 02 — Estilo V4 (inline, válido para Gmail/Outlook)
+  ---------------------------------------------------------------------------
+  A diferencia de la plantilla 01, esta usa estilos INLINE en cada celda en
+  lugar de una hoja de estilos <style>. Es la forma que usan las firmas
+  V2/V3/V4 del proyecto y la única que sobrevive a Gmail y Outlook.
 
- POR QUE
-   El ojo western lee de izquierda a derecha, asi que al poner el logo a la
-   derecha el primer dato que se lee es el NOMBRE en lugar de la marca. Se
-   nota en firmas de consultas: el nombre entra antes.
-
- Paleta : #1a1b1f texto Â· #758696 gris Â· #a6b1bf gris claro Â· #e4ebf3 linea
- Fuente  : Montserrat con fallback Arial (en correo no cargan webfonts, por eso
-           los anchos estan calculados con Arial, que es la mas ancha)
- Imagenes: el logo real es 3402x3402 (cuadrado) y LinkedIn 1280x1280 (cuadrado),
-           asi que ambos se pueden escalar a cualquier tamano sin deformarse.
-           YouTube es 1024x721 (proporcion 1,4202) y por eso lleva dos medidas.
- Reglas  : CSS 100% en linea Â· tablas role="presentation" Â· sin flex/grid/
-           calc/var/min-width Â· sin target="_blank" Â· colores de enlace
-           explicitos (en Word "inherit" no vale) Â· cada img con w/h/alt
-================================================================================
+  El logo usa {{TAMANO_LOGO}} para que el campo de tamaño de la web lo ajuste.
+  Si prefieres un tamaño fijo, cambia {{TAMANO_LOGO}} por 120px.
 -->
-
-<!--[if mso]>
-<xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
-<![endif]-->
-
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="452" align="left" valign="top" style="width:452px;border-collapse:collapse;font-family:'Montserrat',Arial,Helvetica,sans-serif;mso-table-lspace:0pt;mso-table-rspace:0pt;">
   <tr>
-    <td role="presentation" width="312" valign="middle" align="left" style="width:312px;vertical-align:middle;padding:0;">
+    <td role="presentation" width="140" valign="middle" align="left" style="width:140px;vertical-align:middle;padding:0;">
+      <img src="https://docs.biskyteam.com/logo.png" width="120" height="120" alt="BiSKY Team" style="display:block;width:{{TAMANO_LOGO}};height:{{TAMANO_LOGO}};border:0;outline:none;">
+    </td>
+    <td role="presentation" width="1" valign="middle" style="width:1px;vertical-align:middle;padding:0;background-color:#e4ebf3;font-size:1px;line-height:1px;">&nbsp;</td>
+    <td role="presentation" width="27" style="width:27px;padding:0;font-size:1px;line-height:1px;">&nbsp;</td>
+    <td role="presentation" width="284" valign="middle" align="left" style="width:284px;vertical-align:middle;padding:0;">
       <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:18px;line-height:23px;color:#1a1b1f;font-weight:bold;letter-spacing:-0.2px;">{{NOMBRE}}</div>
-      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:15px;color:#758696;padding:2px 0 8px 0;">{{CARGO}} &middot; {{EQUIPO}}</div>
+      <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:11px;line-height:15px;color:#758696;padding:2px 0 8px 0;">{{CARGO}}</div>
       <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:12px;line-height:17px;border-top:1px solid #1a1b1f;padding:8px 0 0 0;margin:0;">
         <a href="mailto:{{CORREO}}" style="color:#1a1b1f;text-decoration:none;font-weight:bold;">{{CORREO}}</a>
       </div>
@@ -45,10 +32,6 @@
   <a href="https://www.youtube.com/@BiSKYTeam" style="text-decoration:none;border:0;"><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" width="15" height="11" alt="YouTube" style="width:15px;height:11px;vertical-align:middle;margin:0 0 2px 0;border:0;outline:none;"></a>
 </div>
       <div style="font-family:'Montserrat',Arial,Helvetica,sans-serif;font-size:8px;line-height:12px;color:#a6b1bf;text-transform:uppercase;letter-spacing:1.0px;padding:7px 0 0 0;">{{TAGLINE}}</div>
-    </td>
-    <td role="presentation" width="20" style="width:20px;padding:0;font-size:1px;line-height:1px;">&nbsp;</td>
-    <td role="presentation" width="120" valign="middle" align="right" style="width:120px;vertical-align:middle;padding:0;">
-      <img src="https://docs.biskyteam.com/logo.png" width="120" height="120" alt="BiSKY Team" style="display:block;width:120px;height:120px;border:0;outline:none;">
     </td>
   </tr>
 </table>
